@@ -52,6 +52,8 @@
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
+        select.modern-input { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: left 1rem center; background-size: 1em; }
+
         .circular-timer { position: relative; width: 80px; height: 80px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; }
         .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
         .timer-circle-bg { fill: none; stroke: #f1f5f9; stroke-width: 6; }
@@ -67,6 +69,16 @@
         .r-label { font-size: 11px; color: #94a3b8; }
         .r-val { font-size: 13px; font-weight: 700; color: #334155; }
         .r-code { color: var(--primary); letter-spacing: 1px; font-size: 15px; }
+
+        /* --- Modern Student Info Card --- */
+        .student-info-card { background: linear-gradient(135deg, #f8fafc, #e0f2fe); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.2); border: 1px solid #bae6fd; text-align: right; position: relative; overflow: hidden; }
+        .student-info-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%); opacity: 0.5; pointer-events: none; }
+        .student-info-item { margin-bottom: 15px; position: relative; padding-right: 45px; z-index: 2; }
+        .student-info-item:last-child { margin-bottom: 0; }
+        .student-info-icon { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); }
+        .student-info-label { font-size: 12px; color: var(--text-sub); font-weight: 700; display: block; margin-bottom: 4px; }
+        .student-info-value { font-size: 18px; font-weight: 900; color: var(--text-main); display: block; }
+        #scanIDDisplay { color: var(--primary-dark); letter-spacing: 1px; font-family: sans-serif; }
 
         /* --- QR --- */
         .qr-card-trigger { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
@@ -98,16 +110,9 @@
 
         /* --- Watermark (UPDATED STYLE) --- */
         .uni-watermark {
-            position: absolute; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 320px; /* زيادة الارتفاع لدمج أفضل */
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 320px; 
             background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center bottom;
-            background-size: cover; 
-            opacity: 0.2; 
-            pointer-events: none; 
-            z-index: 0;
+            background-size: cover; opacity: 0.2; pointer-events: none; z-index: 0;
             mix-blend-mode: multiply;
             -webkit-mask-image: radial-gradient(ellipse at bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 75%);
             mask-image: radial-gradient(ellipse at bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 75%);
@@ -151,7 +156,7 @@
 
     <div id="customSuccessModal" class="modal-overlay">
         <div class="modal-box">
-            <i class="fa-solid fa-circle-check" style="font-size: 45px; color: #10b981; margin-bottom: 15px; animation: popUp 0.5s;"></i>
+            <i class="fa-solid fa-circle-check" style="font-size: 45px; color: #10b981; margin-bottom: 15px;"></i>
             <div class="modal-title" style="color: #10b981;">تم بنجاح</div>
             <div class="modal-text" id="successModalMsg">--</div>
             <button onclick="reloadApp()" class="modal-btn btn-success-modal">موافق</button>
@@ -243,11 +248,34 @@
                     <h1 style="font-size:20px; margin-top:10px;">مسح رمز الحضور</h1>
                     <p style="margin-bottom: 15px;">امسح رمز QR من شاشة الدكتور.</p>
                     
-                    <div class="receipt-box" style="margin-bottom: 20px; padding: 10px 15px;">
-                        <div class="receipt-row"><span class="r-label">الطالب</span><span class="r-val" id="scanNameDisplay">--</span></div>
-                        <div class="receipt-row" style="border:none;"><span class="r-label">ID</span><span class="r-val" id="scanIDDisplay">--</span></div>
+                    <div class="student-info-card">
+                        <div class="student-info-item">
+                            <div class="student-info-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                            <span class="student-info-label">اسم الطالب</span>
+                            <span class="student-info-value" id="scanNameDisplay">--</span>
+                        </div>
+                        <div class="student-info-item">
+                            <div class="student-info-icon"><i class="fa-solid fa-id-card"></i></div>
+                            <span class="student-info-label">الكود الجامعي (ID)</span>
+                            <span class="student-info-value" id="scanIDDisplay">--</span>
+                        </div>
                     </div>
-                    
+
+                    <div class="input-group">
+                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">الفرقة الدراسية:</label>
+                        <select id="yearSelect" class="modern-input" onchange="updateSubjects()">
+                            <option value="" disabled selected>-- اختر الفرقة --</option>
+                            <option value="first_year">الفرقة الأولى</option>
+                            <option value="second_year">الفرقة الثانية</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">المادة الدراسية:</label>
+                        <select id="subjectSelect" class="modern-input" onchange="checkSubjectSelection()" disabled>
+                            <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
+                        </select>
+                    </div>
                     <div id="qr-reader">
                         <div class="scanner-laser"></div>
                     </div>
@@ -275,7 +303,9 @@
                     <div class="receipt-box">
                         <div class="receipt-row"><span class="r-label">الاسم</span><span class="r-val" id="receiptName">--</span></div>
                         <div class="receipt-row"><span class="r-label">الكود</span><span class="r-val" id="receiptID">--</span></div>
-                        <div class="receipt-row"><span class="r-label">الكود اليومي</span><span class="r-val" id="receiptCode">--</span></div>
+                        
+                        <div class="receipt-row"><span class="r-label">المادة</span><span class="r-val" id="receiptSubject" style="color:var(--primary)">--</span></div>
+                        
                         <div class="receipt-row"><span class="r-label">التاريخ</span><span class="r-val" id="receiptDate">--</span></div>
                         <div class="receipt-row"><span class="r-label">اليوم</span><span class="r-val" id="receiptDay">--</span></div>
                         <div class="receipt-row"><span class="r-label">الوقت</span><span class="r-val" id="receiptTime" style="direction:ltr">--</span></div>
@@ -297,9 +327,80 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // --- Google Sheet API URL ---
-        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby5cxIDqCETg20E5bXCr8ZJgb5OV_zky-9WFVDHtngVwM5noxJdU1lljHbxxbeRqh8Q/exec"; 
-        // ----------------------------
+        // --- Google Sheet API URL (Your New Link) ---
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwj8OvcoHxD_n-0OYWfwcogtYxnHc6Xloi-7NMOz2bn1lfzhh8RUkz7WZztipwLPXjg/exec"; 
+        // --------------------------------------------
+
+        // --- FETCH DATA ON LOAD (SMART CACHING) ---
+        let studentsDB = {};
+        
+        // 1. Load from Cache first (Instant)
+        try {
+            const cachedData = localStorage.getItem('students_db_cache_v1');
+            if (cachedData) {
+                studentsDB = JSON.parse(cachedData);
+                console.log("Loaded from cache");
+            }
+        } catch (e) { console.error("Cache error", e); }
+
+        // 2. Update from Server (Background)
+        fetch(SHEET_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                studentsDB = data;
+                localStorage.setItem('students_db_cache_v1', JSON.stringify(data));
+                console.log("Updated from server");
+            })
+            .catch(err => console.error("Failed to load data", err));
+
+        // --- SUBJECTS DATA ---
+        const subjectsData = {
+            "first_year": [
+                "تمريض بالغين 1 نظرى",
+                "تمريض بالغين 1 عملى",
+                "اناتومى نظرى",
+                "اناتومى عملى",
+                "تقييم صحى نظرى",
+                "تقييم صحى عملى",
+                "مصطلحات طبية",
+                "فسيولوجى",
+                "تكنولوجيا المعلومات"
+            ],
+            "second_year": [
+                "تمريض بالغين 1 نظرى",
+                "تمريض بالغين 1 عملى",
+                "تمريض حالات حرجة 1 نظرى",
+                "تمريض حالات حرجة 1 عملى",
+                "امراض باطنة",
+                "باثولوجى",
+                "علم الأدوية",
+                "الكتابة التقنية"
+            ]
+        };
+
+        // Function to update subjects based on year selection
+        function updateSubjects() {
+            const yearSelect = document.getElementById("yearSelect");
+            const subjectSelect = document.getElementById("subjectSelect");
+            const selectedYear = yearSelect.value;
+
+            // Clear existing options
+            subjectSelect.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>';
+
+            if (selectedYear && subjectsData[selectedYear]) {
+                subjectsData[selectedYear].forEach(subject => {
+                    const option = document.createElement("option");
+                    option.value = subject;
+                    option.text = subject;
+                    subjectSelect.appendChild(option);
+                });
+                subjectSelect.disabled = false;
+            } else {
+                subjectSelect.disabled = true;
+                subjectSelect.innerHTML = '<option value="" disabled selected>-- اختر الفرقة أولاً --</option>';
+            }
+            checkSubjectSelection();
+        }
 
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) { if(e.keyCode == 123) return false; }
@@ -313,12 +414,6 @@
         });
         window.addEventListener('offline', () => { showConnectionLostModal(); });
 
-        const _0x1a = "https://docs.google.com/forms/d/e/1FAIpQLSdF_30_MtoraIyXJGAQOgTGXq6v8wHZAYViDdumfS8LvSnu-A/formResponse";
-        const _0x2b = "entry.1635246184"; 
-        const _0x3c = "entry.1533334365"; 
-        const _0x4d = "entry.1679116055"; 
-        const _0x5e = "entry.1034020645"; 
-        
         const targetLat = 30.38583; 
         const targetLong = 30.48888; 
         const allowedDistance = 0.3; 
@@ -348,6 +443,7 @@
         function playClick() { document.getElementById('clickSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate(10); }
         function playSuccess() { document.getElementById('successSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([50, 50, 50]); }
         function playBeep() { document.getElementById('beepSound').play().catch(e=>{}); }
+        
         function toArabicNums(str) { 
             if(!str) return "";
             return str.toString().replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]); 
@@ -499,7 +595,6 @@
              sessionStorage.removeItem(TEMP_ID_KEY);
              sessionStorage.removeItem(TEMP_CODE_KEY);
 
-             // Reset Scan Card visibility if needed
              document.getElementById('startScanCard').style.display = 'flex';
              
              hideConnectionLostModal();
@@ -583,7 +678,7 @@
         }
 
         // =========================================================
-        // NEW FUNCTION: HANDLE ID SUBMIT WITH SHEET LOOKUP
+        // INSTANT SEARCH FUNCTION (USING LOCAL CACHE)
         // =========================================================
         async function handleIdSubmit() {
             playClick();
@@ -597,7 +692,6 @@
                 return;
             }
 
-            // Time check logic
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
                  if (Date.now() > sessionEndTime) {
                     if(countdownInterval) clearInterval(countdownInterval);
@@ -607,51 +701,68 @@
                 }
             }
 
-            // UI Loading
-            alertBox.style.display = 'none';
-            const originalBtnText = nextBtn.innerHTML;
-            nextBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري التحقق...';
-            nextBtn.disabled = true;
+            // 1. Check if data is loaded
+            if(Object.keys(studentsDB).length === 0) {
+                // Wait logic instead of error
+                nextBtn.disabled = true;
+                nextBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل القائمة...';
+                setTimeout(() => {
+                    if(Object.keys(studentsDB).length > 0) {
+                        handleIdSubmit(); 
+                    } else {
+                        nextBtn.disabled = false;
+                        nextBtn.innerHTML = 'التالي <i class="fa-solid fa-arrow-left"></i>';
+                        alertBox.innerText = "⚠️ النت ضعيف جداً، لم يتم تحميل الأسماء بعد. حاول تاني.";
+                        alertBox.style.display = 'block';
+                    }
+                }, 2500);
+                return;
+            }
 
-            try {
-                const response = await fetch(`${SHEET_API_URL}?id=${uniIdVal}`);
-                const data = await response.json();
+            // 2. Instant Lookup
+            const studentName = studentsDB[uniIdVal];
 
-                if (data.found) {
-                    // Data Found
-                    attendanceData.uniID = uniIdVal;
-                    attendanceData.name = data.name; // From Sheet
-                    
-                    sessionStorage.setItem(TEMP_ID_KEY, uniIdVal);
-                    sessionStorage.setItem(TEMP_NAME_KEY, data.name);
+            if (studentName) {
+                // Success
+                attendanceData.uniID = uniIdVal;
+                attendanceData.name = studentName;
+                
+                sessionStorage.setItem(TEMP_ID_KEY, uniIdVal);
+                sessionStorage.setItem(TEMP_NAME_KEY, studentName);
 
-                    // Update Next Screen
-                    document.getElementById('scanNameDisplay').innerText = data.name;
-                    document.getElementById('scanIDDisplay').innerText = toArabicNums(uniIdVal);
-                    
-                    // Stop Timer
-                    if(countdownInterval) clearInterval(countdownInterval);
-                    
-                    // Move Next
-                    stopCameraSafely(); 
-                    switchScreen('screenScanQR');
-                    playSuccess();
-                } else {
-                    // Not Found
-                    alertBox.innerText = "❌ الكود غير صحيح أو الطالب غير مسجل.";
-                    alertBox.style.display = 'block';
-                    nextBtn.innerHTML = originalBtnText;
-                    nextBtn.disabled = false;
-                    if(navigator.vibrate) navigator.vibrate(300);
-                }
-            } catch (error) {
-                alertBox.innerText = "⚠️ تعذر الاتصال بقاعدة البيانات. تحقق من الإنترنت.";
+                // Update UI
+                document.getElementById('scanNameDisplay').innerText = studentName;
+                // Display ID in English (Directly)
+                document.getElementById('scanIDDisplay').innerText = uniIdVal; 
+                
+                if(countdownInterval) clearInterval(countdownInterval);
+                stopCameraSafely(); 
+                switchScreen('screenScanQR');
+                playSuccess();
+            } else {
+                // Not Found
+                alertBox.innerText = "❌ الكود غير صحيح أو الطالب غير مسجل.";
                 alertBox.style.display = 'block';
-                nextBtn.innerHTML = originalBtnText;
-                nextBtn.disabled = false;
+                if(navigator.vibrate) navigator.vibrate(300);
             }
         }
         // =========================================================
+
+        function checkSubjectSelection() {
+            const subject = document.getElementById('subjectSelect').value;
+            const sessionPass = document.getElementById('sessionPass').value;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if(subject && sessionPass) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
+                submitBtn.style.cursor = "pointer";
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.6";
+                submitBtn.style.cursor = "not-allowed";
+            }
+        }
 
         async function startQrScanner() {
             playClick();
@@ -698,19 +809,14 @@
                 
                 document.getElementById('sessionPass').value = decodedText;
                 
-                // Hide retry button if it exists
                 const retryBtn = document.getElementById('retryCamBtn');
                 if(retryBtn) retryBtn.style.display = 'none';
 
-                const submitBtn = document.getElementById('submitBtn');
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = "1";
-                submitBtn.style.cursor = "pointer";
+                checkSubjectSelection(); // Check if ready to submit
                 
                 if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             }).catch(err => {
                 console.error("Stop failed", err);
-                // Safe Fallback
                 document.getElementById('qr-reader').style.display = 'none';
                 document.getElementById('scanSuccessMsg').style.display = 'flex';
                 document.getElementById('submitBtn').disabled = false;
@@ -718,18 +824,20 @@
             });
         }
 
+        // === UPDATED SUBMIT FUNCTION ===
         async function submitToGoogle() {
             playClick();
             const btn = document.getElementById('submitBtn');
-            const originalText = "تأكيد الحضور <i class='fa-solid fa-paper-plane'></i>";
+            const selectedSubject = document.getElementById('subjectSelect').value;
 
             if(!attendanceData.uniID) attendanceData.uniID = sessionStorage.getItem(TEMP_ID_KEY);
             if(!attendanceData.name) attendanceData.name = sessionStorage.getItem(TEMP_NAME_KEY);
             if(!attendanceData.code) attendanceData.code = sessionStorage.getItem(TEMP_CODE_KEY);
             const sessionPassVal = document.getElementById('sessionPass').value;
 
-            if(!attendanceData.uniID || !attendanceData.name) { alert("خطأ: البيانات مفقودة. يرجى العودة وإعادة الإدخال."); return; }
+            if(!attendanceData.uniID || !attendanceData.name) { alert("خطأ: البيانات مفقودة. يرجى العودة."); return; }
             if(!sessionPassVal) { alert("تنبيه: يجب مسح كود QR أولاً."); return; }
+            if(!selectedSubject) { alert("تنبيه: يجب اختيار المادة الدراسية."); return; }
 
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
                 if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') {
@@ -743,7 +851,7 @@
 
             const isOnline = await checkRealConnection();
             if (!isOnline) { 
-                btn.innerHTML = originalText; 
+                btn.innerHTML = "تأكيد الحضور"; 
                 btn.disabled = false;
                 showConnectionLostModal(); 
                 return; 
@@ -754,56 +862,65 @@
             document.getElementById('receiptName').innerText = attendanceData.name;
             document.getElementById('receiptID').innerText = toArabicNums(attendanceData.uniID);
             document.getElementById('receiptCode').innerText = toArabicNums(attendanceData.code);
+            
+            // Add Subject to Receipt
+            document.getElementById('receiptSubject').innerText = selectedSubject;
+
             document.getElementById('receiptDay').innerText = days[now.getDay()];
             document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB');
             document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
 
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الإرسال...';
-
             const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`;
             const formParams = new URLSearchParams();
-            formParams.append(_0x2b, attendanceData.uniID);
-            formParams.append(_0x3c, attendanceData.name);
-            formParams.append(_0x4d, finalCodeValue);
-            if(_0x5e !== "ZW50cnkuWFhYWFhY") { formParams.append(_0x5e, userIP); }
+            formParams.append("id", attendanceData.uniID);
+            formParams.append("name", attendanceData.name);
+            formParams.append("code", finalCodeValue);
+            formParams.append("ip", userIP);
+            formParams.append("subject", selectedSubject); // Sending Subject
 
             currentAbortController = new AbortController();
-            const timeoutId = setTimeout(() => currentAbortController.abort(), 10000); 
+            const timeoutId = setTimeout(() => currentAbortController.abort(), 15000); 
 
             try {
-                await fetch(_0x1a, {
+                const response = await fetch(SHEET_API_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: formParams.toString(),
                     signal: currentAbortController.signal 
                 });
+                
+                const result = await response.json(); 
                 clearTimeout(timeoutId);
-                sessionStorage.removeItem(SESSION_END_TIME_KEY); 
-                sessionStorage.removeItem(TEMP_NAME_KEY);
-                sessionStorage.removeItem(TEMP_ID_KEY);
-                sessionStorage.removeItem(TEMP_CODE_KEY);
 
-                if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
-                    if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') return; 
+                if (result.result === "success") {
+                    sessionStorage.removeItem(SESSION_END_TIME_KEY); 
+                    sessionStorage.removeItem(TEMP_NAME_KEY);
+                    sessionStorage.removeItem(TEMP_ID_KEY);
+                    sessionStorage.removeItem(TEMP_CODE_KEY);
+
+                    if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
+                        if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') return; 
+                    }
+
+                    if(countdownInterval) clearInterval(countdownInterval);
+
+                    if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
+                        localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
+                    }
+                    document.getElementById('statusIcon').className = "fa-solid fa-check hero-icon"; 
+                    document.getElementById('statusIcon').style.color = "#10b981";
+                    switchScreen('screenSuccess');
+                    playSuccess();
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
+                } else {
+                    throw new Error(result.error || "Server Error");
                 }
-
-                if(countdownInterval) clearInterval(countdownInterval);
-
-                if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
-                    localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
-                }
-                document.getElementById('statusIcon').className = "fa-solid fa-check hero-icon"; 
-                document.getElementById('statusIcon').style.color = "#10b981";
-                switchScreen('screenSuccess');
-                playSuccess();
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
 
             } catch (error) {
-                btn.innerHTML = originalText;
+                btn.innerHTML = "تأكيد الحضور";
                 btn.disabled = false;
                 if (sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true' || localStorage.getItem(TIMEOUT_BLOCK_KEY) !== 'true') {
-                    showConnectionLostModal();
+                    alert("حدث خطأ في الاتصال. حاول مرة أخرى.");
                 }
             }
         }
