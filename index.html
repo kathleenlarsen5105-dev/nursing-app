@@ -52,6 +52,7 @@
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
+        /* Style specific for Dropdowns to add arrow */
         select.modern-input { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: left 1rem center; background-size: 1em; }
 
         .circular-timer { position: relative; width: 80px; height: 80px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; }
@@ -70,6 +71,7 @@
         .r-val { font-size: 13px; font-weight: 700; color: #334155; }
         .r-code { color: var(--primary); letter-spacing: 1px; font-size: 15px; }
 
+        /* --- Modern Student Info Card --- */
         .student-info-card { background: linear-gradient(135deg, #f8fafc, #e0f2fe); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.2); border: 1px solid #bae6fd; text-align: right; position: relative; overflow: hidden; }
         .student-info-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%); opacity: 0.5; pointer-events: none; }
         .student-info-item { margin-bottom: 15px; position: relative; padding-right: 45px; z-index: 2; }
@@ -79,6 +81,7 @@
         .student-info-value { font-size: 18px; font-weight: 900; color: var(--text-main); display: block; }
         #scanIDDisplay { color: var(--primary-dark); letter-spacing: 1px; font-family: sans-serif; }
 
+        /* --- QR --- */
         .qr-card-trigger { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         .qr-card-trigger:hover { background: #f1f5f9; border-color: var(--primary); }
         .qr-card-icon { width: 60px; height: 60px; background: #e0f2fe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; animation: pulse-blue 2s infinite; }
@@ -91,8 +94,7 @@
         .scanner-laser { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(to right, transparent, #ef4444, transparent); box-shadow: 0 0 4px #ef4444; z-index: 10; animation: scanning 2s infinite alternate; display: none; }
         .scan-success-badge { background: #ecfdf5; color: #10b981; border: 1px solid #d1fae5; padding: 15px; border-radius: 15px; font-weight: 700; font-size: 14px; display: none; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; animation: popUp 0.4s; }
 
-        .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
-        
+        /* --- Modals --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s ease-out; }
         .modal-box { background: rgba(255, 255, 255, 0.95); width: 85%; max-width: 320px; padding: 25px; border-radius: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2); transform: scale(0.9); animation: popUp 0.3s; }
         .modal-title { font-size: 18px; font-weight: 900; margin-bottom: 10px; color: var(--text-main); }
@@ -103,19 +105,34 @@
         .btn-success-modal { background: #10b981; color: white; }
         .btn-warning-modal { background: #f59e0b; color: white; }
         .btn-cancel { background: #f1f5f9; color: #475569; }
+        
         #connectionLostModal { z-index: 20000 !important; }
         #connectionLostModal .modal-box { border: 2px solid #ef4444; }
 
+        /* --- Watermark (UPDATED STYLE) --- */
         .uni-watermark {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 320px; 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 320px; 
             background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center bottom;
-            background-size: cover; opacity: 0.2; pointer-events: none; z-index: 0;
+            background-size: cover; 
+            opacity: 0.2; 
+            pointer-events: none; 
+            z-index: 0;
             mix-blend-mode: multiply;
             -webkit-mask-image: radial-gradient(ellipse at bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 75%);
             mask-image: radial-gradient(ellipse at bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 75%);
         }
 
+        #screenWelcome { padding-bottom: 120px; }
+        .admin-badge { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; padding: 5px 15px; border-radius: 20px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 10px rgba(239,68,68,0.3); z-index: 100; display: none; }
+        .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
+        .card-body-content { position: relative; min-height: 500px; }
+
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scanning { 0% { top: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
@@ -237,7 +254,6 @@
                 
                 <div id="screenScanQR" class="section">
                     <h1 style="font-size:20px; margin-top:10px;">مسح رمز الحضور</h1>
-                    <p style="margin-bottom: 15px;">امسح رمز QR من شاشة الدكتور.</p>
                     
                     <div class="student-info-card">
                         <div class="student-info-item">
@@ -267,7 +283,6 @@
                             <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
                         </select>
                     </div>
-
                     <div id="qr-reader">
                         <div class="scanner-laser"></div>
                     </div>
@@ -318,39 +333,43 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // ------------------------------------------------------------------
-        // FINAL DEPLOYMENT URL
-        // ------------------------------------------------------------------
-        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyV7Z39D44wc7Zyo6O9r_GVShH1Ah7N4sMweNGPh-dv9dT_-j3GoyAGxdPHDiAOkIs7/exec"; 
-        // ------------------------------------------------------------------
-
-        let studentsDB = {};
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby5cxIDqCETg20E5bXCr8ZJgb5OV_zky-9WFVDHtngVwM5noxJdU1lljHbxxbeRqh8Q/exec"; 
         
-        try {
-            const cachedData = localStorage.getItem('students_db_cache_v1');
-            if (cachedData) {
-                studentsDB = JSON.parse(cachedData);
-            }
-        } catch (e) { console.error("Cache error", e); }
+        let studentsDB = {};
+        fetch(SHEET_API_URL).then(r=>r.json()).then(d=>{studentsDB=d;}).catch(e=>{});
 
-        fetch(SHEET_API_URL)
-            .then(response => response.json())
-            .then(data => {
-                studentsDB = data;
-                localStorage.setItem('students_db_cache_v1', JSON.stringify(data));
-            })
-            .catch(err => console.error("Failed to load data", err));
-
+        // --- SUBJECTS DATA ---
         const subjectsData = {
-            "first_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "اناتومى نظرى", "اناتومى عملى", "تقييم صحى نظرى", "تقييم صحى عملى", "مصطلحات طبية", "فسيولوجى", "تكنولوجيا المعلومات"],
-            "second_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "تمريض حالات حرجة 1 نظرى", "تمريض حالات حرجة 1 عملى", "امراض باطنة", "باثولوجى", "علم الأدوية", "الكتابة التقنية"]
+            "first_year": [
+                "تمريض بالغين 1 نظرى",
+                "تمريض بالغين 1 عملى",
+                "اناتومى نظرى",
+                "اناتومى عملى",
+                "تقييم صحى نظرى",
+                "تقييم صحى عملى",
+                "مصطلحات طبية",
+                "فسيولوجى",
+                "تكنولوجيا المعلومات"
+            ],
+            "second_year": [
+                "تمريض بالغين 1 نظرى",
+                "تمريض بالغين 1 عملى",
+                "تمريض حالات حرجة 1 نظرى",
+                "تمريض حالات حرجة 1 عملى",
+                "امراض باطنة",
+                "باثولوجى",
+                "علم الأدوية",
+                "الكتابة التقنية"
+            ]
         };
 
+        // Update subjects dropdown based on year selection
         function updateSubjects() {
             const yearSelect = document.getElementById("yearSelect");
             const subjectSelect = document.getElementById("subjectSelect");
             const selectedYear = yearSelect.value;
 
+            // Clear existing options
             subjectSelect.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>';
 
             if (selectedYear && subjectsData[selectedYear]) {
@@ -380,7 +399,16 @@
         });
         window.addEventListener('offline', () => { showConnectionLostModal(); });
 
-        const targetLat = 30.38583; const targetLong = 30.48888; const allowedDistance = 0.3; 
+        const _0x1a = "https://docs.google.com/forms/d/e/1FAIpQLSdF_30_MtoraIyXJGAQOgTGXq6v8wHZAYViDdumfS8LvSnu-A/formResponse";
+        const _0x2b = "entry.1635246184"; 
+        const _0x3c = "entry.1533334365"; 
+        const _0x4d = "entry.1679116055"; 
+        const _0x5e = "entry.1034020645"; 
+        
+        const targetLat = 30.38583; 
+        const targetLong = 30.48888; 
+        const allowedDistance = 0.3; 
+
         const storageKey = "nursing_final_secure_v45"; 
         const DOCTOR_MODE_KEY = "is_doctor_bypass_enabled"; 
         const ADMIN_PASS = "RYADA2025"; 
@@ -406,7 +434,6 @@
         function playClick() { document.getElementById('clickSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate(10); }
         function playSuccess() { document.getElementById('successSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([50, 50, 50]); }
         function playBeep() { document.getElementById('beepSound').play().catch(e=>{}); }
-        
         function toArabicNums(str) { 
             if(!str) return "";
             return str.toString().replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]); 
@@ -415,7 +442,7 @@
         setInterval(() => {
             const now = new Date();
             document.getElementById('currentTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour:'2-digit', minute:'2-digit', second:'2-digit'});
-            document.getElementById('currentDate'].innerText = now.toLocaleDateString('en-GB');
+            document.getElementById('currentDate').innerText = now.toLocaleDateString('en-GB');
         }, 1000);
 
         window.onload = function() {
@@ -493,7 +520,7 @@
                 sessionEndTime = parseInt(savedDeadline);
             } else {
                 sessionEndTime = Date.now() + (DATA_ENTRY_TIMEOUT_SEC * 1000);
-                sessionStorage.setItem(SESSION_END_TIME_KEY, newEndTime.toString());
+                sessionStorage.setItem(SESSION_END_TIME_KEY, sessionEndTime.toString());
             }
 
             const circle = document.getElementById('timerProgress');
@@ -503,7 +530,7 @@
             if(countdownInterval) clearInterval(countdownInterval);
             
             countdownInterval = setInterval(() => {
-                const now = new Date();
+                const now = Date.now();
                 const remainingMs = sessionEndTime - now;
                 const secondsLeft = Math.max(0, Math.ceil(remainingMs / 1000));
                 const percent = Math.max(0, remainingMs / (DATA_ENTRY_TIMEOUT_SEC * 1000));
@@ -525,7 +552,7 @@
                     if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
                         localStorage.setItem(TIMEOUT_BLOCK_KEY, 'true');
                     }
-                    document.getElementById('nextStepBtn'].disabled = true;
+                    document.getElementById('nextStepBtn').disabled = true;
                     hideConnectionLostModal();
                     showError("⏳ انتهى الوقت المحدد لإدخال البيانات.<br>تم إغلاق التسجيل لهذا اليوم.", true);
                 }
@@ -534,7 +561,7 @@
 
         function checkAdminPassword() {
             playClick();
-            const enteredPass = document.getElementById('adminPassword'].value;
+            const enteredPass = document.getElementById('adminPassword').value;
             if (enteredPass === ADMIN_PASS) {
                 sessionStorage.setItem(DOCTOR_MODE_KEY, 'true');
                 const toast = document.getElementById('toastMessage');
@@ -542,9 +569,9 @@
                 setTimeout(() => { toast.style.display = 'none'; }, 3000);
                 updateUIForMode(); switchScreen('screenWelcome');
             } else {
-                 document.getElementById('adminAlert'].innerText = "❌ كلمة المرور غير صحيحة.";
-                 document.getElementById('adminAlert'].style.display = 'block';
-                 document.getElementById('adminPassword'].value = ''; 
+                 document.getElementById('adminAlert').innerText = "❌ كلمة المرور غير صحيحة.";
+                 document.getElementById('adminAlert').style.display = 'block';
+                 document.getElementById('adminPassword').value = ''; 
             }
         }
         
@@ -558,28 +585,28 @@
              sessionStorage.removeItem(TEMP_ID_KEY);
              sessionStorage.removeItem(TEMP_CODE_KEY);
 
-             document.getElementById('startScanCard'].style.display = 'flex';
+             document.getElementById('startScanCard').style.display = 'flex';
              
              hideConnectionLostModal();
              switchScreen('screenWelcome');
-             document.getElementById('statusIcon'].className = "fa-solid fa-user-nurse hero-icon";
+             document.getElementById('statusIcon').className = "fa-solid fa-user-nurse hero-icon";
         }
         
         async function stopCameraSafely() {
             if(html5QrCode && html5QrCode.isScanning) {
                 try { await html5QrCode.stop(); } catch(e) {}
             }
-            document.getElementById('qr-reader'].style.display = 'none';
-            document.getElementById('startScanCard'].style.display = 'flex';
-            document.getElementById('scanSuccessMsg'].style.display = 'none';
-            document.getElementById('retryCamBtn'].style.display = 'none';
+            document.getElementById('qr-reader').style.display = 'none';
+            document.getElementById('startScanCard').style.display = 'flex';
+            document.getElementById('scanSuccessMsg').style.display = 'none';
+            document.getElementById('retryCamBtn').style.display = 'none';
         }
 
         function handleGpsError(error) {
             let msg = "يرجى تفعيل الموقع (GPS).";
             if(error.code == 1) msg = "⛔ تم رفض إذن الموقع.<br>يرجى التفعيل يدوياً.";
             else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة أو مغلقة.";
-            document.getElementById('errorMsg'].innerHTML = msg;
+            document.getElementById('errorMsg').innerHTML = msg;
             const retryBtn = document.getElementById('retryBtn');
             retryBtn.innerHTML = "📍 تفعيل الموقع والمحاولة";
             retryBtn.onclick = function() {
@@ -611,7 +638,7 @@
             if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') { showError("⏳ لقد انتهت المهلة المحددة سابقاً.<br>لا يمكنك التسجيل.", true); return; }
             if (localStorage.getItem(storageKey) === new Date().toLocaleDateString('en-GB')) { showError("⛔ تم تسجيل الحضور اليوم مسبقاً.", true); return; }
             switchScreen('screenLoading');
-            document.getElementById('statusIcon'].className = "fa-solid fa-satellite-dish hero-icon fa-spin"; 
+            document.getElementById('statusIcon').className = "fa-solid fa-satellite-dish hero-icon fa-spin"; 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: false, timeout: 30000, maximumAge: Infinity });
             } else { showError("الجهاز لا يدعم GPS.", false); }
@@ -628,21 +655,21 @@
             let code = (Math.floor(142 + Math.random() * 1280) * 7);
             if (code < 1000) code += 7000;
             attendanceData.code = code.toString(); 
-            document.getElementById('attendanceCode'].value = code; 
+            document.getElementById('attendanceCode').value = code; 
             sessionStorage.setItem(TEMP_CODE_KEY, code.toString());
 
             const newEndTime = Date.now() + (DATA_ENTRY_TIMEOUT_SEC * 1000);
             sessionEndTime = newEndTime;
             sessionStorage.setItem(SESSION_END_TIME_KEY, newEndTime.toString());
-            document.getElementById('statusIcon'].className = "fa-solid fa-pen-to-square hero-icon"; 
-            document.getElementById('statusIcon'].style.animation = "none";
+            document.getElementById('statusIcon').className = "fa-solid fa-pen-to-square hero-icon"; 
+            document.getElementById('statusIcon').style.animation = "none";
             switchScreen('screenDataEntry');
             startCountdown(); 
         }
 
         async function handleIdSubmit() {
             playClick();
-            const uniIdVal = document.getElementById('uniID'].value.trim();
+            const uniIdVal = document.getElementById('uniID').value.trim();
             const alertBox = document.getElementById('dataEntryAlert');
             const nextBtn = document.getElementById('nextStepBtn');
 
@@ -662,18 +689,8 @@
             }
 
             if(Object.keys(studentsDB).length === 0) {
-                nextBtn.disabled = true;
-                nextBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل القائمة...';
-                setTimeout(() => {
-                    if(Object.keys(studentsDB).length > 0) {
-                        handleIdSubmit(); 
-                    } else {
-                        nextBtn.disabled = false;
-                        nextBtn.innerHTML = 'التالي <i class="fa-solid fa-arrow-left"></i>';
-                        alertBox.innerText = "⚠️ النت ضعيف جداً، لم يتم تحميل الأسماء بعد. حاول تاني.";
-                        alertBox.style.display = 'block';
-                    }
-                }, 2500);
+                alertBox.innerText = "⚠️ جاري تحميل البيانات.. انتظر لحظة وحاول مجدداً.";
+                alertBox.style.display = 'block';
                 return;
             }
 
@@ -686,8 +703,8 @@
                 sessionStorage.setItem(TEMP_ID_KEY, uniIdVal);
                 sessionStorage.setItem(TEMP_NAME_KEY, studentName);
 
-                document.getElementById('scanNameDisplay'].innerText = studentName;
-                document.getElementById('scanIDDisplay'].innerText = uniIdVal; 
+                document.getElementById('scanNameDisplay').innerText = studentName;
+                document.getElementById('scanIDDisplay').innerText = uniIdVal; 
                 
                 if(countdownInterval) clearInterval(countdownInterval);
                 stopCameraSafely(); 
@@ -701,10 +718,9 @@
         }
 
         function checkSubjectSelection() {
-            const subject = document.getElementById('subjectSelect'].value;
-            const sessionPass = document.getElementById('sessionPass'].value;
+            const subject = document.getElementById('subjectSelect').value;
+            const sessionPass = document.getElementById('sessionPass').value;
             const submitBtn = document.getElementById('submitBtn');
-            
             if(subject && sessionPass) {
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = "1";
@@ -721,7 +737,7 @@
             const scannerContainer = document.getElementById('qr-reader');
             await stopCameraSafely();
             
-            document.getElementById('startScanCard'].style.display = 'none'; 
+            document.getElementById('startScanCard').style.display = 'none'; 
             scannerContainer.style.display = "block"; 
             
             const laser = document.createElement('div');
@@ -730,8 +746,8 @@
             scannerContainer.appendChild(laser);
             laser.style.display = 'block';
 
-            document.getElementById('submitBtn'].disabled = true;
-            document.getElementById('sessionPass'].value = ''; 
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('sessionPass').value = ''; 
 
             html5QrCode = new Html5Qrcode("qr-reader");
             const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
@@ -740,53 +756,55 @@
                 await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess);
             } catch (err) {
                 await stopCameraSafely();
-                document.getElementById('startScanCard'].style.display = 'none';
-                document.getElementById('retryCamBtn'].style.display = 'flex'; 
+                document.getElementById('startScanCard').style.display = 'none';
+                document.getElementById('retryCamBtn').style.display = 'flex'; 
                 
-                document.getElementById('cameraErrorMsg'].innerText = "تعذر فتح الكاميرا. تأكد من الأذونات.";
-                document.getElementById('cameraErrorModal'].style.display = 'flex';
+                document.getElementById('cameraErrorMsg').innerText = "تعذر فتح الكاميرا. تأكد من الأذونات.";
+                document.getElementById('cameraErrorModal').style.display = 'flex';
             }
         }
         
         function retryCamera() {
-            document.getElementById('cameraErrorModal'].style.display = 'none';
+            document.getElementById('cameraErrorModal').style.display = 'none';
             startQrScanner();
         }
 
         function onScanSuccess(decodedText, decodedResult) {
             playBeep();
             html5QrCode.stop().then(() => {
-                document.getElementById('qr-reader'].style.display = 'none';
-                document.getElementById('scanSuccessMsg'].style.display = 'flex';
+                document.getElementById('qr-reader').style.display = 'none';
+                document.getElementById('scanSuccessMsg').style.display = 'flex';
                 
-                document.getElementById('sessionPass'].value = decodedText;
+                document.getElementById('sessionPass').value = decodedText;
                 
                 const retryBtn = document.getElementById('retryCamBtn');
                 if(retryBtn) retryBtn.style.display = 'none';
 
-                checkSubjectSelection(); 
+                checkSubjectSelection();
                 
                 if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             }).catch(err => {
                 console.error("Stop failed", err);
-                document.getElementById('qr-reader'].style.display = 'none';
-                document.getElementById('scanSuccessMsg'].style.display = 'flex';
-                document.getElementById('submitBtn'].disabled = false;
-                document.getElementById('submitBtn'].style.opacity = "1";
+                document.getElementById('qr-reader').style.display = 'none';
+                document.getElementById('scanSuccessMsg').style.display = 'flex';
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').style.opacity = "1";
             });
         }
 
         async function submitToGoogle() {
             playClick();
             const btn = document.getElementById('submitBtn');
-            const selectedSubject = document.getElementById('subjectSelect'].value;
+            const originalText = "تأكيد الحضور <i class='fa-solid fa-paper-plane'></i>";
+            
+            const selectedSubject = document.getElementById('subjectSelect').value;
 
             if(!attendanceData.uniID) attendanceData.uniID = sessionStorage.getItem(TEMP_ID_KEY);
             if(!attendanceData.name) attendanceData.name = sessionStorage.getItem(TEMP_NAME_KEY);
             if(!attendanceData.code) attendanceData.code = sessionStorage.getItem(TEMP_CODE_KEY);
-            const sessionPassVal = document.getElementById('sessionPass'].value;
+            const sessionPassVal = document.getElementById('sessionPass').value;
 
-            if(!attendanceData.uniID || !attendanceData.name) { alert("خطأ: البيانات مفقودة. يرجى العودة."); return; }
+            if(!attendanceData.uniID || !attendanceData.name) { alert("خطأ: البيانات مفقودة. يرجى العودة وإعادة الإدخال."); return; }
             if(!sessionPassVal) { alert("تنبيه: يجب مسح كود QR أولاً."); return; }
             if(!selectedSubject) { alert("تنبيه: يجب اختيار المادة الدراسية."); return; }
 
@@ -797,82 +815,87 @@
                 }
             }
 
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الإرسال...';
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الفحص...';
             btn.disabled = true;
 
             const isOnline = await checkRealConnection();
-            if (!isOnline) { btn.innerHTML = "تأكيد الحضور"; btn.disabled = false; showConnectionLostModal(); return; }
+            if (!isOnline) { 
+                btn.innerHTML = originalText; 
+                btn.disabled = false;
+                showConnectionLostModal(); 
+                return; 
+            }
 
             const now = new Date();
             const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-            const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`;
+            document.getElementById('receiptName').innerText = attendanceData.name;
+            document.getElementById('receiptID').innerText = toArabicNums(attendanceData.uniID);
+            document.getElementById('receiptCode').innerText = toArabicNums(attendanceData.code);
             
+            // Add Subject to Receipt
+            document.getElementById('receiptSubject').innerText = selectedSubject;
+
+            document.getElementById('receiptDay').innerText = days[now.getDay()];
+            document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB');
+            document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
+
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الإرسال...';
+
+            const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`;
             const formParams = new URLSearchParams();
             formParams.append("id", attendanceData.uniID);
             formParams.append("name", attendanceData.name);
             formParams.append("code", finalCodeValue);
             formParams.append("ip", userIP);
-            formParams.append("subject", selectedSubject); 
+            formParams.append("subject", selectedSubject); // Send Subject
+
+            currentAbortController = new AbortController();
+            const timeoutId = setTimeout(() => currentAbortController.abort(), 10000); 
 
             try {
                 await fetch(SHEET_API_URL, {
                     method: 'POST',
-                    mode: 'no-cors', 
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formParams.toString()
+                    body: formParams.toString(),
+                    signal: currentAbortController.signal 
                 });
-                
+                clearTimeout(timeoutId);
                 sessionStorage.removeItem(SESSION_END_TIME_KEY); 
                 sessionStorage.removeItem(TEMP_NAME_KEY);
                 sessionStorage.removeItem(TEMP_ID_KEY);
                 sessionStorage.removeItem(TEMP_CODE_KEY);
 
                 if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
-                    localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
+                    if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') return; 
                 }
+
                 if(countdownInterval) clearInterval(countdownInterval);
-                
-                const receiptData = {
-                    name: attendanceData.name,
-                    id: attendanceData.uniID,
-                    subject: selectedSubject,
-                    date: now.toLocaleDateString('en-GB'),
-                    time: now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'})
-                };
-                localStorage.setItem('last_attendance_receipt', JSON.stringify(receiptData));
-                
+
                 if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
                     localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
                 }
-                
-                document.getElementById('receiptName'].innerText = receiptData.name;
-                document.getElementById('receiptID'].innerText = toArabicNums(receiptData.id);
-                document.getElementById('receiptCode'].innerText = toArabicNums(attendanceData.code);
-                document.getElementById('receiptSubject'].innerText = receiptData.subject;
-                document.getElementById('receiptDay'].innerText = days[now.getDay()];
-                document.getElementById('receiptDate'].innerText = receiptData.date;
-                document.getElementById('receiptTime'].innerText = receiptData.time;
-
-                document.getElementById('statusIcon'].className = "fa-solid fa-check hero-icon"; 
-                document.getElementById('statusIcon'].style.color = "#10b981";
+                document.getElementById('statusIcon').className = "fa-solid fa-check hero-icon"; 
+                document.getElementById('statusIcon').style.color = "#10b981";
                 switchScreen('screenSuccess');
                 playSuccess();
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
 
             } catch (error) {
-                console.error(error);
-                btn.innerHTML = "تأكيد الحضور";
+                btn.innerHTML = originalText;
                 btn.disabled = false;
-                alert("حدث خطأ غير متوقع، حاول مرة أخرى.");
+                if (sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true' || localStorage.getItem(TIMEOUT_BLOCK_KEY) !== 'true') {
+                    showConnectionLostModal();
+                }
             }
         }
 
         function showError(msg, isPermanent = false) {
             if(countdownInterval) clearInterval(countdownInterval);
-            document.getElementById('errorMsg'].innerHTML = msg;
-            document.getElementById('statusIcon'].className = "fa-solid fa-triangle-exclamation hero-icon";
-            document.getElementById('statusIcon'].style.color = "#ef4444";
-            document.getElementById('statusIcon'].style.animation = "none";
+            document.getElementById('errorMsg').innerHTML = msg;
+            document.getElementById('statusIcon').className = "fa-solid fa-triangle-exclamation hero-icon";
+            document.getElementById('statusIcon').style.color = "#ef4444";
+            document.getElementById('statusIcon').style.animation = "none";
             const retryBtn = document.getElementById('retryBtn');
             retryBtn.innerHTML = "حاول مرة أخرى";
             retryBtn.onclick = function() { location.reload(); }; 
