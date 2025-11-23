@@ -70,6 +70,7 @@
         .r-val { font-size: 13px; font-weight: 700; color: #334155; }
         .r-code { color: var(--primary); letter-spacing: 1px; font-size: 15px; }
 
+        /* --- Modern Student Info Card --- */
         .student-info-card { background: linear-gradient(135deg, #f8fafc, #e0f2fe); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.2); border: 1px solid #bae6fd; text-align: right; position: relative; overflow: hidden; }
         .student-info-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%); opacity: 0.5; pointer-events: none; }
         .student-info-item { margin-bottom: 15px; position: relative; padding-right: 45px; z-index: 2; }
@@ -79,6 +80,7 @@
         .student-info-value { font-size: 18px; font-weight: 900; color: var(--text-main); display: block; }
         #scanIDDisplay { color: var(--primary-dark); letter-spacing: 1px; font-family: sans-serif; }
 
+        /* --- QR --- */
         .qr-card-trigger { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         .qr-card-trigger:hover { background: #f1f5f9; border-color: var(--primary); }
         .qr-card-icon { width: 60px; height: 60px; background: #e0f2fe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; animation: pulse-blue 2s infinite; }
@@ -299,6 +301,7 @@
                         <div class="receipt-row"><span class="r-label">المادة</span><span class="r-val" id="receiptSubject" style="color:var(--primary)">--</span></div>
                         
                         <div class="receipt-row"><span class="r-label">التاريخ</span><span class="r-val" id="receiptDate">--</span></div>
+                        <div class="receipt-row"><span class="r-label">اليوم</span><span class="r-val" id="receiptDay">--</span></div>
                         <div class="receipt-row"><span class="r-label">الوقت</span><span class="r-val" id="receiptTime" style="direction:ltr">--</span></div>
                     </div>
                     <div style="color:#10b981; font-weight:700; font-size:13px;"><i class="fa-solid fa-shield-check"></i> حضور مؤكد</div>
@@ -318,11 +321,9 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // ------------------------------------------------------------------
-        // FINAL DEPLOYMENT URL
-        // ------------------------------------------------------------------
+        // --- FINAL DEPLOYMENT URL ---
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyV7Z39D44wc7Zyo6O9r_GVShH1Ah7N4sMweNGPh-dv9dT_-j3GoyAGxdPHDiAOkIs7/exec"; 
-        // ------------------------------------------------------------------
+        // ----------------------------
 
         let studentsDB = {};
         
@@ -820,7 +821,7 @@
                     body: formParams.toString()
                 });
                 
-                // Success Logic (Assume success since no-cors doesn't return errors)
+                // Success Logic (Assume success since no-cors)
                 sessionStorage.removeItem(SESSION_END_TIME_KEY); 
                 sessionStorage.removeItem(TEMP_NAME_KEY);
                 sessionStorage.removeItem(TEMP_ID_KEY);
@@ -869,10 +870,10 @@
 
         function showError(msg, isPermanent = false) {
             if(countdownInterval) clearInterval(countdownInterval);
-            document.getElementById('errorMsg').innerHTML = msg;
-            document.getElementById('statusIcon').className = "fa-solid fa-triangle-exclamation hero-icon";
-            document.getElementById('statusIcon').style.color = "#ef4444";
-            document.getElementById('statusIcon').style.animation = "none";
+            document.getElementById('errorMsg'].innerHTML = msg;
+            document.getElementById('statusIcon'].className = "fa-solid fa-triangle-exclamation hero-icon";
+            document.getElementById('statusIcon'].style.color = "#ef4444";
+            document.getElementById('statusIcon'].style.animation = "none";
             const retryBtn = document.getElementById('retryBtn');
             retryBtn.innerHTML = "حاول مرة أخرى";
             retryBtn.onclick = function() { location.reload(); }; 
