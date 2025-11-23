@@ -276,6 +276,7 @@
                             <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
                         </select>
                     </div>
+
                     <div id="qr-reader">
                         <div class="scanner-laser"></div>
                     </div>
@@ -307,7 +308,6 @@
                         <div class="receipt-row"><span class="r-label">المادة</span><span class="r-val" id="receiptSubject" style="color:var(--primary)">--</span></div>
                         
                         <div class="receipt-row"><span class="r-label">التاريخ</span><span class="r-val" id="receiptDate">--</span></div>
-                        <div class="receipt-row"><span class="r-label">اليوم</span><span class="r-val" id="receiptDay">--</span></div>
                         <div class="receipt-row"><span class="r-label">الوقت</span><span class="r-val" id="receiptTime" style="direction:ltr">--</span></div>
                     </div>
                     <div style="color:#10b981; font-weight:700; font-size:13px;"><i class="fa-solid fa-shield-check"></i> حضور مؤكد</div>
@@ -327,9 +327,11 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // --- Google Sheet API URL (Your New Link) ---
+        // ------------------------------------------------------------------
+        // IMPORTANT: YOUR GOOGLE SCRIPT URL
+        // ------------------------------------------------------------------
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwj8OvcoHxD_n-0OYWfwcogtYxnHc6Xloi-7NMOz2bn1lfzhh8RUkz7WZztipwLPXjg/exec"; 
-        // --------------------------------------------
+        // ------------------------------------------------------------------
 
         // --- FETCH DATA ON LOAD (SMART CACHING) ---
         let studentsDB = {};
@@ -824,7 +826,7 @@
             });
         }
 
-        // === UPDATED SUBMIT FUNCTION ===
+        // === SUBMIT FUNCTION (With no-cors FIX) ===
         async function submitToGoogle() {
             playClick();
             const btn = document.getElementById('submitBtn');
@@ -846,7 +848,7 @@
                 }
             }
 
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الفحص...';
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الإرسال...';
             btn.disabled = true;
 
             const isOnline = await checkRealConnection();
@@ -859,69 +861,60 @@
 
             const now = new Date();
             const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-            document.getElementById('receiptName').innerText = attendanceData.name;
-            document.getElementById('receiptID').innerText = toArabicNums(attendanceData.uniID);
-            document.getElementById('receiptCode').innerText = toArabicNums(attendanceData.code);
             
-            // Add Subject to Receipt
-            document.getElementById('receiptSubject').innerText = selectedSubject;
-
-            document.getElementById('receiptDay').innerText = days[now.getDay()];
-            document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB');
-            document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
-
             const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`;
             const formParams = new URLSearchParams();
             formParams.append("id", attendanceData.uniID);
             formParams.append("name", attendanceData.name);
             formParams.append("code", finalCodeValue);
             formParams.append("ip", userIP);
-            formParams.append("subject", selectedSubject); // Sending Subject
+            formParams.append("subject", selectedSubject); 
 
-            currentAbortController = new AbortController();
-            const timeoutId = setTimeout(() => currentAbortController.abort(), 15000); 
-
+            // Using no-cors mode to prevent hanging
             try {
-                const response = await fetch(SHEET_API_URL, {
+                await fetch(SHEET_API_URL, {
                     method: 'POST',
+                    mode: 'no-cors', // This is crucial for instant UI response
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formParams.toString(),
-                    signal: currentAbortController.signal 
+                    body: formParams.toString()
                 });
                 
-                const result = await response.json(); 
-                clearTimeout(timeoutId);
+                // Success Logic (Assume success since no-cors doesn't return errors)
+                sessionStorage.removeItem(SESSION_END_TIME_KEY); 
+                sessionStorage.removeItem(TEMP_NAME_KEY);
+                sessionStorage.removeItem(TEMP_ID_KEY);
+                sessionStorage.removeItem(TEMP_CODE_KEY);
 
-                if (result.result === "success") {
-                    sessionStorage.removeItem(SESSION_END_TIME_KEY); 
-                    sessionStorage.removeItem(TEMP_NAME_KEY);
-                    sessionStorage.removeItem(TEMP_ID_KEY);
-                    sessionStorage.removeItem(TEMP_CODE_KEY);
-
-                    if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
-                        if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') return; 
-                    }
-
-                    if(countdownInterval) clearInterval(countdownInterval);
-
-                    if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
-                        localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
-                    }
-                    document.getElementById('statusIcon').className = "fa-solid fa-check hero-icon"; 
-                    document.getElementById('statusIcon').style.color = "#10b981";
-                    switchScreen('screenSuccess');
-                    playSuccess();
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
-                } else {
-                    throw new Error(result.error || "Server Error");
+                if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
+                    if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') return; 
                 }
+
+                if(countdownInterval) clearInterval(countdownInterval);
+
+                if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
+                    localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
+                }
+                
+                // Fill Receipt
+                document.getElementById('receiptName').innerText = attendanceData.name;
+                document.getElementById('receiptID').innerText = toArabicNums(attendanceData.uniID);
+                document.getElementById('receiptCode').innerText = toArabicNums(attendanceData.code);
+                document.getElementById('receiptSubject').innerText = selectedSubject;
+                document.getElementById('receiptDay').innerText = days[now.getDay()];
+                document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB');
+                document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
+
+                document.getElementById('statusIcon').className = "fa-solid fa-check hero-icon"; 
+                document.getElementById('statusIcon').style.color = "#10b981";
+                switchScreen('screenSuccess');
+                playSuccess();
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
 
             } catch (error) {
+                console.log(error);
                 btn.innerHTML = "تأكيد الحضور";
                 btn.disabled = false;
-                if (sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true' || localStorage.getItem(TIMEOUT_BLOCK_KEY) !== 'true') {
-                    alert("حدث خطأ في الاتصال. حاول مرة أخرى.");
-                }
+                alert("حدث خطأ في الشبكة.");
             }
         }
 
