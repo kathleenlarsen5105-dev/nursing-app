@@ -126,7 +126,7 @@
         .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
         .card-body-content { position: relative; min-height: 500px; }
 
-        /* --- تنسيقات تقرير الحضور الجديد --- */
+        /* --- تنسيقات تقرير الحضور (محدثة) --- */
         .report-modal-body {
             max-height: 60vh;
             overflow-y: auto;
@@ -140,21 +140,37 @@
         .report-modal-body::-webkit-scrollbar { width: 6px; }
         .report-modal-body::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
 
-        .report-group { margin-bottom: 20px; animation: slideUp 0.4s ease-out; }
+        .report-group { margin-bottom: 10px; animation: slideUp 0.4s ease-out; }
+
+        /* تعديل الهيدر ليكون قابلاً للضغط */
         .report-header {
             background: linear-gradient(to left, var(--primary), var(--primary-dark));
             color: white;
-            padding: 8px 15px;
+            padding: 12px 15px;
             border-radius: 10px;
             font-size: 13px;
             font-weight: bold;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
             box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2);
+            cursor: pointer; /* مؤشر اليد */
+            user-select: none;
+            transition: 0.2s;
         }
+        .report-header:active { transform: scale(0.98); }
+
+        /* أيقونة السهم للقائمة */
+        .toggle-icon { transition: transform 0.3s ease; }
+        .report-header.active .toggle-icon { transform: rotate(180deg); }
+
         .report-count { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 11px; }
+
+        /* القائمة مخفية افتراضياً */
+        .report-list-container {
+            display: none; 
+            padding-top: 5px;
+        }
 
         .report-item {
             background: white;
@@ -167,11 +183,25 @@
             align-items: center;
             transition: 0.2s;
         }
-        .report-item:hover { transform: translateX(-3px); border-color: var(--primary); }
         .st-name { font-weight: 700; font-size: 12px; color: #334155; display: block; }
         .st-id { font-size: 10px; color: #94a3b8; font-family: monospace; letter-spacing: 1px; }
-        .st-time { font-size: 11px; color: var(--primary); font-weight: bold; direction: ltr; }
-        .empty-state { text-align: center; color: #94a3b8; padding: 40px 0; font-size: 13px; }
+
+        /* زر الحذف الفردي */
+        .btn-delete-single {
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fecaca;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .btn-delete-single:active { transform: scale(0.9); }
 
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -217,7 +247,10 @@
         <div class="modal-box" style="max-width: 380px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="modal-title" style="margin:0; font-size:16px;">سجل اليوم <span style="font-size:12px; color:#94a3b8" id="reportDateDisplay"></span></div>
-                <button onclick="clearLocalReport()" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:12px;"><i class="fa-solid fa-trash"></i> مسح</button>
+                
+                <button onclick="clearLocalReport()" style="background:#fee2e2; width:35px; height:35px; border-radius:50%; border:none; color:#ef4444; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 5px rgba(239,68,68,0.2);">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
             </div>
             
             <div id="reportContent" class="report-modal-body">
@@ -961,7 +994,7 @@
         }
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
 
-        // --- دوال نظام التقرير الجديد ---
+        // --- دوال نظام التقرير الجديد (المحدثة) ---
         function saveToLocalLog(studentData) {
             let logs = JSON.parse(localStorage.getItem(LOCAL_LOG_KEY) || "[]");
             const today = new Date().toLocaleDateString('en-GB');
@@ -986,7 +1019,7 @@
             logs = logs.filter(log => log.date === today);
 
             if (logs.length === 0) {
-                content.innerHTML = '<div class="empty-state"><i class="fa-solid fa-clipboard-list" style="font-size:30px; margin-bottom:10px; display:block;"></i>لا يوجد تسجيلات اليوم على هذا الجهاز</div>';
+                content.innerHTML = '<div class="empty-state"><i class="fa-solid fa-clipboard-list" style="font-size:30px; margin-bottom:10px; display:block;"></i>لا يوجد تسجيلات اليوم</div>';
             } else {
                 const grouped = logs.reduce((acc, curr) => {
                     (acc[curr.subject] = acc[curr.subject] || []).push(curr);
@@ -994,29 +1027,69 @@
                 }, {});
 
                 let html = '';
+                let index = 0; 
+
                 for (const [subject, students] of Object.entries(grouped)) {
+                    const groupId = `group_${index}`;
                     html += `
                         <div class="report-group">
-                            <div class="report-header">
-                                <span>${subject}</span>
+                            <div class="report-header" onclick="toggleReportGroup('${groupId}', this)">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                                    <span>${subject}</span>
+                                </div>
                                 <span class="report-count">${students.length}</span>
                             </div>
-                            ${students.map(st => `
-                                <div class="report-item">
-                                    <div>
-                                        <span class="st-name">${st.name}</span>
-                                        <span class="st-id">ID: ${st.uniID}</span>
+                            
+                            <div id="${groupId}" class="report-list-container">
+                                ${students.map((st, i) => `
+                                    <div class="report-item">
+                                        <div>
+                                            <span class="st-name">${st.name}</span>
+                                            <span class="st-id">ID: ${st.uniID}</span>
+                                        </div>
+                                        <div style="display:flex; align-items:center;">
+                                            <span class="st-time" style="margin-left:10px;">${st.timestamp}</span>
+                                            <button onclick="deleteSingleLog('${st.uniID}', '${st.timestamp}')" class="btn-delete-single">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <span class="st-time">${st.timestamp}</span>
-                                </div>
-                            `).join('')}
+                                `).join('')}
+                            </div>
                         </div>
                     `;
+                    index++;
                 }
                 content.innerHTML = html;
             }
             
             modal.style.display = 'flex';
+        }
+
+        function toggleReportGroup(id, headerElement) {
+            playClick();
+            const list = document.getElementById(id);
+            if (list.style.display === "block") {
+                list.style.display = "none";
+                headerElement.classList.remove('active');
+            } else {
+                list.style.display = "block";
+                headerElement.classList.add('active');
+            }
+        }
+
+        function deleteSingleLog(targetID, targetTime) {
+            if(confirm("هل تريد حذف هذا الطالب من القائمة المحلية فقط؟")) {
+                playClick();
+                let logs = JSON.parse(localStorage.getItem(LOCAL_LOG_KEY) || "[]");
+                
+                // نحذف العنصر الذي يطابق الـ ID والوقت بدقة
+                const updatedLogs = logs.filter(log => !(log.uniID == targetID && log.timestamp == targetTime));
+                
+                localStorage.setItem(LOCAL_LOG_KEY, JSON.stringify(updatedLogs));
+                openReportModal(); 
+            }
         }
 
         function closeReportModal() {
@@ -1025,7 +1098,8 @@
         }
 
         function clearLocalReport() {
-            if(confirm("هل أنت متأكد من مسح سجلات هذا الجهاز؟")) {
+            if(confirm("هل أنت متأكد من مسح جميع السجلات؟")) {
+                playClick();
                 localStorage.removeItem(LOCAL_LOG_KEY);
                 openReportModal(); 
             }
