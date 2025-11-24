@@ -8,7 +8,6 @@
     <meta property="og:title" content="جامعة الريادة - كلية التمريض">
     <meta property="og:description" content="نظام تسجيل الحضور الذكي.">
     <meta property="og:image" content="https://k.top4top.io/p_3615d3vek1.png">
-    <meta property="og:type" content="website">
     
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0f172a">
@@ -34,34 +33,33 @@
         .card-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(255,255,255,1), transparent); }
         .card-body { padding: 0 25px 30px 25px; position: relative; }
         
-        /* --- Hero Wrapper (نظام التبديل بين اللوجو والأيقونات) --- */
+        /* --- Hero Wrapper (اللوجو والأيقونة) --- */
         .hero-icon-wrapper { 
-            width: 110px; 
-            height: 110px; 
+            width: 120px; 
+            height: 120px; 
             background: white; 
             border-radius: 50%; 
-            margin: -55px auto 15px auto; 
+            margin: -60px auto 15px auto; 
             position: relative; 
             z-index: 10; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
-            border: 4px solid white; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
             overflow: hidden;
-            transition: all 0.3s ease;
+            /* تم إزالة الإطار السميك ليكون اللوجو حر */
+            border: 4px solid white; 
         }
 
-        /* 1. تنسيق صورة اللوجو */
+        /* 1. صورة اللوجو (تملأ الدائرة بالكامل) */
         .hero-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            padding: 0;
+            object-fit: cover; /* يملأ الدائرة بالكامل */
+            transform: scale(1.1); /* تكبير بسيط لإلغاء الحواف البيضاء للصورة نفسها */
             display: block;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
-            transform: scale(1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 1;
         }
 
-        /* 2. تنسيق الأيقونة المخفية (تحميل/صح/خطأ) */
+        /* 2. حاوية الأيقونة (مخفية في البداية) */
         .status-icon-container {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -70,17 +68,18 @@
             justify-content: center;
             background: white;
             opacity: 0;
-            transform: scale(0.5);
+            transform: scale(0);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 50%;
         }
-        .hero-icon { font-size: 40px; color: var(--primary); }
+        .hero-icon { font-size: 45px; color: var(--primary); transition: 0.3s; }
 
-        /* 3. حالة التبديل (Active State) */
-        .hero-icon-wrapper.active-process .hero-img {
+        /* 3. كلاس التفعيل (يخفي اللوجو ويظهر الأيقونة) */
+        .hero-icon-wrapper.show-icon .hero-img {
             transform: scale(0);
             opacity: 0;
         }
-        .hero-icon-wrapper.active-process .status-icon-container {
+        .hero-icon-wrapper.show-icon .status-icon-container {
             opacity: 1;
             transform: scale(1);
         }
@@ -102,7 +101,7 @@
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
-        /* --- Modern Floating Select --- */
+        /* --- Modern Floating Select (Colored) --- */
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
         .custom-select-trigger {
             position: relative; display: flex; align-items: center; justify-content: space-between;
@@ -127,7 +126,7 @@
         .custom-option.selected { background: #e0f2fe; color: var(--primary-dark); }
         .custom-select-wrapper.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(100%); }
 
-        /* --- Ticket Receipt --- */
+        /* --- Modern Ticket Receipt --- */
         .ticket-container { background: white; border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #f1f5f9; }
         .ticket-container::before, .ticket-container::after { content: ''; position: absolute; top: 110px; width: 24px; height: 24px; background: #0f172a; border-radius: 50%; z-index: 20; }
         .ticket-container::before { left: -12px; } .ticket-container::after { right: -12px; }
@@ -554,6 +553,60 @@
             ]
         };
 
+        // --- Smart Header Logic (The Fix) ---
+        function updateHeaderState(screenId) {
+            const wrapper = document.getElementById('heroIconWrapper');
+            const icon = document.getElementById('statusIcon');
+            
+            // Reset classes first
+            wrapper.classList.remove('show-icon');
+            
+            // Define icons for each state
+            if (screenId === 'screenWelcome') {
+                // Show Logo
+                // No action needed, removing 'show-icon' does the trick
+            } else {
+                // Show Icon mode
+                wrapper.classList.add('show-icon');
+                
+                if (screenId === 'screenLoading') {
+                    icon.className = "fa-solid fa-satellite-dish hero-icon fa-spin"; 
+                    icon.style.color = "var(--primary)";
+                } else if (screenId === 'screenDataEntry') {
+                    icon.className = "fa-solid fa-user-pen hero-icon"; 
+                    icon.style.color = "var(--primary)";
+                    icon.style.animation = "none";
+                } else if (screenId === 'screenScanQR') {
+                    icon.className = "fa-solid fa-qrcode hero-icon"; 
+                    icon.style.color = "var(--primary)";
+                    icon.style.animation = "none";
+                } else if (screenId === 'screenSuccess') {
+                    icon.className = "fa-solid fa-check hero-icon"; 
+                    icon.style.color = "#10b981";
+                    icon.style.animation = "none";
+                } else if (screenId === 'screenError') {
+                    icon.className = "fa-solid fa-triangle-exclamation hero-icon";
+                    icon.style.color = "#ef4444";
+                    icon.style.animation = "none";
+                } else if (screenId === 'screenAdminLogin') {
+                    icon.className = "fa-solid fa-lock hero-icon";
+                    icon.style.color = "var(--primary-dark)";
+                    icon.style.animation = "none";
+                }
+            }
+        }
+
+        // --- Switch Screen (Updated) ---
+        function switchScreen(id) { 
+            const allSections = document.querySelectorAll('.section');
+            const nextScreen = document.getElementById(id);
+            allSections.forEach(el => { if (el.classList.contains('active')) el.classList.remove('active'); });
+            nextScreen.classList.add('active');
+            
+            // Call the smart header update
+            updateHeaderState(id);
+        }
+
         // --- Custom Select Logic (Modern with Colors) ---
         function setupCustomSelects() {
             // Setup Year Select
@@ -872,15 +925,11 @@
              sessionStorage.removeItem(TEMP_ID_KEY);
              sessionStorage.removeItem(TEMP_CODE_KEY);
              
-             document.getElementById('uniID').value = ''; // مسح خانة الID عند العودة
+             document.getElementById('uniID').value = ''; 
              document.getElementById('startScanCard').style.display = 'flex';
              
              hideConnectionLostModal();
              switchScreen('screenWelcome');
-             
-             // إعادة اللوجو للوضع الطبيعي
-             const wrapper = document.getElementById('heroIconWrapper');
-             wrapper.classList.remove('active-process');
         }
         
         async function stopCameraSafely() {
@@ -930,14 +979,6 @@
             if (localStorage.getItem(storageKey) === new Date().toLocaleDateString('en-GB')) { showError("⛔ تم تسجيل الحضور اليوم مسبقاً.", true); return; }
             
             switchScreen('screenLoading');
-            
-            // تفعيل وضع التحميل في الأيقونة
-            const wrapper = document.getElementById('heroIconWrapper');
-            const icon = document.getElementById('statusIcon');
-            
-            wrapper.classList.add('active-process');
-            icon.className = "fa-solid fa-satellite-dish hero-icon fa-spin"; 
-            icon.style.color = "var(--primary)";
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: false, timeout: 30000, maximumAge: Infinity });
@@ -961,11 +1002,6 @@
             const newEndTime = Date.now() + (DATA_ENTRY_TIMEOUT_SEC * 1000);
             sessionEndTime = newEndTime;
             sessionStorage.setItem(SESSION_END_TIME_KEY, newEndTime.toString());
-            
-            // تحديث الأيقونة لوضع الإدخال
-            const icon = document.getElementById('statusIcon');
-            icon.className = "fa-solid fa-pen-to-square hero-icon"; 
-            icon.style.animation = "none";
             
             switchScreen('screenDataEntry');
             startCountdown(); 
@@ -1180,15 +1216,6 @@
                     subject: selectedSubject
                 });
 
-                // تفعيل حالة النجاح
-                const wrapper = document.getElementById('heroIconWrapper');
-                const icon = document.getElementById('statusIcon');
-                
-                wrapper.classList.add('active-process');
-                icon.className = "fa-solid fa-check hero-icon"; 
-                icon.style.color = "#10b981";
-                icon.style.animation = "none";
-
                 switchScreen('screenSuccess');
                 playSuccess();
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
@@ -1206,15 +1233,6 @@
             if(countdownInterval) clearInterval(countdownInterval);
             document.getElementById('errorMsg').innerHTML = msg;
             
-            // تفعيل حالة الخطأ
-            const wrapper = document.getElementById('heroIconWrapper');
-            const icon = document.getElementById('statusIcon');
-            
-            wrapper.classList.add('active-process');
-            icon.className = "fa-solid fa-triangle-exclamation hero-icon";
-            icon.style.color = "#ef4444";
-            icon.style.animation = "none";
-
             const retryBtn = document.getElementById('retryBtn');
             retryBtn.innerHTML = "حاول مرة أخرى";
             retryBtn.onclick = function() { location.reload(); }; 
@@ -1228,6 +1246,9 @@
             const nextScreen = document.getElementById(id);
             allSections.forEach(el => { if (el.classList.contains('active')) el.classList.remove('active'); });
             nextScreen.classList.add('active');
+            
+            // Call the smart header update
+            updateHeaderState(id);
         }
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
 
