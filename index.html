@@ -29,25 +29,22 @@
         
         .bg-image { background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; filter: blur(12px) brightness(0.9); transform: scale(1.2); z-index: -1; position: fixed; top: -10vh; left: -10vw; width: 120vw; height: 120vh; pointer-events: none; }
         
-        /* --- APP CARD (CRITICAL FIX: Overflow Visible for Dropdowns) --- */
+        /* --- CARD STYLES (Fixed Overflow) --- */
         .app-card { 
             background: var(--glass-bg); width: 90%; max-width: 400px; border-radius: 24px; 
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); text-align: center; 
             position: relative; 
-            overflow: visible; /* MUST BE VISIBLE for dropdowns to show */
+            overflow: visible !important; /* CRITICAL FIX */
             animation: slideUp 0.6s ease-out; margin: 50px auto 40px auto; 
         }
-
-        /* --- MASK for Particles & Banner (To keep them inside border-radius) --- */
+        /* Mask for particles only */
         .card-mask {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             border-radius: 24px; overflow: hidden; z-index: 0; pointer-events: none;
         }
-
         .card-banner { width: 100%; height: 140px; background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; position: relative; z-index: 1; }
         .card-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(255,255,255,1), transparent); }
-        
-        .card-body { padding: 0 25px 30px 25px; position: relative; z-index: 5; } /* Content on top */
+        .card-body { padding: 0 25px 30px 25px; position: relative; z-index: 5; }
         
         /* Hero Wrapper */
         .hero-icon-wrapper { 
@@ -85,7 +82,6 @@
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
         .btn-secondary { background: #f1f5f9; color: var(--text-main); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Cairo'; margin-top: 15px; box-shadow: 0 4px 10px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
         
-        /* --- Modern Log Buttons --- */
         .btn-log-locked { background: #14532d !important; color: #bbf7d0 !important; border: 1px solid #166534 !important; opacity: 0.9; cursor: not-allowed !important; }
         .btn-log-unlocked { background: #ecfdf5 !important; color: #15803d !important; border: 1px solid #bbf7d0 !important; cursor: pointer !important; }
         .btn-exam { background: linear-gradient(to right, #f8fafc, #f1f5f9); color: #475569; border: 1px solid #e2e8f0; margin-top: 10px; }
@@ -96,7 +92,7 @@
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
-        /* --- Particles --- */
+        /* Particles */
         .particles-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; pointer-events: none; }
         .particle { position: absolute; bottom: -20px; background: linear-gradient(135deg, rgba(224, 242, 254, 0.4), rgba(255, 255, 255, 0.1)); border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); animation: floatUp 15s infinite linear; }
         .particle:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-duration: 12s; animation-delay: 0s; }
@@ -106,8 +102,13 @@
         .particle:nth-child(5) { width: 25px; height: 25px; left: 90%; animation-duration: 15s; animation-delay: 3s; }
         @keyframes floatUp { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translateY(-600px) translateX(20px) rotate(360deg); opacity: 0; } }
 
-        /* --- FIXED & COLORFUL SELECTS --- */
-        .custom-select-wrapper { position: relative; user-select: none; width: 100%; z-index: 200; }
+        /* --- FIXED SELECTS (Z-Index & Visibility) --- */
+        /* Year Wrapper: Higher Z-Index */
+        #yearSelectWrapper { z-index: 200; }
+        /* Subject Wrapper: Lower Z-Index */
+        #subjectSelectWrapper { z-index: 150; }
+
+        .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
         .custom-select-trigger { 
             position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 15px; 
             font-size: 14px; font-weight: 700; color: #334155; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 14px; 
@@ -123,7 +124,9 @@
             border: none; border-radius: 16px; background: white; 
             box-shadow: 0 15px 40px -10px rgba(0,0,0,0.2); 
             opacity: 0; visibility: hidden; pointer-events: none; 
-            z-index: 500; max-height: 220px; overflow-y: auto; transform: translateY(-10px); 
+            /* Ensure it is above other elements */
+            z-index: 999; 
+            max-height: 220px; overflow-y: auto; transform: translateY(-10px); 
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding: 6px; border: 1px solid #e2e8f0; 
         }
         .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; pointer-events: all; transform: translateY(0); }
@@ -132,12 +135,9 @@
             padding: 12px 15px; font-size: 13px; font-weight: 600; color: #475569; 
             cursor: pointer; transition: 0.2s; border-radius: 10px; margin-bottom: 4px; border: 1px solid transparent;
         }
-        /* VIBRANT HOVER COLORS */
         .custom-option:hover { 
             background: linear-gradient(to right, #e0f2fe, #f0f9ff); 
-            color: var(--primary-dark); 
-            border-right: 3px solid var(--primary);
-            padding-right: 20px;
+            color: var(--primary-dark); border-right: 3px solid var(--primary); padding-right: 20px;
         }
         .custom-option.selected { background: #bae6fd; color: #0c4a6e; font-weight: 800; }
         .custom-select-wrapper.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(100%); }
@@ -196,8 +196,6 @@
         .btn-success-modal { background: #10b981; color: white; }
         .btn-warning-modal { background: #f59e0b; color: white; }
         .btn-cancel { background: #f1f5f9; color: #475569; }
-        
-        /* Modern Report Close Button */
         .btn-modern-close { background: #fecaca; color: #b91c1c; width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-family: 'Cairo'; margin-top: 10px; }
         .btn-modern-close:hover { background: #fee2e2; }
 
@@ -218,11 +216,7 @@
             display: flex; align-items: center; gap: 8px; margin-top: 5px;
         }
 
-        .attempts-badge { 
-            background: #fff1f2; color: #be123c; font-size: 11px; font-weight: 800; 
-            padding: 5px 10px; border-radius: 20px; border: 1px solid #fecdd3; 
-            display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;
-        }
+        .attempts-badge { background: #fff1f2; color: #be123c; font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 20px; border: 1px solid #fecdd3; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; }
 
         .admin-floating-back {
             position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
@@ -349,11 +343,7 @@
         <div class="card-mask">
             <div class="card-banner"></div>
             <div class="particles-container">
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
+                <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
             </div>
         </div>
 
@@ -479,10 +469,13 @@
 
                     <div class="input-group">
                         <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">الفرقة الدراسية:</label>
+                        
                         <div class="custom-select-wrapper" id="yearSelectWrapper">
                             <div class="custom-select-trigger"><span>-- اختر الفرقة --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
-                            <div class="custom-options" id="yearOptionsContainer">
-                                </div>
+                            <div class="custom-options">
+                                <div class="custom-option" data-value="first_year">الفرقة الأولى</div>
+                                <div class="custom-option" data-value="second_year">الفرقة الثانية</div>
+                            </div>
                         </div>
                         <select id="yearSelect" style="display:none;">
                             <option value="" disabled selected>-- اختر الفرقة --</option>
@@ -811,7 +804,7 @@
         function saveToLocalLog(d) { let l=JSON.parse(localStorage.getItem(LOCAL_LOG_KEY)||"[]"); d.date=new Date().toLocaleDateString('en-GB'); d.timestamp=new Date().toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'}); l.push(d); localStorage.setItem(LOCAL_LOG_KEY,JSON.stringify(l)); }
         async function goBackToWelcome() { playClick(); if (geo_watch_id) navigator.geolocation.clearWatch(geo_watch_id); if(countdownInterval) clearInterval(countdownInterval); await stopCameraSafely(); sessionStorage.removeItem(SESSION_END_TIME_KEY); sessionStorage.removeItem(TEMP_NAME_KEY); sessionStorage.removeItem(TEMP_ID_KEY); sessionStorage.removeItem(TEMP_CODE_KEY); processIsActive = false; document.getElementById('uniID').value = ''; document.getElementById('startScanCard').style.display = 'flex'; hideConnectionLostModal(); switchScreen('screenWelcome'); }
         
-        // FIXED DROPDOWN LOGIC
+        // FIXED DROPDOWN LOGIC WITH HARDCODED YEAR TRIGGER
         function setupCustomSelects() {
             const yearWrapper = document.getElementById('yearSelectWrapper');
             const subjectWrapper = document.getElementById('subjectSelectWrapper');
@@ -834,26 +827,15 @@
                 }
             });
 
-            // Populate Year Options
-            const yearContainer = document.getElementById('yearOptionsContainer');
-            yearContainer.innerHTML = ''; // Clear first
-            const years = [
-                {val: 'first_year', text: 'الفرقة الأولى'},
-                {val: 'second_year', text: 'الفرقة الثانية'}
-            ];
-            
-            years.forEach(y => {
-                const div = document.createElement('div');
-                div.className = 'custom-option';
-                div.textContent = y.text;
-                div.setAttribute('data-value', y.val);
-                div.onclick = function() {
+            // Add Logic to Hardcoded Year Options
+            const yearOptions = yearWrapper.querySelectorAll('.custom-option');
+            yearOptions.forEach(opt => {
+                opt.addEventListener('click', function() {
                     yearWrapper.querySelector('span').textContent = this.textContent;
                     yearWrapper.classList.remove('open');
                     document.getElementById('yearSelect').value = this.getAttribute('data-value');
-                    updateSubjects(); // Trigger subject update
-                };
-                yearContainer.appendChild(div);
+                    updateSubjects(); // Trigger Logic
+                });
             });
 
             window.addEventListener('click', e => { 
@@ -876,27 +858,12 @@
             if (y && subjectsData[y]) {
                 sReal.disabled = false; sWrapper.classList.remove('disabled');
                 subjectsData[y].forEach(sub => {
-                    // Real Option
-                    const opt = document.createElement("option"); 
-                    opt.value = sub; opt.text = sub; 
-                    sReal.appendChild(opt);
-                    
-                    // Custom Option
-                    const cOpt = document.createElement('div'); 
-                    cOpt.className = 'custom-option'; 
-                    cOpt.textContent = sub; 
-                    cOpt.setAttribute('data-value', sub);
-                    cOpt.onclick = function() {
-                        sTrigger.textContent = this.textContent; 
-                        sWrapper.classList.remove('open'); 
-                        sReal.value = this.getAttribute('data-value'); 
-                        checkSubjectSelection(); 
-                    };
+                    const opt = document.createElement("option"); opt.value = sub; opt.text = sub; sReal.appendChild(opt);
+                    const cOpt = document.createElement('div'); cOpt.className = 'custom-option'; cOpt.textContent = sub; cOpt.setAttribute('data-value', sub);
+                    cOpt.addEventListener('click', function() { sTrigger.textContent = this.textContent; sWrapper.classList.remove('open'); sReal.value = this.getAttribute('data-value'); checkSubjectSelection(); });
                     sOptions.appendChild(cOpt);
                 });
-            } else { 
-                sReal.disabled = true; sWrapper.classList.add('disabled'); sTrigger.textContent = '-- اختر الفرقة أولاً --'; 
-            }
+            } else { sReal.disabled = true; sWrapper.classList.add('disabled'); sTrigger.textContent = '-- اختر الفرقة أولاً --'; }
             checkSubjectSelection();
         }
 
