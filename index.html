@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="icon" href="icon.png" type="image/png">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
@@ -52,49 +52,55 @@
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
-        /* --- Custom Select Styling (New) --- */
+        /* --- Modern Floating Select (تصميم القوائم الجديد) --- */
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
+        
         .custom-select-trigger {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 15px;
             font-size: 14px;
             font-weight: 700;
             color: #334155;
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .custom-select-trigger:hover { border-color: #cbd5e1; }
-        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); background: white; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+        .custom-select-trigger:hover { border-color: var(--primary); }
+        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1); }
+        
         .arrow-icon { transition: transform 0.3s; font-size: 12px; color: #94a3b8; }
         .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
         
+        /* القائمة المنسدلة العائمة */
         .custom-options {
             position: absolute;
             display: block;
-            top: 100%;
+            top: calc(100% + 8px); /* مسافة صغيرة */
             left: 0;
             right: 0;
-            border: 2px solid var(--primary);
-            border-top: 0;
-            border-radius: 0 0 12px 12px;
+            border: none;
+            border-radius: 16px;
             background: white;
-            transition: all 0.2s opacity, all 0.2s visibility;
+            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.15); /* ظل ناعم */
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
             z-index: 500;
-            max-height: 200px;
+            max-height: 220px;
             overflow-y: auto;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* حركة انسيابية */
+            padding: 6px;
         }
-        .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; pointer-events: all; }
+        .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; pointer-events: all; transform: translateY(0); }
+        
         .custom-option {
             padding: 12px 15px;
             font-size: 13px;
@@ -102,64 +108,117 @@
             color: #334155;
             cursor: pointer;
             transition: 0.2s;
-            border-bottom: 1px solid #f1f5f9;
+            border-radius: 10px;
+            margin-bottom: 2px;
         }
-        .custom-option:last-child { border-bottom: none; }
-        .custom-option:hover { background: #f0f9ff; color: var(--primary); padding-right: 20px; }
+        .custom-option:hover { background: #f0f9ff; color: var(--primary); }
         .custom-option.selected { background: #e0f2fe; color: var(--primary-dark); }
-        .custom-select-wrapper.disabled { opacity: 0.6; pointer-events: none; }
+        
+        .custom-select-wrapper.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(100%); }
 
-        /* --- Receipt Modern Styling (New) --- */
-        .receipt-card-modern {
+        /* --- Modern Ticket Receipt (تصميم التذكرة الجديد) --- */
+        .ticket-container {
             background: white;
-            border-radius: 16px;
-            padding: 0;
-            overflow: hidden;
-            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
+            border-radius: 24px;
             position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            border: 1px solid #f1f5f9;
         }
-        .receipt-header-modern {
+        
+        /* الدوائر الجانبية (Cutouts) */
+        .ticket-container::before, .ticket-container::after {
+            content: '';
+            position: absolute;
+            top: 110px;
+            width: 24px;
+            height: 24px;
+            background: #0f172a; /* نفس لون خلفية الموقع */
+            border-radius: 50%;
+            z-index: 20;
+        }
+        .ticket-container::before { left: -12px; }
+        .ticket-container::after { right: -12px; }
+
+        .ticket-header {
             background: linear-gradient(135deg, #10b981, #059669);
-            padding: 15px;
+            padding: 20px;
             text-align: center;
             color: white;
+            position: relative;
         }
-        .receipt-body-modern { padding: 20px; position: relative; }
-        .r-row-mod {
+        .ticket-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px auto;
+            font-size: 24px;
+            border: 2px solid rgba(255,255,255,0.4);
+        }
+        
+        .ticket-body {
+            padding: 25px 20px;
+            position: relative;
+        }
+        
+        .ticket-dashed-line {
+            border-top: 2px dashed #cbd5e1;
+            margin-bottom: 20px;
+            width: 100%;
+            height: 1px;
+        }
+
+        .t-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed #cbd5e1;
         }
-        .r-row-mod:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .r-lbl-mod { font-size: 11px; color: #64748b; font-weight: 700; }
-        .r-val-mod { 
-            font-size: 14px; 
-            font-weight: 700; 
-            color: #1e293b; 
-            font-family: 'Roboto', sans-serif; /* English Numbers */
-            direction: ltr; 
-        }
-        .verified-stamp {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            border: 3px solid #10b981;
-            color: #10b981;
-            font-weight: 900;
-            font-size: 20px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            opacity: 0.2;
-            pointer-events: none;
+        .t-row:last-child { margin-bottom: 0; }
+        
+        .t-label {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .t-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        /* تنسيق خاص للأرقام الإنجليزية */
+        .english-num {
+            font-family: 'Outfit', sans-serif; /* خط أرقام جميل */
+            direction: ltr;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-15deg);
+            border: 2px solid #10b981;
+            color: #10b981;
+            padding: 5px 15px;
+            font-size: 16px;
+            font-weight: 900;
+            border-radius: 8px;
+            opacity: 0;
+            font-family: 'Outfit', sans-serif;
             letter-spacing: 2px;
-            animation: stampIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: stampEffect 0.6s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            pointer-events: none;
         }
 
         .circular-timer { position: relative; width: 80px; height: 80px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; }
@@ -306,7 +365,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-top: 15px;
-            direction: ltr;
+            direction: ltr; /* لجعل الأرقام من اليسار لليمين */
         }
         .key-btn {
             background: white;
@@ -386,7 +445,7 @@
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scanning { 0% { top: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
-        @keyframes stampIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(2) rotate(0deg); } 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1) rotate(-15deg); } }
+        @keyframes stampEffect { 0% { opacity: 0; transform: translateX(-50%) rotate(0deg) scale(2); } 100% { opacity: 0.4; transform: translateX(-50%) rotate(-15deg) scale(1); } }
     </style>
 </head>
 <body>
@@ -580,8 +639,8 @@
                         <div class="custom-select-wrapper" id="yearSelectWrapper">
                             <div class="custom-select-trigger"><span>-- اختر الفرقة --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
                             <div class="custom-options">
-                                <span class="custom-option" data-value="first_year">الفرقة الأولى</span>
-                                <span class="custom-option" data-value="second_year">الفرقة الثانية</span>
+                                <div class="custom-option" data-value="first_year">الفرقة الأولى</div>
+                                <div class="custom-option" data-value="second_year">الفرقة الثانية</div>
                             </div>
                         </div>
                         <select id="yearSelect" style="display:none;" onchange="updateSubjects()">
@@ -628,38 +687,47 @@
                 <div id="screenSuccess" class="section">
                     <h1 style="color:#10b981; margin-bottom: 15px;">تم التسجيل بنجاح</h1>
                     
-                    <div class="receipt-card-modern">
-                        <div class="receipt-header-modern">
-                            <i class="fa-solid fa-check-circle" style="font-size: 30px; margin-bottom: 5px;"></i>
-                            <div style="font-weight: bold; font-size: 16px;">إيصال حضور</div>
+                    <div class="ticket-container">
+                        <div class="ticket-header">
+                            <div class="ticket-icon"><i class="fa-solid fa-check"></i></div>
+                            <div style="font-weight: 900; font-size: 18px;">إيصال حضور</div>
                         </div>
-                        <div class="receipt-body-modern">
-                            <div class="verified-stamp">VERIFIED</div>
+                        
+                        <div class="ticket-body">
+                            <div class="verified-badge">VERIFIED</div>
                             
-                            <div class="r-row-mod">
-                                <span class="r-lbl-mod">الاسم</span>
-                                <span class="r-val-mod" id="receiptName" style="font-family:'Cairo';">--</span>
+                            <div class="t-row">
+                                <span class="t-label">اسم الطالب</span>
+                                <span class="t-value" id="receiptName">--</span>
                             </div>
-                            <div class="r-row-mod">
-                                <span class="r-lbl-mod">ID الطالب</span>
-                                <span class="r-val-mod" id="receiptID">--</span>
+                            
+                            <div class="t-row">
+                                <span class="t-label">الكود الجامعي (ID)</span>
+                                <span class="t-value english-num" id="receiptID">--</span>
                             </div>
-                            <div class="r-row-mod">
-                                <span class="r-lbl-mod">المادة</span>
-                                <span class="r-val-mod" id="receiptSubject" style="color:var(--primary); font-family:'Cairo';">--</span>
+                            
+                            <div class="ticket-dashed-line"></div>
+                            
+                            <div class="t-row">
+                                <span class="t-label">المادة الدراسية</span>
+                                <span class="t-value" id="receiptSubject" style="color:var(--primary)">--</span>
                             </div>
-                            <div class="r-row-mod">
-                                <span class="r-lbl-mod">التاريخ</span>
-                                <span class="r-val-mod" id="receiptDate">--</span>
+                            
+                            <div class="t-row">
+                                <span class="t-label">التاريخ</span>
+                                <span class="t-value english-num" id="receiptDate">--</span>
                             </div>
-                            <div class="r-row-mod">
-                                <span class="r-lbl-mod">الوقت</span>
-                                <span class="r-val-mod" id="receiptTime">--</span>
+                            
+                            <div class="t-row">
+                                <span class="t-label">وقت التسجيل</span>
+                                <span class="t-value english-num" id="receiptTime">--</span>
                             </div>
                         </div>
                     </div>
 
-                    <div style="color:#10b981; font-weight:700; font-size:13px;"><i class="fa-solid fa-shield-check"></i> تم الحفظ في النظام</div>
+                    <div style="color:#64748b; font-weight:700; font-size:12px; margin-top:10px;">
+                        <i class="fa-solid fa-circle-check" style="color:#10b981;"></i> تم حفظ البيانات في النظام بنجاح
+                    </div>
                 </div>
 
                 <div id="screenError" class="section">
@@ -695,7 +763,7 @@
             ]
         };
 
-        // --- Custom Select Logic ---
+        // --- Custom Select Logic (Modern) ---
         function setupCustomSelects() {
             // Setup Year Select
             const yearWrapper = document.getElementById('yearSelectWrapper');
@@ -704,8 +772,11 @@
             const yearOptions = yearWrapper.querySelectorAll('.custom-option');
 
             // Toggle list
-            yearTrigger.addEventListener('click', () => {
+            yearTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if(!yearWrapper.classList.contains('disabled')) {
+                    // Close other dropdown if open
+                    document.getElementById('subjectSelectWrapper').classList.remove('open');
                     yearWrapper.classList.toggle('open');
                 }
             });
@@ -727,8 +798,11 @@
             const subjectWrapper = document.getElementById('subjectSelectWrapper');
             const subjectTrigger = subjectWrapper.querySelector('.custom-select-trigger');
             
-            subjectTrigger.addEventListener('click', () => {
+            subjectTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if(!subjectWrapper.classList.contains('disabled')) {
+                    // Close other dropdown if open
+                    yearWrapper.classList.remove('open');
                     subjectWrapper.classList.toggle('open');
                 }
             });
@@ -770,7 +844,7 @@
                     subjectSelect.appendChild(option);
 
                     // Add to custom select
-                    const customOption = document.createElement('span');
+                    const customOption = document.createElement('div');
                     customOption.className = 'custom-option';
                     customOption.textContent = subject;
                     customOption.setAttribute('data-value', subject);
@@ -1251,12 +1325,12 @@
 
             const now = new Date();
             document.getElementById('receiptName').innerText = attendanceData.name;
-            // Display ID in English Numbers
+            // عرض الـ ID بالأرقام الإنجليزية
             document.getElementById('receiptID').innerText = attendanceData.uniID;
             
             document.getElementById('receiptSubject').innerText = selectedSubject;
 
-            // English Date/Time Format
+            // عرض التاريخ والوقت بالأرقام الإنجليزية
             document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB'); 
             document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
 
