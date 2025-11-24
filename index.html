@@ -62,7 +62,7 @@
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
-        /* Select & Ticket Styles (Same as before) */
+        /* Select & Ticket Styles */
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
         .custom-select-trigger { position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 15px; font-size: 14px; font-weight: 700; color: #334155; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 14px; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .custom-select-trigger:hover { border-color: var(--primary); background: white; }
@@ -108,7 +108,6 @@
         .student-info-value { font-size: 18px; font-weight: 900; color: var(--text-main); display: block; }
         #scanIDDisplay { color: var(--primary-dark); letter-spacing: 1px; font-family: sans-serif; }
 
-        /* QR & Modals */
         .qr-card-trigger { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         .qr-card-trigger:hover { background: #f1f5f9; border-color: var(--primary); }
         .qr-card-icon { width: 60px; height: 60px; background: #e0f2fe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; animation: pulse-blue 2s infinite; }
@@ -162,13 +161,14 @@
         .key-btn.action-btn { background: #f8fafc; color: #64748b; }
         .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
 
-        /* --- Footer --- */
+        /* --- Footer (Updated) --- */
         .academic-footer { margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(203, 213, 225, 0.6); display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 5; }
-        .academic-person { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .role-badge { font-size: 10px; color: var(--primary); font-weight: 800; background: #e0f2fe; padding: 3px 12px; border-radius: 15px; letter-spacing: 0.5px; }
-        .person-name { font-size: 14px; font-weight: 800; color: var(--text-main); background: linear-gradient(45deg, #1e293b, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .academic-divider { width: 40px; height: 3px; background: #f1f5f9; border-radius: 2px; }
-        .uni-footer-label { margin-top: 15px; font-size: 11px; color: #64748b; font-weight: 700; background: rgba(255, 255, 255, 0.5); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 2px 5px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 6px; }
+        .uni-footer-label-large { 
+            font-size: 14px; color: var(--primary-dark); font-weight: 800; 
+            background: rgba(224, 242, 254, 0.5); padding: 10px 20px; border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
+            display: flex; align-items: center; gap: 8px; margin-top: 5px;
+        }
 
         /* Attempts Badge */
         .attempts-badge { 
@@ -177,15 +177,23 @@
             display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;
         }
 
-        /* Admin Back Button */
-        .admin-back-btn {
-            position: absolute; top: -45px; right: 10px;
-            background: rgba(255,255,255,0.9); color: #334155;
-            padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;
-            border: 1px solid #e2e8f0; cursor: pointer; z-index: 1000;
-            display: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        /* Modern Floating Admin Back Button (Bottom Left) */
+        .admin-floating-back {
+            position: fixed; bottom: 20px; left: 20px;
+            width: 45px; height: 45px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #475569;
+            border-radius: 50%;
+            display: none; /* Hidden by default */
+            align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .admin-back-btn:active { transform: scale(0.95); }
+        .admin-floating-back:active { transform: scale(0.9); }
+        .admin-floating-back i { font-size: 16px; transform: scaleX(-1); /* Flip arrow for Arabic RTL */ }
 
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -262,15 +270,16 @@
         تم تفعيل وضع المسؤول بنجاح
     </div>
 
+    <div id="adminFloatingBack" class="admin-floating-back" onclick="goBackToWelcome()">
+        <i class="fa-solid fa-arrow-right"></i>
+    </div>
+
     <div class="app-card">
         <div class="card-banner"></div>
         <div id="adminBadge" class="admin-badge"><i class="fa-solid fa-user-shield"></i> وضع المسؤول مفعل</div>
 
         <div class="card-body">
-            <button id="globalAdminBackBtn" class="admin-back-btn" onclick="goBackToWelcome()">
-                <i class="fa-solid fa-arrow-right"></i> رجوع
-            </button>
-
+            
             <div class="hero-icon-wrapper" id="heroIconWrapper">
                 <img src="https://k.top4top.io/p_3615d3vek1.png" class="hero-img" id="heroImage">
                 <div class="status-icon-container" id="statusIconContainer">
@@ -289,10 +298,6 @@
                     <h1>نظام كشف الحضور</h1>
                     <p>مرحباً بك. يرجى الضغط بالأسفل لتسجيل حضور المحاضرة الحالية.</p>
                     
-                    <div id="attemptsDisplay" class="attempts-badge" style="display:none;">
-                        <i class="fa-solid fa-heart-pulse"></i> المتبقي: <span id="attemptsCountVal">3</span> محاولات
-                    </div>
-
                     <div style="position: relative; z-index: 2;">
                         <button onclick="startProcess(false)" class="btn-main" id="mainActionBtn">تسجيل الحضور <i class="fa-solid fa-fingerprint"></i></button>
                         <button id="btnAdminLogin" onclick="switchScreen('screenAdminLogin')" class="btn-secondary">دخول المسؤول <i class="fa-solid fa-lock"></i></button>
@@ -301,20 +306,8 @@
                         <button id="btnViewReport" onclick="openReportModal()" class="btn-secondary" style="display:none; background: #ecfdf5; color: #15803d; border: 1px solid #bbf7d0; margin-top: 10px;"><i class="fa-solid fa-list-check"></i> سجل حضور اليوم</button>
 
                         <div class="academic-footer">
-                            <div class="academic-person">
-                                <span class="role-badge"><i class="fa-solid fa-crown" style="font-size:9px; margin-left:3px; color:#f59e0b;"></i> عميد كلية التمريض</span>
-                                <span class="person-name">أ.د نجلاء عبدالموجود</span>
-                            </div>
-                            
-                            <div class="academic-divider"></div>
-                            
-                            <div class="academic-person">
-                                <span class="role-badge"><i class="fa-solid fa-user-tie" style="font-size:9px; margin-left:3px;"></i> إشراف</span>
-                                <span class="person-name">د. محمود عثمان</span>
-                            </div>
-
-                            <div class="uni-footer-label">
-                                <i class="fa-solid fa-building-columns"></i> جامعة الريادة للعلوم والتكنولوجيا
+                            <div class="uni-footer-label-large">
+                                <i class="fa-solid fa-building-columns" style="color:var(--primary)"></i> جامعة الريادة للعلوم والتكنولوجيا
                             </div>
                         </div>
 
@@ -349,7 +342,7 @@
                         </div>
                     </div>
                     <div class="attempts-badge" id="attemptsDisplayEntry">
-                        <i class="fa-solid fa-heart-pulse"></i> محاولات: <span id="attemptsCountValEntry">3</span>
+                        <i class="fa-solid fa-heart-pulse"></i> المتبقي: <span id="attemptsCountValEntry">3</span> محاولات
                     </div>
                     <h1 style="font-size:20px; margin-top:5px;">بيانات الطالب / الطالبة</h1>
                     <div id="dataEntryAlert" class="alert-box" style="display:none; margin-bottom: 25px; color:#ef4444; font-weight:bold;"></div>
@@ -493,7 +486,6 @@
                 <div id="screenError" class="section">
                     <h1 style="color:#ef4444;">تنبيه</h1>
                     <div id="errorMsg" class="alert-box"></div>
-                    <button id="adminErrorBackBtn" onclick="goBackToWelcome()" class="btn-secondary" style="margin-top:10px; display:none;">العودة (مسؤول)</button>
                     <button id="retryBtn" class="btn-main" style="background:#334155; margin-top:20px;">حاول مرة أخرى</button>
                 </div>
             </div>
@@ -515,21 +507,22 @@
             "second_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "تمريض حالات حرجة 1 نظرى", "تمريض حالات حرجة 1 عملى", "امراض باطنة", "باثولوجى", "علم الأدوية", "الكتابة التقنية"]
         };
 
-        // --- Logic Constants ---
-        const storageKey = "nursing_final_secure_v45"; 
+        // --- Logic Constants (Updated Version to Reset Ban) ---
+        const storageKey = "nursing_final_secure_v46"; // New version
         const DOCTOR_MODE_KEY = "is_doctor_bypass_enabled"; 
         const ADMIN_PASS = "RYADA2025"; 
         const DATA_ENTRY_TIMEOUT_SEC = 15;
-        const TIMEOUT_BLOCK_KEY = "timeout_blocked_forever_v45_" + new Date().toLocaleDateString('en-GB');
+        // Updated keys to reset the ban for you immediately
+        const TIMEOUT_BLOCK_KEY = "timeout_blocked_forever_v46_" + new Date().toLocaleDateString('en-GB'); 
         const SESSION_END_TIME_KEY = "data_entry_deadline_v1";
         const TEMP_NAME_KEY = "temp_student_name";
         const TEMP_ID_KEY = "temp_student_id";
         const TEMP_CODE_KEY = "temp_session_code";
         const LOCAL_LOG_KEY = "attendance_daily_log_v1";
         
-        // Attempts System
+        // Attempts System (Updated Key to Reset Attempts)
         const MAX_ATTEMPTS = 3;
-        const ATTEMPTS_KEY = "daily_attempts_v45_" + new Date().toLocaleDateString('en-GB');
+        const ATTEMPTS_KEY = "daily_attempts_v46_" + new Date().toLocaleDateString('en-GB');
 
         let userIP = "Unknown";
         let geo_watch_id;
@@ -538,11 +531,10 @@
         let currentAbortController = null;
         let sessionEndTime = 0;
         let attendanceData = {}; 
-        let processIsActive = false; // Flag to track if student is in critical process
+        let processIsActive = false; 
 
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(e => userIP = "Hidden IP");
 
-        // --- Audio & Helpers ---
         function playClick() { document.getElementById('clickSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate(10); }
         function playSuccess() { document.getElementById('successSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([50, 50, 50]); }
         function playBeep() { document.getElementById('beepSound').play().catch(e=>{}); }
@@ -563,40 +555,23 @@
 
         function updateUIForAttempts() {
             const left = getAttemptsLeft();
-            document.getElementById('attemptsCountVal').innerText = left;
             document.getElementById('attemptsCountValEntry').innerText = left;
-            
-            // If student mode, show badge
-            if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
-                document.getElementById('attemptsDisplay').style.display = 'inline-flex';
-                document.getElementById('attemptsDisplayEntry').style.display = 'inline-flex';
-            } else {
-                document.getElementById('attemptsDisplay').style.display = 'none';
-                document.getElementById('attemptsDisplayEntry').style.display = 'none';
-            }
         }
 
-        // --- Exit Prevention Logic (The Trap) ---
-        // 1. Prevent Back Button in Browser
+        // --- Trap Logic ---
         window.history.pushState(null, null, window.location.href);
         window.onpopstate = function () {
             if (processIsActive && sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
                 window.history.pushState(null, null, window.location.href);
-                // User tried to go back - penalize? Maybe just stay put.
-                // Let's rely on visibility change for penalties.
             } else if (sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true') {
-                // Admin can go back
                 goBackToWelcome();
             }
         };
 
-        // 2. Penalize for switching tabs/minimizing app
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') {
                 if (processIsActive && sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
-                    // Student left the app while active!
                     decrementAttempts();
-                    // Force reload to reset state and show error on return
                     location.reload(); 
                 }
             }
@@ -625,12 +600,12 @@
             nextScreen.classList.add('active');
             updateHeaderState(id);
             
-            // Admin Back Button Visibility
-            const adminBack = document.getElementById('globalAdminBackBtn');
+            // Admin Floating Back Button Visibility
+            const adminBack = document.getElementById('adminFloatingBack');
             const isAdmin = sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true';
             
             if (isAdmin && id !== 'screenWelcome' && id !== 'screenAdminLogin') {
-                adminBack.style.display = 'block';
+                adminBack.style.display = 'flex';
             } else {
                 adminBack.style.display = 'none';
             }
@@ -655,7 +630,6 @@
                 submitToGoogle();
             });
             
-            // Check if we just reloaded from a penalty
             const left = getAttemptsLeft();
             if (left === 0 && sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
                  showError("⛔ لقد استنفذت جميع محاولاتك اليوم (3 محاولات).<br>تم حظرك.", true);
@@ -669,20 +643,19 @@
             const loginBtn = document.getElementById('btnAdminLogin');
             const logoutBtn = document.getElementById('btnAdminLogout');
             const reportBtn = document.getElementById('btnViewReport'); 
-            const adminErrorBack = document.getElementById('adminErrorBackBtn');
+            const adminFloating = document.getElementById('adminFloatingBack');
 
             if (isAdmin) {
                 badge.style.display = 'block';
                 loginBtn.style.display = 'none';
                 logoutBtn.style.display = 'block';
                 reportBtn.style.display = 'block'; 
-                adminErrorBack.style.display = 'block';
             } else {
                 badge.style.display = 'none';
                 loginBtn.style.display = 'block';
                 logoutBtn.style.display = 'none';
                 reportBtn.style.display = 'none'; 
-                adminErrorBack.style.display = 'none';
+                adminFloating.style.display = 'none';
             }
             updateUIForAttempts();
         }
@@ -691,7 +664,6 @@
         async function startProcess(skip = false) {
             playClick();
             
-            // Check Attempts (if student)
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') {
                 if (getAttemptsLeft() <= 0) {
                     showError("⛔ لقد استنفذت محاولاتك (3) اليوم.", true);
@@ -771,14 +743,13 @@
                         text.innerText = "0"; return;
                     }
 
-                    // TIMEOUT -> STRIKE!
                     const left = decrementAttempts();
                     document.getElementById('nextStepBtn').disabled = true;
                     hideConnectionLostModal();
-                    processIsActive = false; // Release trap
+                    processIsActive = false; 
 
                     if (left === 0) {
-                        localStorage.setItem(TIMEOUT_BLOCK_KEY, 'true'); // Final Ban
+                        localStorage.setItem(TIMEOUT_BLOCK_KEY, 'true'); 
                         showError("⏳ انتهى الوقت. لقد استنفذت جميع المحاولات.<br>تم إغلاق التسجيل.", true);
                     } else {
                         showError(`⏳ انتهى الوقت.<br>تم خصم محاولة. المتبقي: ${left}`, false);
@@ -786,8 +757,6 @@
                 }
             }, 100); 
         }
-
-        // --- Other Functions ---
 
         async function handleIdSubmit() {
             playClick();
@@ -824,7 +793,6 @@
             const selectedSubject = document.getElementById('subjectSelect').value;
             const sessionPassVal = document.getElementById('sessionPass').value;
 
-            // Checks...
             if(!attendanceData.uniID || !sessionPassVal || !selectedSubject) { alert("بيانات ناقصة"); return; }
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true' && localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') { showError("محظور"); return; }
 
@@ -834,7 +802,6 @@
             const isOnline = await checkRealConnection();
             if (!isOnline) { btn.innerHTML = originalText; btn.disabled = false; showConnectionLostModal(); return; }
 
-            // Prepare Data
             const now = new Date();
             document.getElementById('receiptName').innerText = attendanceData.name;
             document.getElementById('receiptID').innerText = attendanceData.uniID;
@@ -862,7 +829,7 @@
                     signal: currentAbortController.signal 
                 });
                 clearTimeout(timeoutId);
-                processIsActive = false; // Success! No trap needed.
+                processIsActive = false; 
                 
                 if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
                     localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
@@ -880,7 +847,6 @@
             }
         }
 
-        // --- Standard Helpers ---
         function addKey(num) { playClick(); const i = document.getElementById('uniID'); if(i.value.length<10) i.value+=num; }
         function backspaceKey() { playClick(); const i = document.getElementById('uniID'); i.value=i.value.slice(0,-1); }
         function clearKey() { playClick(); document.getElementById('uniID').value=''; }
@@ -903,20 +869,15 @@
              switchScreen('screenWelcome');
         }
 
-        // Custom Select Logic
         function setupCustomSelects() {
             const yearWrapper = document.getElementById('yearSelectWrapper');
             const subjectWrapper = document.getElementById('subjectSelectWrapper');
-            
-            // Toggle Logic
             yearWrapper.querySelector('.custom-select-trigger').addEventListener('click', e => {
                 e.stopPropagation(); if(!yearWrapper.classList.contains('disabled')) { document.getElementById('subjectSelectWrapper').classList.remove('open'); yearWrapper.classList.toggle('open'); }
             });
             subjectWrapper.querySelector('.custom-select-trigger').addEventListener('click', e => {
                 e.stopPropagation(); if(!subjectWrapper.classList.contains('disabled')) { yearWrapper.classList.remove('open'); subjectWrapper.classList.toggle('open'); }
             });
-            
-            // Year Selection
             yearWrapper.querySelectorAll('.custom-option').forEach(op => {
                 op.addEventListener('click', function() {
                     yearWrapper.querySelector('span').textContent = this.textContent;
@@ -957,7 +918,6 @@
             else { b.disabled = true; b.style.opacity = "0.6"; b.style.cursor = "not-allowed"; }
         }
 
-        // QR
         async function stopCameraSafely() { if(html5QrCode && html5QrCode.isScanning) { try { await html5QrCode.stop(); } catch(e) {} } document.getElementById('qr-reader').style.display = 'none'; }
         function retryCamera() { document.getElementById('cameraErrorModal').style.display = 'none'; startQrScanner(); }
         async function startQrScanner() {
@@ -969,7 +929,6 @@
             catch (err) { await stopCameraSafely(); document.getElementById('startScanCard').style.display = 'none'; document.getElementById('retryCamBtn').style.display = 'flex'; document.getElementById('cameraErrorModal').style.display = 'flex'; }
         }
 
-        // Admin & Errors
         function checkAdminPassword() {
             playClick();
             if (document.getElementById('adminPassword').value === ADMIN_PASS) {
@@ -997,8 +956,8 @@
         function hideConnectionLostModal() { document.getElementById('connectionLostModal').style.display = 'none'; }
         async function checkRealConnection() { try { await fetch('https://jsonplaceholder.typicode.com/posts/1?t=' + Date.now(), { method: 'HEAD', cache: 'no-store' }); return true; } catch (e) { return false; } }
         function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); }
-        
-        // Report Logic (Shortened)
+        function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: false, timeout: 30000, maximumAge: 0 }); }; switchScreen('screenError'); }
+
         function openReportModal() { playClick(); document.getElementById('reportModal').style.display = 'flex'; const d=new Date().toLocaleDateString('en-GB'); document.getElementById('reportDateDisplay').innerText=`(${d})`; let l=JSON.parse(localStorage.getItem(LOCAL_LOG_KEY)||"[]").filter(x=>x.date===d); if(l.length===0) document.getElementById('reportContent').innerHTML='<div class="empty-state">لا يوجد</div>'; else { let h=''; let g=l.reduce((a,c)=>{(a[c.subject]=a[c.subject]||[]).push(c);return a},{}); let i=0; for(const[s,st] of Object.entries(g)){ h+=`<div class="report-group"><div class="report-header" onclick="toggleReportGroup('g_${i}',this)"><span>${s}</span><span class="report-count">${st.length}</span></div><div id="g_${i}" class="report-list-container" style="display:none;">${st.map(x=>`<div class="report-item"><span>${x.name}</span><button onclick="deleteSingleLog('${x.uniID}','${x.timestamp}')" class="btn-delete-single"><i class="fa-solid fa-trash"></i></button></div>`).join('')}</div></div>`; i++; } document.getElementById('reportContent').innerHTML=h; } }
         function toggleReportGroup(id,el) { playClick(); const x=document.getElementById(id); if(x.style.display==='block'){x.style.display='none';el.classList.remove('active');}else{x.style.display='block';el.classList.add('active');} }
         function deleteSingleLog(id,tm) { if(confirm("حذف؟")) { let l=JSON.parse(localStorage.getItem(LOCAL_LOG_KEY)||"[]").filter(x=>!(x.uniID==id&&x.timestamp==tm)); localStorage.setItem(LOCAL_LOG_KEY,JSON.stringify(l)); openReportModal(); } }
