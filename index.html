@@ -72,7 +72,7 @@
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
         
-        /* --- BUTTON HIERARCHY --- */
+        /* --- BUTTON HIERARCHY (MODIFICATION 1) --- */
         .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; padding: 15px; border-radius: 14px; font-size: 15px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; box-shadow: 0 8px 20px -5px rgba(14, 165, 233, 0.4); transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; z-index: 5; }
         .btn-main:active { transform: scale(0.97); }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
@@ -125,7 +125,7 @@
             100% { transform: translateY(-600px) translateX(20px) rotate(360deg); opacity: 0; }
         }
 
-        /* --- Custom Dropdown (Traditional Look) --- */
+        /* --- Modern Mobile Select (Bottom Sheet Style) --- */
         .custom-select-wrapper {
             position: relative;
             user-select: none;
@@ -173,43 +173,57 @@
             color: var(--primary);
         }
 
-        /* القائمة المنسدلة (MODIFICATION 3: Standard Dropdown from trigger) */
-        .custom-options {
-            position: absolute; /* Changed from fixed */
-            top: calc(100% + 8px); 
+        /* الخلفية المعتمة (Backdrop) */
+        .custom-select-wrapper.open::before {
+            content: '';
+            position: fixed;
+            top: 0;
             left: 0;
-            right: 0;
-            bottom: auto; 
-            padding: 6px; 
-            z-index: 500; 
-            border-radius: 16px;
-            background: white;
-            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.15); 
-            transform: translateY(-10px); 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 220px; 
-            overflow-y: auto;
-            border: 1px solid #f1f5f9; 
-            
-            /* Visibility control */
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            display: block; /* Ensure it respects standard visibility flow */
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 9998; /* أعلى من كل شيء */
+            animation: fadeIn 0.3s forwards;
         }
-        
-        .custom-options::after, .custom-select-wrapper.open::before {
-            /* Remove fixed/bottom sheet artifacts like handle and backdrop */
-            content: none;
+
+        /* القائمة المنزلقة من الأسفل */
+        .custom-options {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border-radius: 25px 25px 0 0;
+            padding: 25px 20px 40px 20px; /* مساحة إضافية بالأسفل */
+            z-index: 9999; /* أعلى من الخلفية */
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            visibility: hidden;
+            max-height: 70vh; /* لا تتجاوز 70% من الشاشة */
+            overflow-y: auto;
+            display: block !important;
+        }
+
+        /* مقبض صغير للأعلى (Handle) */
+        .custom-options::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 10px;
         }
 
         .custom-select-wrapper.open .custom-options {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: all;
             transform: translateY(0);
+            visibility: visible;
         }
-        
+
         /* خيارات القائمة */
         .custom-option {
             padding: 16px 20px;
@@ -306,18 +320,7 @@
         .btn-confirm { background: #ef4444; color: white; }
         .btn-success-modal { background: #10b981; color: white; }
         .btn-warning-modal { background: #f59e0b; color: white; }
-        /* MODIFICATION 1: Modal Cancel/Close Button Style */
-        .btn-cancel { 
-            background: #ffffff; 
-            color: var(--text-sub); 
-            border: 2px solid #e2e8f0; /* Added clear border */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .btn-cancel:hover {
-            border-color: #cbd5e1;
-            background: #f8fafc;
-        }
-
+        .btn-cancel { background: #f1f5f9; color: #475569; }
         #connectionLostModal { z-index: 20000 !important; }
         #connectionLostModal .modal-box { border: 2px solid #ef4444; }
 
@@ -327,38 +330,17 @@
         .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
         .card-body-content { position: relative; min-height: 500px; z-index: 5; } /* Ensure content is above particles */
 
-        /* --- FOOTER MODIFICATION (MODIFICATION 2: Info Look) --- */
-        .academic-footer { 
-            margin-top: 15px; 
-            padding-top: 5px; 
-            border-top: none; /* Removed border from parent */
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            align-items: center; 
-            position: relative; 
-            z-index: 5; 
-        }
+        /* --- FOOTER MODERN STYLE (MODIFICATION 2) --- */
+        .academic-footer { margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(203, 213, 225, 0.6); display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 5; }
         .uni-footer-label-large { 
-            font-size: 14px; /* Slightly smaller */
-            color: var(--text-sub); /* Subdued color */
-            font-weight: 700; /* Less heavy font */
-            background: transparent; /* No background */
-            padding: 10px 0; /* Minimal padding */
-            border-radius: 0; 
-            border: none; /* Removed border */
-            box-shadow: none; /* Removed shadow */
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            border-top: 1px dashed rgba(203, 213, 225, 0.6); /* Use dashed line for clear separation */
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            margin-top: 5px;
-        }
-        .uni-footer-label-large i {
-            color: var(--primary-dark) !important; /* Keep icon color clear */
-            font-size: 18px;
+            font-size: 16px; color: var(--primary-dark); font-weight: 900; 
+            background: rgba(255, 255, 255, 0.9); /* More opaque glass base */
+            padding: 12px 25px; border-radius: 25px; 
+            border: 1px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 0 5px rgba(14, 165, 233, 0.1); /* Blue glow */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex; align-items: center; gap: 8px; margin-top: 5px;
         }
 
         /* Attempts Badge */
@@ -398,7 +380,7 @@
         .key-btn.action-btn { background: #f8fafc; color: #64748b; }
         .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
 
-        /* --- REPORT MODAL MODERN STYLE --- */
+        /* --- REPORT MODAL MODERN STYLE (MODIFICATION 3) --- */
         .report-modal-body { 
             margin-bottom: 20px; 
             max-height: 400px;
@@ -985,7 +967,7 @@
 
         async function handleIdSubmit() {
             playClick(); const uniIdVal = document.getElementById('uniID').value.trim(); const alertBox = document.getElementById('dataEntryAlert');
-            if (!uniIdVal) { alertBox.innerText = ⚠️ يرجى إدخال الكود الجامعي."; alertBox.style.display = 'block'; return; }
+            if (!uniIdVal) { alertBox.innerText = "⚠️ يرجى إدخال الكود الجامعي."; alertBox.style.display = 'block'; return; }
             if(Object.keys(studentsDB).length === 0) { alertBox.innerText = "⚠️ جاري تحميل البيانات.."; alertBox.style.display = 'block'; return; }
             const studentName = studentsDB[uniIdVal];
             if (studentName) {
@@ -1022,7 +1004,7 @@
         function saveToLocalLog(d) { let l=JSON.parse(localStorage.getItem(LOCAL_LOG_KEY)||"[]"); d.date=new Date().toLocaleDateString('en-GB'); d.timestamp=new Date().toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'}); l.push(d); localStorage.setItem(LOCAL_LOG_KEY,JSON.stringify(l)); }
         async function goBackToWelcome() { playClick(); if (geo_watch_id) navigator.geolocation.clearWatch(geo_watch_id); if(countdownInterval) clearInterval(countdownInterval); await stopCameraSafely(); sessionStorage.removeItem(SESSION_END_TIME_KEY); sessionStorage.removeItem(TEMP_NAME_KEY); sessionStorage.removeItem(TEMP_ID_KEY); sessionStorage.removeItem(TEMP_CODE_KEY); processIsActive = false; document.getElementById('uniID').value = ''; document.getElementById('startScanCard').style.display = 'flex'; hideConnectionLostModal(); switchScreen('screenWelcome'); }
         
-        /* --- FIXED JS FOR CUSTOM SELECT (Traditional Dropdown) --- */
+        /* --- FIXED JS FOR NEW BOTTOM SHEET SELECT --- */
         function setupCustomSelects() {
             const yearWrapper = document.getElementById('yearSelectWrapper');
             const subjectWrapper = document.getElementById('subjectSelectWrapper');
