@@ -126,7 +126,7 @@
         .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
         .card-body-content { position: relative; min-height: 500px; }
 
-        /* --- تنسيقات تقرير الحضور (محدثة) --- */
+        /* --- تنسيقات تقرير الحضور --- */
         .report-modal-body {
             max-height: 60vh;
             overflow-y: auto;
@@ -199,7 +199,7 @@
         }
         .btn-delete-single:active { transform: scale(0.9); }
 
-        /* --- تنسيقات الكيبورد المخصص (New) --- */
+        /* --- تنسيقات الكيبورد المخصص --- */
         .custom-keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -224,7 +224,7 @@
         .key-btn.action-btn { background: #f8fafc; color: #64748b; }
         .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
 
-        /* --- تنسيقات الفوتر الأكاديمي الجديد --- */
+        /* --- تنسيقات الفوتر الأكاديمي --- */
         .academic-footer {
             margin-top: 25px;
             padding-top: 20px;
@@ -255,7 +255,6 @@
             font-size: 14px;
             font-weight: 800;
             color: var(--text-main);
-            /* تأثير تدرج لوني خفيف على الاسم */
             background: linear-gradient(45deg, #1e293b, #0ea5e9);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -265,6 +264,20 @@
             height: 3px;
             background: #f1f5f9;
             border-radius: 2px;
+        }
+        .uni-footer-label {
+            margin-top: 15px;
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
@@ -379,6 +392,10 @@
                             <div class="academic-person">
                                 <span class="role-badge"><i class="fa-solid fa-user-tie" style="font-size:9px; margin-left:3px;"></i> إشراف</span>
                                 <span class="person-name">د. محمود عثمان</span>
+                            </div>
+
+                            <div class="uni-footer-label">
+                                <i class="fa-solid fa-building-columns"></i> جامعة الريادة للعلوم والتكنولوجيا
                             </div>
                         </div>
 
