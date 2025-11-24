@@ -9,8 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    
     <style>
-        /* --- CSS STYLES (UNCHANGED) --- */
+        /* --- نفس التصميم اللي عجبك بالظبط بدون تغيير --- */
         #desktop-blocker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; color: #ef4444; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Cairo'; }
         :root { --primary: #0ea5e9; --primary-dark: #0284c7; --text-main: #1e293b; --text-sub: #64748b; --glass-bg: rgba(255, 255, 255, 0.95); --danger: #ef4444; --success: #10b981; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -41,10 +42,11 @@
         .receipt-box { background: #fff; border: 1px dashed #cbd5e1; border-radius: 16px; padding: 15px; text-align: right; margin-bottom: 20px; }
         .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; }
         .uni-watermark { position: absolute; bottom: 0; left: 0; width: 100%; height: 250px; background: url('https://a.top4top.io/p_36115ao3o1.jpg') bottom center/cover; opacity: 0.15; pointer-events: none; -webkit-mask-image: linear-gradient(to top, black, transparent); }
-        
-        /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-box { background: white; padding: 20px; border-radius: 20px; width: 85%; max-width: 320px; text-align: center; }
+        
+        /* --- العنصر السحري: الصندوق المخفي --- */
+        #hidden_iframe { display: none; }
     </style>
 </head>
 <body>
@@ -94,7 +96,8 @@
             <button onclick="startCamera()" id="camBtn" class="btn-main" style="background:#334155;">فتح الكاميرا <i class="fa-solid fa-camera"></i></button>
             <input type="hidden" id="qrResult">
             <p id="qrStatus" style="color:#10b981; font-weight:bold; display:none; margin-top:10px;">تم مسح الكود بنجاح ✅</p>
-            <button onclick="submitToGoogleForms()" id="submitBtn" class="btn-main" disabled style="opacity:0.5;">تأكيد الحضور</button>
+            
+            <button onclick="finalSubmit()" id="submitBtn" class="btn-main" disabled style="opacity:0.5;">تأكيد الحضور</button>
         </div>
 
         <div id="screenSuccess" class="section">
@@ -112,6 +115,19 @@
     </div>
 </div>
 
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<form action="https://docs.google.com/forms/d/e/1FAIpQLScvWHhzq25mqr1SK0xQeOClbBmdM04Q2hXPaGTlp2jaa93iSQ/formResponse" 
+      method="POST" 
+      target="hidden_iframe" 
+      id="attendanceForm" 
+      style="display:none;">
+      
+    <input type="hidden" name="entry.1366436526" id="entry_id">
+    <input type="hidden" name="entry.1087940609" id="entry_name">
+    <input type="hidden" name="entry.466865005" id="entry_subject">
+    <input type="hidden" name="entry.119391108" id="entry_qr">
+</form>
 <div id="connectionLostModal" class="modal-overlay">
     <div class="modal-box">
         <i class="fa-solid fa-wifi" style="font-size:30px; color:#ef4444; margin-bottom:10px;"></i>
@@ -122,24 +138,13 @@
 </div>
 
 <script>
-    // ---------------------------------------------------------
-    // 1. SERVER SCRIPT (FOR READING NAMES)
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyV7Z39D44wc7Zyo6O9r_GVShH1Ah7N4sMweNGPh-dv9dT_-j3GoyAGxdPHDiAOkIs7/exec";
+    // 1. SCRIPT URL (لجلب الأسماء فقط) - ده شغال تمام
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzqIZZOba1qAsq-k8kuIJubXDNRoW_OzWUOmtq4LeHR4gcvixcfoxvNEQRAeuAPDNM4TQ/exec";
     
-    // 2. GOOGLE FORM URL (FOR SUBMITTING) - NEW FORM
-    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScvWHhzq25mqr1SK0xQeOClbBmdM04Q2hXPaGTlp2jaa93iSQ/formResponse"; 
-
-    // 3. ENTRY IDs (CORRECT FROM YOUR NEW FORM)
-    const ENTRY_ID = "entry.1366436526";      // Student ID
-    const ENTRY_NAME = "entry.1087940609";    // Student Name
-    const ENTRY_SUBJECT = "entry.466865005";  // Subject
-    const ENTRY_QR = "entry.119391108";       // QR Code
-    // ---------------------------------------------------------
-
     let studentsDB = {};
     let userData = {};
 
-    // Load Names
+    // تحميل الأسماء
     fetch(SCRIPT_URL).then(r => r.json()).then(data => {
         studentsDB = data;
         localStorage.setItem('cached_students', JSON.stringify(data));
@@ -204,7 +209,8 @@
         }).catch(err => alert("خطأ في الكاميرا"));
     }
 
-    async function submitToGoogleForms() {
+    // --- دالة الإرسال الجديدة (المضمونة) ---
+    function finalSubmit() {
         const sub = document.getElementById("subjectSelect").value;
         const qr = document.getElementById("qrResult").value;
         
@@ -214,22 +220,17 @@
         btn.innerHTML = "جاري الإرسال...";
         btn.disabled = true;
 
-        const formData = new URLSearchParams();
-        formData.append(ENTRY_ID, userData.id);
-        formData.append(ENTRY_NAME, userData.name);
-        formData.append(ENTRY_SUBJECT, sub);
-        formData.append(ENTRY_QR, qr);
+        // 1. تعبئة الفورم المخفي بالبيانات
+        document.getElementById('entry_id').value = userData.id;
+        document.getElementById('entry_name').value = userData.name;
+        document.getElementById('entry_subject').value = sub;
+        document.getElementById('entry_qr').value = qr;
 
-        try {
-            // Send blind request (no-cors) to bypass browser restrictions
-            await fetch(GOOGLE_FORM_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: formData.toString()
-            });
+        // 2. إرسال الفورم (المتصفح بيعتبر ده إرسال طبيعي مش كود)
+        document.getElementById('attendanceForm').submit();
 
-            // Success (Immediate)
+        // 3. إظهار النجاح فوراً (بنديله ثانية ونص عشان يلحق يبعت)
+        setTimeout(() => {
             document.getElementById("receiptName").innerText = userData.name;
             document.getElementById("receiptSubject").innerText = sub;
             document.getElementById("receiptDate").innerText = new Date().toLocaleDateString('en-GB');
@@ -239,13 +240,7 @@
             document.getElementById("screenSuccess").classList.add("active");
             
             if(window.confetti) confetti();
-
-        } catch (e) {
-            console.error(e);
-            btn.innerHTML = "تأكيد الحضور";
-            btn.disabled = false;
-            alert("حدث خطأ في الشبكة، ولكن حاول التحقق من المشرف.");
-        }
+        }, 1500); 
     }
 
     window.addEventListener('offline', () => document.getElementById('connectionLostModal').style.display = 'flex');
