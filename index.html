@@ -142,7 +142,6 @@
 
         .report-group { margin-bottom: 10px; animation: slideUp 0.4s ease-out; }
 
-        /* تعديل الهيدر ليكون قابلاً للضغط */
         .report-header {
             background: linear-gradient(to left, var(--primary), var(--primary-dark));
             color: white;
@@ -154,19 +153,17 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2);
-            cursor: pointer; /* مؤشر اليد */
+            cursor: pointer;
             user-select: none;
             transition: 0.2s;
         }
         .report-header:active { transform: scale(0.98); }
 
-        /* أيقونة السهم للقائمة */
         .toggle-icon { transition: transform 0.3s ease; }
         .report-header.active .toggle-icon { transform: rotate(180deg); }
 
         .report-count { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 11px; }
 
-        /* القائمة مخفية افتراضياً */
         .report-list-container {
             display: none; 
             padding-top: 5px;
@@ -186,7 +183,6 @@
         .st-name { font-weight: 700; font-size: 12px; color: #334155; display: block; }
         .st-id { font-size: 10px; color: #94a3b8; font-family: monospace; letter-spacing: 1px; }
 
-        /* زر الحذف الفردي */
         .btn-delete-single {
             background: #fee2e2;
             color: #ef4444;
@@ -202,6 +198,31 @@
             margin-right: 10px;
         }
         .btn-delete-single:active { transform: scale(0.9); }
+
+        /* --- تنسيقات الكيبورد المخصص (New) --- */
+        .custom-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+            direction: ltr; /* لجعل الأرقام من اليسار لليمين */
+        }
+        .key-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #334155;
+            box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.1s;
+            font-family: 'Cairo', sans-serif;
+        }
+        .key-btn:active { transform: scale(0.95); background: #f1f5f9; box-shadow: none; }
+        .key-btn.action-btn { background: #f8fafc; color: #64748b; }
+        .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
 
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -338,10 +359,28 @@
                     <h1 style="font-size:20px; margin-top:5px;">بيانات الطالب</h1>
                     <div id="dataEntryAlert" class="alert-box" style="display:none; margin-bottom: 25px; color:#ef4444; font-weight:bold;"></div>
                     
-                    <div class="input-group"><input type="number" id="uniID" class="modern-input" placeholder="الكود الجامعي (ID)" required></div>
+                    <div class="input-group">
+                        <input type="text" id="uniID" class="modern-input" placeholder="أدخل الكود الجامعي" readonly style="text-align:center; font-size:20px; letter-spacing:2px; font-weight:bold; background:white;">
+                    </div>
                     
                     <div class="input-group"><input type="text" id="attendanceCode" class="modern-input locked" readonly></div>
-                    <button type="button" onclick="handleIdSubmit()" class="btn-main" id="nextStepBtn">التالي <i class="fa-solid fa-arrow-left"></i></button>
+                    
+                    <div class="custom-keypad">
+                        <button class="key-btn" onclick="addKey('1')">1</button>
+                        <button class="key-btn" onclick="addKey('2')">2</button>
+                        <button class="key-btn" onclick="addKey('3')">3</button>
+                        <button class="key-btn" onclick="addKey('4')">4</button>
+                        <button class="key-btn" onclick="addKey('5')">5</button>
+                        <button class="key-btn" onclick="addKey('6')">6</button>
+                        <button class="key-btn" onclick="addKey('7')">7</button>
+                        <button class="key-btn" onclick="addKey('8')">8</button>
+                        <button class="key-btn" onclick="addKey('9')">9</button>
+                        <button class="key-btn action-btn" onclick="clearKey()">C</button>
+                        <button class="key-btn" onclick="addKey('0')">0</button>
+                        <button class="key-btn delete-btn" onclick="backspaceKey()"><i class="fa-solid fa-delete-left"></i></button>
+                    </div>
+
+                    <button type="button" onclick="handleIdSubmit()" class="btn-main" id="nextStepBtn" style="margin-top:20px;">التالي <i class="fa-solid fa-arrow-left"></i></button>
                 </div>
                 
                 <div id="screenScanQR" class="section">
@@ -425,7 +464,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // --- روابط السكربت (مهم جداً) ---
+        // --- روابط السكربت ---
         const STUDENTS_DB_URL = "https://script.google.com/macros/s/AKfycby5cxIDqCETg20E5bXCr8ZJgb5OV_zky-9WFVDHtngVwM5noxJdU1lljHbxxbeRqh8Q/exec"; 
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby1ntSw05_regu9_kN2fHLJanjIFizsOcgSxzWfwG2YcjKgIddCKqV32az8acZCJrMz/exec"; 
         
@@ -491,7 +530,6 @@
         const TEMP_ID_KEY = "temp_student_id";
         const TEMP_CODE_KEY = "temp_session_code";
         
-        // مفتاح التخزين الخاص بالتقرير
         const LOCAL_LOG_KEY = "attendance_daily_log_v1";
 
         let userIP = "Unknown";
@@ -511,6 +549,24 @@
         function toArabicNums(str) { 
             if(!str) return "";
             return str.toString().replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]); 
+        }
+
+        // --- دوال الكيبورد المخصص (New) ---
+        function addKey(num) {
+            playClick();
+            const input = document.getElementById('uniID');
+            if(input.value.length < 10) {
+                input.value += num;
+            }
+        }
+        function backspaceKey() {
+            playClick();
+            const input = document.getElementById('uniID');
+            input.value = input.value.slice(0, -1);
+        }
+        function clearKey() {
+            playClick();
+            document.getElementById('uniID').value = '';
         }
 
         setInterval(() => {
@@ -544,18 +600,18 @@
             const badge = document.getElementById('adminBadge');
             const loginBtn = document.getElementById('btnAdminLogin');
             const logoutBtn = document.getElementById('btnAdminLogout');
-            const reportBtn = document.getElementById('btnViewReport'); // الزر الجديد
+            const reportBtn = document.getElementById('btnViewReport'); 
 
             if (isAdmin) {
                 badge.style.display = 'block';
                 loginBtn.style.display = 'none';
                 logoutBtn.style.display = 'block';
-                reportBtn.style.display = 'block'; // إظهار الزر
+                reportBtn.style.display = 'block'; 
             } else {
                 badge.style.display = 'none';
                 loginBtn.style.display = 'block';
                 logoutBtn.style.display = 'none';
-                reportBtn.style.display = 'none'; // إخفاء الزر
+                reportBtn.style.display = 'none'; 
             }
             
             const savedDeadline = sessionStorage.getItem(SESSION_END_TIME_KEY);
@@ -661,7 +717,8 @@
              sessionStorage.removeItem(TEMP_NAME_KEY);
              sessionStorage.removeItem(TEMP_ID_KEY);
              sessionStorage.removeItem(TEMP_CODE_KEY);
-
+             
+             document.getElementById('uniID').value = ''; // مسح خانة الID عند العودة
              document.getElementById('startScanCard').style.display = 'flex';
              
              hideConnectionLostModal();
@@ -907,7 +964,6 @@
             document.getElementById('receiptName').innerText = attendanceData.name;
             document.getElementById('receiptID').innerText = toArabicNums(attendanceData.uniID);
             
-            // Add Subject to Receipt
             document.getElementById('receiptSubject').innerText = selectedSubject;
 
             document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB');
@@ -921,7 +977,7 @@
             formParams.append("name", attendanceData.name);
             formParams.append("code", finalCodeValue);
             formParams.append("ip", userIP);
-            formParams.append("subject", selectedSubject); // Send Subject
+            formParams.append("subject", selectedSubject); 
 
             currentAbortController = new AbortController();
             const timeoutId = setTimeout(() => currentAbortController.abort(), 10000); 
@@ -950,7 +1006,6 @@
                     localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
                 }
                 
-                // --- Save to Local Log for Admin Report ---
                 saveToLocalLog({
                     name: attendanceData.name,
                     uniID: attendanceData.uniID,
@@ -994,7 +1049,6 @@
         }
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
 
-        // --- دوال نظام التقرير الجديد (المحدثة) ---
         function saveToLocalLog(studentData) {
             let logs = JSON.parse(localStorage.getItem(LOCAL_LOG_KEY) || "[]");
             const today = new Date().toLocaleDateString('en-GB');
@@ -1084,7 +1138,6 @@
                 playClick();
                 let logs = JSON.parse(localStorage.getItem(LOCAL_LOG_KEY) || "[]");
                 
-                // نحذف العنصر الذي يطابق الـ ID والوقت بدقة
                 const updatedLogs = logs.filter(log => !(log.uniID == targetID && log.timestamp == targetTime));
                 
                 localStorage.setItem(LOCAL_LOG_KEY, JSON.stringify(updatedLogs));
