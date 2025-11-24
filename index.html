@@ -52,7 +52,7 @@
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
-        /* --- Modern Floating Select (تصميم القوائم الجديد) --- */
+        /* --- Modern Floating Select (Colored) --- */
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
         
         .custom-select-trigger {
@@ -65,30 +65,33 @@
             font-size: 14px;
             font-weight: 700;
             color: #334155;
-            background: white;
+            background: #f8fafc; /* Default background */
             border: 1px solid #cbd5e1;
             border-radius: 14px;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .custom-select-trigger:hover { border-color: var(--primary); }
-        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1); }
+        .custom-select-trigger:hover { border-color: var(--primary); background: white; }
+        .custom-select-wrapper.open .custom-select-trigger { 
+            border-color: var(--primary); 
+            background: #f0f9ff; /* Light Blue Tint when open */
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); 
+        }
         
         .arrow-icon { transition: transform 0.3s; font-size: 12px; color: #94a3b8; }
         .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
         
-        /* القائمة المنسدلة العائمة */
         .custom-options {
             position: absolute;
             display: block;
-            top: calc(100% + 8px); /* مسافة صغيرة */
+            top: calc(100% + 8px);
             left: 0;
             right: 0;
             border: none;
             border-radius: 16px;
             background: white;
-            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.15); /* ظل ناعم */
+            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.15);
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -96,8 +99,9 @@
             max-height: 220px;
             overflow-y: auto;
             transform: translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* حركة انسيابية */
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             padding: 6px;
+            border: 1px solid #f1f5f9;
         }
         .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; pointer-events: all; transform: translateY(0); }
         
@@ -110,13 +114,19 @@
             transition: 0.2s;
             border-radius: 10px;
             margin-bottom: 2px;
+            border-right: 3px solid transparent; /* For colored indicator */
         }
-        .custom-option:hover { background: #f0f9ff; color: var(--primary); }
+        .custom-option:hover { 
+            background: #f0f9ff; 
+            color: var(--primary); 
+            border-right-color: var(--primary); /* Colorful indicator */
+            padding-right: 20px;
+        }
         .custom-option.selected { background: #e0f2fe; color: var(--primary-dark); }
         
         .custom-select-wrapper.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(100%); }
 
-        /* --- Modern Ticket Receipt (تصميم التذكرة الجديد) --- */
+        /* --- Modern Ticket Receipt --- */
         .ticket-container {
             background: white;
             border-radius: 24px;
@@ -127,14 +137,13 @@
             border: 1px solid #f1f5f9;
         }
         
-        /* الدوائر الجانبية (Cutouts) */
         .ticket-container::before, .ticket-container::after {
             content: '';
             position: absolute;
             top: 110px;
             width: 24px;
             height: 24px;
-            background: #0f172a; /* نفس لون خلفية الموقع */
+            background: #0f172a; 
             border-radius: 50%;
             z-index: 20;
         }
@@ -195,9 +204,8 @@
             color: #1e293b;
         }
         
-        /* تنسيق خاص للأرقام الإنجليزية */
         .english-num {
-            font-family: 'Outfit', sans-serif; /* خط أرقام جميل */
+            font-family: 'Outfit', sans-serif; 
             direction: ltr;
             letter-spacing: 0.5px;
             font-weight: 700;
@@ -591,7 +599,7 @@
                             <span class="timer-label">ثانية</span>
                         </div>
                     </div>
-                    <h1 style="font-size:20px; margin-top:5px;">بيانات الطالب</h1>
+                    <h1 style="font-size:20px; margin-top:5px;">بيانات الطالب / الطالبة</h1>
                     <div id="dataEntryAlert" class="alert-box" style="display:none; margin-bottom: 25px; color:#ef4444; font-weight:bold;"></div>
                     
                     <div class="input-group">
@@ -624,7 +632,7 @@
                     <div class="student-info-card">
                         <div class="student-info-item">
                             <div class="student-info-icon"><i class="fa-solid fa-user-graduate"></i></div>
-                            <span class="student-info-label">اسم الطالب</span>
+                            <span class="student-info-label">اسم الطالب / الطالبة</span>
                             <span class="student-info-value" id="scanNameDisplay">--</span>
                         </div>
                         <div class="student-info-item">
@@ -690,14 +698,14 @@
                     <div class="ticket-container">
                         <div class="ticket-header">
                             <div class="ticket-icon"><i class="fa-solid fa-check"></i></div>
-                            <div style="font-weight: 900; font-size: 18px;">إيصال حضور</div>
+                            <div style="font-weight: 900; font-size: 18px;">تأكيد حضور</div>
                         </div>
                         
                         <div class="ticket-body">
                             <div class="verified-badge">VERIFIED</div>
                             
                             <div class="t-row">
-                                <span class="t-label">اسم الطالب</span>
+                                <span class="t-label">اسم الطالب / الطالبة</span>
                                 <span class="t-value" id="receiptName">--</span>
                             </div>
                             
@@ -763,7 +771,7 @@
             ]
         };
 
-        // --- Custom Select Logic (Modern) ---
+        // --- Custom Select Logic (Modern with Colors) ---
         function setupCustomSelects() {
             // Setup Year Select
             const yearWrapper = document.getElementById('yearSelectWrapper');
@@ -1208,7 +1216,7 @@
                 switchScreen('screenScanQR');
                 playSuccess();
             } else {
-                alertBox.innerText = "❌ الكود غير صحيح أو الطالب غير مسجل.";
+                alertBox.innerText = "❌ الكود غير صحيح أو الطالب / الطالبة غير مسجل.";
                 alertBox.style.display = 'block';
                 if(navigator.vibrate) navigator.vibrate(300);
             }
@@ -1499,7 +1507,7 @@
         }
 
         function deleteSingleLog(targetID, targetTime) {
-            if(confirm("هل تريد حذف هذا الطالب من القائمة المحلية فقط؟")) {
+            if(confirm("هل تريد حذف هذا الطالب / الطالبة من القائمة المحلية فقط؟")) {
                 playClick();
                 let logs = JSON.parse(localStorage.getItem(LOCAL_LOG_KEY) || "[]");
                 
