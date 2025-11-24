@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="icon" href="icon.png" type="image/png">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
@@ -29,8 +29,8 @@
         body { font-family: 'Cairo', sans-serif; min-height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--text-main); background-color: transparent !important; position: relative; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); -webkit-user-select: none; user-select: none; touch-action: manipulation; }
         
         .bg-image { background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; filter: blur(12px) brightness(0.9); transform: scale(1.2); z-index: -1; position: fixed; top: -10vh; left: -10vw; width: 120vw; height: 120vh; pointer-events: none; }
-        .app-card { background: var(--glass-bg); width: 90%; max-width: 400px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); text-align: center; position: relative; overflow: hidden; animation: slideUp 0.6s ease-out; margin: 20px auto 40px auto; }
-        .card-banner { width: 100%; height: 140px; background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; position: relative; }
+        .app-card { background: var(--glass-bg); width: 90%; max-width: 400px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); text-align: center; position: relative; overflow: visible; animation: slideUp 0.6s ease-out; margin: 20px auto 40px auto; }
+        .card-banner { width: 100%; height: 140px; background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; position: relative; border-radius: 24px 24px 0 0; overflow: hidden; }
         .card-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(255,255,255,1), transparent); }
         .card-body { padding: 0 25px 30px 25px; position: relative; }
         .hero-icon-wrapper { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -40px auto 15px auto; position: relative; z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 4px solid white; }
@@ -47,12 +47,120 @@
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
         .btn-secondary { background: #f1f5f9; color: var(--text-main); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Cairo'; margin-top: 15px; box-shadow: 0 4px 10px -2px rgba(0,0,0,0.1); transition: 0.3s; }
         .logout-btn { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; display: none; } 
-        .input-group { margin-bottom: 15px; text-align: right; }
+        .input-group { margin-bottom: 15px; text-align: right; position: relative; }
         .modern-input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; font-size: 14px; outline: none; transition: 0.3s; background: #f8fafc; }
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
-        select.modern-input { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: left 1rem center; background-size: 1em; }
+        /* --- Custom Select Styling (New) --- */
+        .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
+        .custom-select-trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .custom-select-trigger:hover { border-color: #cbd5e1; }
+        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); background: white; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+        .arrow-icon { transition: transform 0.3s; font-size: 12px; color: #94a3b8; }
+        .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
+        
+        .custom-options {
+            position: absolute;
+            display: block;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 2px solid var(--primary);
+            border-top: 0;
+            border-radius: 0 0 12px 12px;
+            background: white;
+            transition: all 0.2s opacity, all 0.2s visibility;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 500;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; pointer-events: all; }
+        .custom-option {
+            padding: 12px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .custom-option:last-child { border-bottom: none; }
+        .custom-option:hover { background: #f0f9ff; color: var(--primary); padding-right: 20px; }
+        .custom-option.selected { background: #e0f2fe; color: var(--primary-dark); }
+        .custom-select-wrapper.disabled { opacity: 0.6; pointer-events: none; }
+
+        /* --- Receipt Modern Styling (New) --- */
+        .receipt-card-modern {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .receipt-header-modern {
+            background: linear-gradient(135deg, #10b981, #059669);
+            padding: 15px;
+            text-align: center;
+            color: white;
+        }
+        .receipt-body-modern { padding: 20px; position: relative; }
+        .r-row-mod {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #cbd5e1;
+        }
+        .r-row-mod:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .r-lbl-mod { font-size: 11px; color: #64748b; font-weight: 700; }
+        .r-val-mod { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #1e293b; 
+            font-family: 'Roboto', sans-serif; /* English Numbers */
+            direction: ltr; 
+        }
+        .verified-stamp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            border: 3px solid #10b981;
+            color: #10b981;
+            font-weight: 900;
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            opacity: 0.2;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: stampIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
 
         .circular-timer { position: relative; width: 80px; height: 80px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; }
         .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
@@ -63,13 +171,6 @@
         .timer-label { font-size: 9px; color: #94a3b8; font-weight: 700; }
         .timer-pulse { animation: pulse-red 1s infinite; }
         
-        .receipt-box { background: #fff; border: 1px dashed #cbd5e1; border-radius: 16px; padding: 15px; text-align: right; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9; }
-        .receipt-row:last-child { border: none; margin: 0; padding: 0; }
-        .r-label { font-size: 11px; color: #94a3b8; }
-        .r-val { font-size: 13px; font-weight: 700; color: #334155; }
-        .r-code { color: var(--primary); letter-spacing: 1px; font-size: 15px; }
-
         .student-info-card { background: linear-gradient(135deg, #f8fafc, #e0f2fe); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.2); border: 1px solid #bae6fd; text-align: right; position: relative; overflow: hidden; }
         .student-info-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%); opacity: 0.5; pointer-events: none; }
         .student-info-item { margin-bottom: 15px; position: relative; padding-right: 45px; z-index: 2; }
@@ -205,7 +306,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-top: 15px;
-            direction: ltr; /* لجعل الأرقام من اليسار لليمين */
+            direction: ltr;
         }
         .key-btn {
             background: white;
@@ -285,6 +386,7 @@
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scanning { 0% { top: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
+        @keyframes stampIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(2) rotate(0deg); } 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1) rotate(-15deg); } }
     </style>
 </head>
 <body>
@@ -475,7 +577,14 @@
 
                     <div class="input-group">
                         <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">الفرقة الدراسية:</label>
-                        <select id="yearSelect" class="modern-input" onchange="updateSubjects()">
+                        <div class="custom-select-wrapper" id="yearSelectWrapper">
+                            <div class="custom-select-trigger"><span>-- اختر الفرقة --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
+                            <div class="custom-options">
+                                <span class="custom-option" data-value="first_year">الفرقة الأولى</span>
+                                <span class="custom-option" data-value="second_year">الفرقة الثانية</span>
+                            </div>
+                        </div>
+                        <select id="yearSelect" style="display:none;" onchange="updateSubjects()">
                             <option value="" disabled selected>-- اختر الفرقة --</option>
                             <option value="first_year">الفرقة الأولى</option>
                             <option value="second_year">الفرقة الثانية</option>
@@ -484,10 +593,16 @@
 
                     <div class="input-group">
                         <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">المادة الدراسية:</label>
-                        <select id="subjectSelect" class="modern-input" onchange="checkSubjectSelection()" disabled>
+                        <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
+                            <div class="custom-select-trigger"><span>-- اختر الفرقة أولاً --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
+                            <div class="custom-options" id="subjectOptionsContainer">
+                                </div>
+                        </div>
+                        <select id="subjectSelect" style="display:none;" onchange="checkSubjectSelection()">
                             <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
                         </select>
                     </div>
+
                     <div id="qr-reader">
                         <div class="scanner-laser"></div>
                     </div>
@@ -511,17 +626,40 @@
                 </div>
 
                 <div id="screenSuccess" class="section">
-                    <h1 style="color:#10b981; margin-bottom: 5px;">تم التسجيل بنجاح</h1>
-                    <div class="receipt-box">
-                        <div class="receipt-row"><span class="r-label">الاسم</span><span class="r-val" id="receiptName">--</span></div>
-                        <div class="receipt-row"><span class="r-label">الكود</span><span class="r-val" id="receiptID">--</span></div>
-                        
-                        <div class="receipt-row"><span class="r-label">المادة</span><span class="r-val" id="receiptSubject" style="color:var(--primary)">--</span></div>
-                        
-                        <div class="receipt-row"><span class="r-label">التاريخ</span><span class="r-val" id="receiptDate">--</span></div>
-                        <div class="receipt-row"><span class="r-label">الوقت</span><span class="r-val" id="receiptTime" style="direction:ltr">--</span></div>
+                    <h1 style="color:#10b981; margin-bottom: 15px;">تم التسجيل بنجاح</h1>
+                    
+                    <div class="receipt-card-modern">
+                        <div class="receipt-header-modern">
+                            <i class="fa-solid fa-check-circle" style="font-size: 30px; margin-bottom: 5px;"></i>
+                            <div style="font-weight: bold; font-size: 16px;">إيصال حضور</div>
+                        </div>
+                        <div class="receipt-body-modern">
+                            <div class="verified-stamp">VERIFIED</div>
+                            
+                            <div class="r-row-mod">
+                                <span class="r-lbl-mod">الاسم</span>
+                                <span class="r-val-mod" id="receiptName" style="font-family:'Cairo';">--</span>
+                            </div>
+                            <div class="r-row-mod">
+                                <span class="r-lbl-mod">ID الطالب</span>
+                                <span class="r-val-mod" id="receiptID">--</span>
+                            </div>
+                            <div class="r-row-mod">
+                                <span class="r-lbl-mod">المادة</span>
+                                <span class="r-val-mod" id="receiptSubject" style="color:var(--primary); font-family:'Cairo';">--</span>
+                            </div>
+                            <div class="r-row-mod">
+                                <span class="r-lbl-mod">التاريخ</span>
+                                <span class="r-val-mod" id="receiptDate">--</span>
+                            </div>
+                            <div class="r-row-mod">
+                                <span class="r-lbl-mod">الوقت</span>
+                                <span class="r-val-mod" id="receiptTime">--</span>
+                            </div>
+                        </div>
                     </div>
-                    <div style="color:#10b981; font-weight:700; font-size:13px;"><i class="fa-solid fa-shield-check"></i> حضور مؤكد</div>
+
+                    <div style="color:#10b981; font-weight:700; font-size:13px;"><i class="fa-solid fa-shield-check"></i> تم الحفظ في النظام</div>
                 </div>
 
                 <div id="screenError" class="section">
@@ -557,23 +695,99 @@
             ]
         };
 
+        // --- Custom Select Logic ---
+        function setupCustomSelects() {
+            // Setup Year Select
+            const yearWrapper = document.getElementById('yearSelectWrapper');
+            const yearTrigger = yearWrapper.querySelector('.custom-select-trigger');
+            const yearRealSelect = document.getElementById('yearSelect');
+            const yearOptions = yearWrapper.querySelectorAll('.custom-option');
+
+            // Toggle list
+            yearTrigger.addEventListener('click', () => {
+                if(!yearWrapper.classList.contains('disabled')) {
+                    yearWrapper.classList.toggle('open');
+                }
+            });
+
+            // Option click
+            yearOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    yearWrapper.querySelector('span').textContent = this.textContent;
+                    yearWrapper.classList.remove('open');
+                    
+                    // Update Real Select
+                    yearRealSelect.value = this.getAttribute('data-value');
+                    // Trigger logic
+                    updateSubjects();
+                });
+            });
+
+            // Setup Subject Select (Base)
+            const subjectWrapper = document.getElementById('subjectSelectWrapper');
+            const subjectTrigger = subjectWrapper.querySelector('.custom-select-trigger');
+            
+            subjectTrigger.addEventListener('click', () => {
+                if(!subjectWrapper.classList.contains('disabled')) {
+                    subjectWrapper.classList.toggle('open');
+                }
+            });
+
+            // Close when clicking outside
+            window.addEventListener('click', function(e) {
+                if (!yearWrapper.contains(e.target)) yearWrapper.classList.remove('open');
+                if (!subjectWrapper.contains(e.target)) subjectWrapper.classList.remove('open');
+            });
+        }
+
         function updateSubjects() {
             const yearSelect = document.getElementById("yearSelect");
             const subjectSelect = document.getElementById("subjectSelect");
             const selectedYear = yearSelect.value;
+            
+            // Custom Elements
+            const subjectWrapper = document.getElementById('subjectSelectWrapper');
+            const subjectOptionsContainer = document.getElementById('subjectOptionsContainer');
+            const subjectTriggerSpan = subjectWrapper.querySelector('.custom-select-trigger span');
+
+            // Reset
             subjectSelect.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>';
+            subjectOptionsContainer.innerHTML = '';
+            subjectTriggerSpan.textContent = '-- اختر المادة --';
 
             if (selectedYear && subjectsData[selectedYear]) {
+                // Enable Real Select
+                subjectSelect.disabled = false;
+                
+                // Enable Custom Select
+                subjectWrapper.classList.remove('disabled');
+
                 subjectsData[selectedYear].forEach(subject => {
+                    // Add to real select
                     const option = document.createElement("option");
                     option.value = subject;
                     option.text = subject;
                     subjectSelect.appendChild(option);
+
+                    // Add to custom select
+                    const customOption = document.createElement('span');
+                    customOption.className = 'custom-option';
+                    customOption.textContent = subject;
+                    customOption.setAttribute('data-value', subject);
+                    
+                    customOption.addEventListener('click', function() {
+                        subjectTriggerSpan.textContent = this.textContent;
+                        subjectWrapper.classList.remove('open');
+                        subjectSelect.value = this.getAttribute('data-value');
+                        checkSubjectSelection();
+                    });
+
+                    subjectOptionsContainer.appendChild(customOption);
                 });
-                subjectSelect.disabled = false;
             } else {
                 subjectSelect.disabled = true;
-                subjectSelect.innerHTML = '<option value="" disabled selected>-- اختر الفرقة أولاً --</option>';
+                subjectWrapper.classList.add('disabled');
+                subjectTriggerSpan.textContent = '-- اختر الفرقة أولاً --';
             }
             checkSubjectSelection();
         }
@@ -652,6 +866,7 @@
         window.onload = function() {
             initGlobalGuard();
             updateUIForMode();
+            setupCustomSelects(); // Initialize custom selects
 
             document.getElementById('submitBtn').addEventListener('click', function(e) {
                 e.preventDefault(); 
@@ -1036,11 +1251,13 @@
 
             const now = new Date();
             document.getElementById('receiptName').innerText = attendanceData.name;
-            document.getElementById('receiptID').innerText = toArabicNums(attendanceData.uniID);
+            // Display ID in English Numbers
+            document.getElementById('receiptID').innerText = attendanceData.uniID;
             
             document.getElementById('receiptSubject').innerText = selectedSubject;
 
-            document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB');
+            // English Date/Time Format
+            document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB'); 
             document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
 
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الإرسال...';
