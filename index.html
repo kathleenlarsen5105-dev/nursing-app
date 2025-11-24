@@ -163,12 +163,7 @@
 
         /* --- Footer (Updated) --- */
         .academic-footer { margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(203, 213, 225, 0.6); display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 5; }
-        .uni-footer-label-large { 
-            font-size: 14px; color: var(--primary-dark); font-weight: 800; 
-            background: rgba(224, 242, 254, 0.5); padding: 10px 20px; border-radius: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
-            display: flex; align-items: center; gap: 8px; margin-top: 5px;
-        }
+        
 
         /* Attempts Badge */
         .attempts-badge { 
@@ -193,7 +188,7 @@
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .admin-floating-back:active { transform: scale(0.9); }
-        .admin-floating-back i { font-size: 16px; transform: scaleX(-1); /* Flip arrow for Arabic RTL */ }
+        .admin-floating-back i { font-size: 16px; /* Correct direction for RTL context if needed, but fa-arrow-right usually points right */ }
 
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -304,12 +299,6 @@
                         
                         <button id="btnAdminLogout" onclick="openLogoutModal()" class="btn-secondary logout-btn">خروج المسؤول <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal"></i></button>
                         <button id="btnViewReport" onclick="openReportModal()" class="btn-secondary" style="display:none; background: #ecfdf5; color: #15803d; border: 1px solid #bbf7d0; margin-top: 10px;"><i class="fa-solid fa-list-check"></i> سجل حضور اليوم</button>
-
-                        <div class="academic-footer">
-                            <div class="uni-footer-label-large">
-                                <i class="fa-solid fa-building-columns" style="color:var(--primary)"></i> جامعة الريادة للعلوم والتكنولوجيا
-                            </div>
-                        </div>
 
                     </div>
                     <div class="uni-watermark"></div>
@@ -625,6 +614,19 @@
             updateUIForMode();
             setupCustomSelects(); 
 
+            // Start Clock IMMEDIATELY
+            setInterval(() => {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-US', {hour12: true, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+                const dateStr = now.toLocaleDateString('en-GB');
+                
+                const timeEl = document.getElementById('currentTime');
+                const dateEl = document.getElementById('currentDate');
+                
+                if(timeEl) timeEl.innerText = timeStr;
+                if(dateEl) dateEl.innerText = dateStr;
+            }, 1000);
+
             document.getElementById('submitBtn').addEventListener('click', function(e) {
                 e.preventDefault(); 
                 submitToGoogle();
@@ -644,18 +646,23 @@
             const logoutBtn = document.getElementById('btnAdminLogout');
             const reportBtn = document.getElementById('btnViewReport'); 
             const adminFloating = document.getElementById('adminFloatingBack');
+            const attemptsBadge = document.getElementById('attemptsDisplayEntry');
 
             if (isAdmin) {
                 badge.style.display = 'block';
                 loginBtn.style.display = 'none';
                 logoutBtn.style.display = 'block';
                 reportBtn.style.display = 'block'; 
+                // Hide attempts in admin mode
+                if(attemptsBadge) attemptsBadge.style.display = 'none';
             } else {
                 badge.style.display = 'none';
                 loginBtn.style.display = 'block';
                 logoutBtn.style.display = 'none';
                 reportBtn.style.display = 'none'; 
                 adminFloating.style.display = 'none';
+                // Show attempts in normal mode (only if on screenDataEntry, usually controlled by CSS/Layout but forced here)
+                if(attemptsBadge) attemptsBadge.style.display = 'inline-flex';
             }
             updateUIForAttempts();
         }
@@ -689,7 +696,7 @@
         function checkPosition(position) {
             const targetLat = 30.38583; 
             const targetLong = 30.48888; 
-            const allowedDistance = 0.3; 
+            const allowedDistance = 1.0; // 1 KM Radius to cover 1 sq km comfortably
             const dist = getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, targetLat, targetLong);
             
             if (dist <= allowedDistance) { generateCodeAndShowDataEntry(); } 
