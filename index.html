@@ -59,7 +59,6 @@
         .logout-btn { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; display: none; } 
         .input-group { margin-bottom: 15px; text-align: right; position: relative; }
         .modern-input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; font-size: 14px; outline: none; transition: 0.3s; background: #f8fafc; }
-        .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
         /* Select & Ticket Styles */
@@ -161,9 +160,15 @@
         .key-btn.action-btn { background: #f8fafc; color: #64748b; }
         .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
 
-        /* --- Footer (Updated) --- */
+        /* --- Footer (Restored inside card) --- */
         .academic-footer { margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(203, 213, 225, 0.6); display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 5; }
+        .academic-person { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .role-badge { font-size: 10px; color: var(--primary); font-weight: 800; background: #e0f2fe; padding: 3px 12px; border-radius: 15px; letter-spacing: 0.5px; }
+        .person-name { font-size: 14px; font-weight: 800; color: var(--text-main); background: linear-gradient(45deg, #1e293b, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .academic-divider { width: 40px; height: 3px; background: #f1f5f9; border-radius: 2px; }
         
+        /* Restored Style for University Label inside Footer */
+        .uni-footer-label { margin-top: 15px; font-size: 11px; color: #64748b; font-weight: 700; background: rgba(255, 255, 255, 0.5); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 2px 5px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 6px; }
 
         /* Attempts Badge */
         .attempts-badge { 
@@ -172,9 +177,9 @@
             display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;
         }
 
-        /* Modern Floating Admin Back Button (Bottom Left) */
+        /* Modern Floating Admin Back Button (Bottom Right) */
         .admin-floating-back {
-            position: fixed; bottom: 20px; left: 20px;
+            position: fixed; bottom: 20px; right: 20px; /* Changed to Right */
             width: 45px; height: 45px;
             background: rgba(255, 255, 255, 0.9);
             color: #475569;
@@ -188,7 +193,7 @@
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .admin-floating-back:active { transform: scale(0.9); }
-        .admin-floating-back i { font-size: 16px; /* Correct direction for RTL context if needed, but fa-arrow-right usually points right */ }
+        .admin-floating-back i { font-size: 16px; }
 
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -299,6 +304,24 @@
                         
                         <button id="btnAdminLogout" onclick="openLogoutModal()" class="btn-secondary logout-btn">خروج المسؤول <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal"></i></button>
                         <button id="btnViewReport" onclick="openReportModal()" class="btn-secondary" style="display:none; background: #ecfdf5; color: #15803d; border: 1px solid #bbf7d0; margin-top: 10px;"><i class="fa-solid fa-list-check"></i> سجل حضور اليوم</button>
+
+                        <div class="academic-footer">
+                            <div class="academic-person">
+                                <span class="role-badge"><i class="fa-solid fa-crown" style="font-size:9px; margin-left:3px; color:#f59e0b;"></i> عميد كلية التمريض</span>
+                                <span class="person-name">أ.د نجلاء عبدالموجود</span>
+                            </div>
+                            
+                            <div class="academic-divider"></div>
+                            
+                            <div class="academic-person">
+                                <span class="role-badge"><i class="fa-solid fa-user-tie" style="font-size:9px; margin-left:3px;"></i> إشراف</span>
+                                <span class="person-name">د. محمود عثمان</span>
+                            </div>
+
+                            <div class="uni-footer-label">
+                                <i class="fa-solid fa-building-columns"></i> جامعة الريادة للعلوم والتكنولوجيا
+                            </div>
+                        </div>
 
                     </div>
                     <div class="uni-watermark"></div>
@@ -481,7 +504,6 @@
         </div>
     </div>
 
-    <div class="page-footer-credit"><i class="fa-solid fa-pen-nib"></i> جامعة الريادة</div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
