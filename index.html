@@ -72,10 +72,29 @@
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
         
+        /* --- BUTTON HIERARCHY (MODIFICATION 1) --- */
         .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; padding: 15px; border-radius: 14px; font-size: 15px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; box-shadow: 0 8px 20px -5px rgba(14, 165, 233, 0.4); transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; z-index: 5; }
         .btn-main:active { transform: scale(0.97); }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
-        .btn-secondary { background: #f1f5f9; color: var(--text-main); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Cairo'; margin-top: 15px; box-shadow: 0 4px 10px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
+        /* Secondary button redesigned to be a subtle/ghost button */
+        .btn-secondary { 
+            background: #ffffff; /* Use white background */
+            color: var(--primary-dark); /* Use primary color text */
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 14px; 
+            font-size: 14px; 
+            font-weight: 700; 
+            border: 2px solid #e0f2fe; /* Light blue border */
+            cursor: pointer; 
+            font-family: 'Cairo'; 
+            margin-top: 10px; 
+            box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1);
+            transition: 0.3s; 
+            position: relative; 
+            z-index: 5; 
+        }
+        .btn-secondary:hover { background: #f0f9ff; }
         .logout-btn { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; display: none; } 
         .input-group { margin-bottom: 15px; text-align: right; position: relative; z-index: 5; }
         .modern-input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; font-size: 14px; outline: none; transition: 0.3s; background: #f8fafc; }
@@ -106,7 +125,7 @@
             100% { transform: translateY(-600px) translateX(20px) rotate(360deg); opacity: 0; }
         }
 
-        /* --- Modern Mobile Select (Bottom Sheet Style) - FIX APPLIED HERE --- */
+        /* --- Modern Mobile Select (Bottom Sheet Style) --- */
         .custom-select-wrapper {
             position: relative;
             user-select: none;
@@ -184,7 +203,7 @@
             visibility: hidden;
             max-height: 70vh; /* لا تتجاوز 70% من الشاشة */
             overflow-y: auto;
-            display: block !important; /* فرض الظهور للتحكم بالترانسفورم */
+            display: block !important;
         }
 
         /* مقبض صغير للأعلى (Handle) */
@@ -247,7 +266,7 @@
             filter: grayscale(100%);
         }
 
-        /* --- Ticket Styles --- */
+        /* Ticket Styles */
         .ticket-container { background: white; border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #f1f5f9; }
         .ticket-container::before, .ticket-container::after { content: ''; position: absolute; top: 110px; width: 24px; height: 24px; background: #0f172a; border-radius: 50%; z-index: 20; }
         .ticket-container::before { left: -12px; } .ticket-container::after { right: -12px; }
@@ -311,12 +330,16 @@
         .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
         .card-body-content { position: relative; min-height: 500px; z-index: 5; } /* Ensure content is above particles */
 
-        /* --- Footer (Updated) --- */
+        /* --- FOOTER MODERN STYLE (MODIFICATION 2) --- */
         .academic-footer { margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(203, 213, 225, 0.6); display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 5; }
         .uni-footer-label-large { 
             font-size: 16px; color: var(--primary-dark); font-weight: 900; 
-            background: rgba(224, 242, 254, 0.5); padding: 12px 25px; border-radius: 25px; 
-            border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
+            background: rgba(255, 255, 255, 0.9); /* More opaque glass base */
+            padding: 12px 25px; border-radius: 25px; 
+            border: 1px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 0 5px rgba(14, 165, 233, 0.1); /* Blue glow */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: flex; align-items: center; gap: 8px; margin-top: 5px;
         }
 
@@ -356,6 +379,76 @@
         .key-btn:active { transform: scale(0.95); background: #f1f5f9; box-shadow: none; }
         .key-btn.action-btn { background: #f8fafc; color: #64748b; }
         .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
+
+        /* --- REPORT MODAL MODERN STYLE (MODIFICATION 3) --- */
+        .report-modal-body { 
+            margin-bottom: 20px; 
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: right;
+            padding-right: 5px;
+        }
+        .report-group { /* Individual Accordion Card */
+            background: #ffffff;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: all 0.3s;
+        }
+        .report-header { /* Collapsible Header */
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            position: relative;
+            background: #f0f9ff; /* Light primary color background */
+            border-right: 5px solid var(--primary);
+        }
+        .report-header:hover { background: #e0f2fe; }
+        .report-header.active { background: #dbeafe; border-right-color: var(--primary-dark); }
+        .report-header::after {
+            content: '\f078'; /* Chevron down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 12px;
+            color: var(--primary-dark);
+            transition: transform 0.3s;
+        }
+        .report-header.active::after {
+            transform: rotate(180deg);
+        }
+        .report-count { 
+            background: var(--primary); color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; 
+            font-weight: 900; 
+        }
+        .report-list-container { /* List of students inside */
+            padding: 10px 0;
+            border-top: 1px solid #e2e8f0;
+        }
+        .report-item { /* Individual student row */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px dashed #f1f5f9;
+            transition: background 0.2s;
+        }
+        .report-item:last-child { border-bottom: none; }
+        .st-name { font-weight: 700; font-size: 14px; }
+        .btn-delete-single { /* Delete button styling */
+            background: #fee2e2; color: #b91c1c; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+            transition: 0.2s; font-size: 12px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn-delete-single:active { transform: scale(0.9); }
+        .empty-state { padding: 30px; font-weight: 700; color: var(--text-sub); background: #f8fafc; border-radius: 12px; }
+
 
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -489,7 +582,7 @@
                         <button id="btnAdminLogin" onclick="switchScreen('screenAdminLogin')" class="btn-secondary">دخول المسؤول <i class="fa-solid fa-lock"></i></button>
                         
                         <button id="btnAdminLogout" onclick="openLogoutModal()" class="btn-secondary logout-btn">خروج المسؤول <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal"></i></button>
-                        <button id="btnViewReport" onclick="openReportModal()" class="btn-secondary" disabled style="background: #f1f5f9; color: #94a3b8; border: 1px solid #e2e8f0; margin-top: 10px;"><i class="fa-solid fa-lock"></i> سجل حضور اليوم (مقفل)</button>
+                        <button id="btnViewReport" onclick="openReportModal()" class="btn-secondary" disabled><i class="fa-solid fa-lock"></i> سجل حضور اليوم (مقفل)</button>
 
                         <div class="academic-footer">
                             <div class="uni-footer-label-large">
@@ -805,6 +898,7 @@
                 reportBtn.className = 'btn-secondary';
                 reportBtn.style.background = '#ecfdf5';
                 reportBtn.style.color = '#15803d';
+                reportBtn.style.borderColor = '#d1fae5';
                 reportBtn.innerHTML = '<i class="fa-solid fa-list-check"></i> سجل حضور اليوم';
                 
                 if(attemptsBadge) attemptsBadge.style.display = 'none'; 
@@ -816,7 +910,8 @@
                 // Update Report Button for Student (Locked)
                 reportBtn.style.display = 'block';
                 reportBtn.disabled = true;
-                reportBtn.style.background = '#f1f5f9';
+                reportBtn.className = 'btn-secondary';
+                reportBtn.style.background = '#ffffff';
                 reportBtn.style.color = '#94a3b8';
                 reportBtn.style.borderColor = '#e2e8f0';
                 reportBtn.innerHTML = '<i class="fa-solid fa-lock"></i> سجل حضور اليوم (مقفل)';
@@ -1046,7 +1141,7 @@
             const d=new Date().toLocaleDateString('en-GB'); 
             document.getElementById('reportDateDisplay').innerText=`(${d})`; 
             let l=JSON.parse(localStorage.getItem(LOCAL_LOG_KEY)||"[]").filter(x=>x.date===d); 
-            if(l.length===0) document.getElementById('reportContent').innerHTML='<div class="empty-state">لا يوجد</div>'; 
+            if(l.length===0) document.getElementById('reportContent').innerHTML='<div class="empty-state">لا يوجد سجلات حضور اليوم.</div>'; 
             else { 
                 let h=''; let g=l.reduce((a,c)=>{(a[c.subject]=a[c.subject]||[]).push(c);return a},{}); let i=0; 
                 for(const[s,st] of Object.entries(g)){ 
@@ -1059,10 +1154,10 @@
                                 <div class="report-item">
                                     <div style="display:flex; flex-direction:column; align-items:flex-start;">
                                         <span class="st-name">${x.name}</span>
-                                        <span class="st-id" style="font-size:10px; color:#94a3b8;">${x.uniID}</span>
+                                        <span class="st-id english-num" style="font-size:10px; color:#94a3b8;">${x.uniID}</span>
                                     </div>
                                     <div style="display:flex; align-items:center; gap:8px;">
-                                        <span style="font-size:11px; color:#64748b; font-family:'Outfit'; direction:ltr;">${x.timestamp}</span>
+                                        <span class="english-num" style="font-size:11px; color:#64748b; font-family:'Outfit'; direction:ltr;">${x.timestamp}</span>
                                         <button onclick="promptDeleteSingle('${x.uniID}','${x.timestamp}')" class="btn-delete-single">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
