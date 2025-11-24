@@ -217,6 +217,18 @@
         .admin-floating-back:active { transform: scale(0.9); }
         .admin-floating-back i { font-size: 16px; }
 
+        /* --- FIXED KEYPAD CSS --- */
+        .custom-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; direction: ltr; position: relative; z-index: 10; }
+        .key-btn { 
+            background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px 0; 
+            font-size: 22px; font-weight: 700; color: #334155; 
+            box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.1s; 
+            font-family: 'Cairo', sans-serif; display: flex; justify-content: center; align-items: center;
+        }
+        .key-btn:active { transform: scale(0.95); background: #f1f5f9; box-shadow: none; }
+        .key-btn.action-btn { background: #f8fafc; color: #64748b; }
+        .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
+
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -400,18 +412,18 @@
                     <div class="input-group"><input type="text" id="attendanceCode" class="modern-input locked" readonly></div>
                     
                     <div class="custom-keypad">
-                        <button class="key-btn" onclick="addKey('1')">1</button>
-                        <button class="key-btn" onclick="addKey('2')">2</button>
-                        <button class="key-btn" onclick="addKey('3')">3</button>
-                        <button class="key-btn" onclick="addKey('4')">4</button>
-                        <button class="key-btn" onclick="addKey('5')">5</button>
-                        <button class="key-btn" onclick="addKey('6')">6</button>
-                        <button class="key-btn" onclick="addKey('7')">7</button>
-                        <button class="key-btn" onclick="addKey('8')">8</button>
-                        <button class="key-btn" onclick="addKey('9')">9</button>
-                        <button class="key-btn action-btn" onclick="clearKey()">C</button>
-                        <button class="key-btn" onclick="addKey('0')">0</button>
-                        <button class="key-btn delete-btn" onclick="backspaceKey()"><i class="fa-solid fa-delete-left"></i></button>
+                        <button type="button" class="key-btn" onclick="addKey('1')">1</button>
+                        <button type="button" class="key-btn" onclick="addKey('2')">2</button>
+                        <button type="button" class="key-btn" onclick="addKey('3')">3</button>
+                        <button type="button" class="key-btn" onclick="addKey('4')">4</button>
+                        <button type="button" class="key-btn" onclick="addKey('5')">5</button>
+                        <button type="button" class="key-btn" onclick="addKey('6')">6</button>
+                        <button type="button" class="key-btn" onclick="addKey('7')">7</button>
+                        <button type="button" class="key-btn" onclick="addKey('8')">8</button>
+                        <button type="button" class="key-btn" onclick="addKey('9')">9</button>
+                        <button type="button" class="key-btn action-btn" onclick="clearKey()">C</button>
+                        <button type="button" class="key-btn" onclick="addKey('0')">0</button>
+                        <button type="button" class="key-btn delete-btn" onclick="backspaceKey()"><i class="fa-solid fa-delete-left"></i></button>
                     </div>
 
                     <button type="button" onclick="handleIdSubmit()" class="btn-main" id="nextStepBtn" style="margin-top:20px;">التالي <i class="fa-solid fa-arrow-left"></i></button>
