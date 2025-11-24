@@ -126,6 +126,53 @@
         .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
         .card-body-content { position: relative; min-height: 500px; }
 
+        /* --- تنسيقات تقرير الحضور الجديد --- */
+        .report-modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+            text-align: right;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            scrollbar-width: thin;
+        }
+        .report-modal-body::-webkit-scrollbar { width: 6px; }
+        .report-modal-body::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+
+        .report-group { margin-bottom: 20px; animation: slideUp 0.4s ease-out; }
+        .report-header {
+            background: linear-gradient(to left, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2);
+        }
+        .report-count { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 11px; }
+
+        .report-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .report-item:hover { transform: translateX(-3px); border-color: var(--primary); }
+        .st-name { font-weight: 700; font-size: 12px; color: #334155; display: block; }
+        .st-id { font-size: 10px; color: #94a3b8; font-family: monospace; letter-spacing: 1px; }
+        .st-time { font-size: 11px; color: var(--primary); font-weight: bold; direction: ltr; }
+        .empty-state { text-align: center; color: #94a3b8; padding: 40px 0; font-size: 13px; }
+
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -163,6 +210,20 @@
             <div class="modal-title" style="color: #10b981;">تم بنجاح</div>
             <div class="modal-text" id="successModalMsg">--</div>
             <button onclick="reloadApp()" class="modal-btn btn-success-modal">موافق</button>
+        </div>
+    </div>
+
+    <div id="reportModal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 380px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="modal-title" style="margin:0; font-size:16px;">سجل اليوم <span style="font-size:12px; color:#94a3b8" id="reportDateDisplay"></span></div>
+                <button onclick="clearLocalReport()" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:12px;"><i class="fa-solid fa-trash"></i> مسح</button>
+            </div>
+            
+            <div id="reportContent" class="report-modal-body">
+                </div>
+
+            <button onclick="closeReportModal()" class="modal-btn btn-cancel" style="width:100%">إغلاق</button>
         </div>
     </div>
 
@@ -206,7 +267,10 @@
                     <div style="position: relative; z-index: 2;">
                         <button onclick="startProcess(false)" class="btn-main" id="mainActionBtn">تسجيل الحضور <i class="fa-solid fa-fingerprint"></i></button>
                         <button id="btnAdminLogin" onclick="switchScreen('screenAdminLogin')" class="btn-secondary">دخول المسؤول <i class="fa-solid fa-lock"></i></button>
+                        
                         <button id="btnAdminLogout" onclick="openLogoutModal()" class="btn-secondary logout-btn">خروج المسؤول <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal"></i></button>
+                        <button id="btnViewReport" onclick="openReportModal()" class="btn-secondary" style="display:none; background: #ecfdf5; color: #15803d; border: 1px solid #bbf7d0; margin-top: 10px;"><i class="fa-solid fa-list-check"></i> سجل حضور اليوم</button>
+
                     </div>
                     <div class="uni-watermark"></div>
                 </div>
@@ -329,14 +393,10 @@
 
     <script>
         // --- روابط السكربت (مهم جداً) ---
-        // 1. رابط جلب أسماء الطلاب (يستخدم الرابط القديم)
         const STUDENTS_DB_URL = "https://script.google.com/macros/s/AKfycby5cxIDqCETg20E5bXCr8ZJgb5OV_zky-9WFVDHtngVwM5noxJdU1lljHbxxbeRqh8Q/exec"; 
-        
-        // 2. رابط إرسال الحضور (الرابط الجديد)
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby1ntSw05_regu9_kN2fHLJanjIFizsOcgSxzWfwG2YcjKgIddCKqV32az8acZCJrMz/exec"; 
         
         let studentsDB = {};
-        // نجلب الأسماء من الرابط القديم
         fetch(STUDENTS_DB_URL).then(r=>r.json()).then(d=>{studentsDB=d;}).catch(e=>{console.log("DB Load Error", e)});
 
         // --- SUBJECTS DATA ---
@@ -351,7 +411,6 @@
             ]
         };
 
-        // Update subjects dropdown based on year selection
         function updateSubjects() {
             const yearSelect = document.getElementById("yearSelect");
             const subjectSelect = document.getElementById("subjectSelect");
@@ -398,6 +457,9 @@
         const TEMP_NAME_KEY = "temp_student_name";
         const TEMP_ID_KEY = "temp_student_id";
         const TEMP_CODE_KEY = "temp_session_code";
+        
+        // مفتاح التخزين الخاص بالتقرير
+        const LOCAL_LOG_KEY = "attendance_daily_log_v1";
 
         let userIP = "Unknown";
         let geo_watch_id;
@@ -449,15 +511,18 @@
             const badge = document.getElementById('adminBadge');
             const loginBtn = document.getElementById('btnAdminLogin');
             const logoutBtn = document.getElementById('btnAdminLogout');
+            const reportBtn = document.getElementById('btnViewReport'); // الزر الجديد
 
             if (isAdmin) {
                 badge.style.display = 'block';
                 loginBtn.style.display = 'none';
                 logoutBtn.style.display = 'block';
+                reportBtn.style.display = 'block'; // إظهار الزر
             } else {
                 badge.style.display = 'none';
                 loginBtn.style.display = 'block';
                 logoutBtn.style.display = 'none';
+                reportBtn.style.display = 'none'; // إخفاء الزر
             }
             
             const savedDeadline = sessionStorage.getItem(SESSION_END_TIME_KEY);
@@ -806,7 +871,6 @@
             }
 
             const now = new Date();
-            const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
             document.getElementById('receiptName').innerText = attendanceData.name;
             document.getElementById('receiptID').innerText = toArabicNums(attendanceData.uniID);
             
@@ -830,7 +894,6 @@
             const timeoutId = setTimeout(() => currentAbortController.abort(), 10000); 
 
             try {
-                // استخدام الرابط الجديد هنا
                 await fetch(SHEET_API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -853,6 +916,14 @@
                 if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
                     localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB'));
                 }
+                
+                // --- Save to Local Log for Admin Report ---
+                saveToLocalLog({
+                    name: attendanceData.name,
+                    uniID: attendanceData.uniID,
+                    subject: selectedSubject
+                });
+
                 document.getElementById('statusIcon').className = "fa-solid fa-check hero-icon"; 
                 document.getElementById('statusIcon').style.color = "#10b981";
                 switchScreen('screenSuccess');
@@ -889,6 +960,76 @@
             nextScreen.classList.add('active');
         }
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
+
+        // --- دوال نظام التقرير الجديد ---
+        function saveToLocalLog(studentData) {
+            let logs = JSON.parse(localStorage.getItem(LOCAL_LOG_KEY) || "[]");
+            const today = new Date().toLocaleDateString('en-GB');
+            
+            studentData.date = today;
+            studentData.timestamp = new Date().toLocaleTimeString('en-US', {hour12: true, hour:'2-digit', minute:'2-digit'});
+            
+            logs.push(studentData);
+            localStorage.setItem(LOCAL_LOG_KEY, JSON.stringify(logs));
+        }
+
+        function openReportModal() {
+            playClick();
+            const modal = document.getElementById('reportModal');
+            const content = document.getElementById('reportContent');
+            const dateDisplay = document.getElementById('reportDateDisplay');
+            const today = new Date().toLocaleDateString('en-GB');
+            
+            dateDisplay.innerText = `(${today})`;
+            
+            let logs = JSON.parse(localStorage.getItem(LOCAL_LOG_KEY) || "[]");
+            logs = logs.filter(log => log.date === today);
+
+            if (logs.length === 0) {
+                content.innerHTML = '<div class="empty-state"><i class="fa-solid fa-clipboard-list" style="font-size:30px; margin-bottom:10px; display:block;"></i>لا يوجد تسجيلات اليوم على هذا الجهاز</div>';
+            } else {
+                const grouped = logs.reduce((acc, curr) => {
+                    (acc[curr.subject] = acc[curr.subject] || []).push(curr);
+                    return acc;
+                }, {});
+
+                let html = '';
+                for (const [subject, students] of Object.entries(grouped)) {
+                    html += `
+                        <div class="report-group">
+                            <div class="report-header">
+                                <span>${subject}</span>
+                                <span class="report-count">${students.length}</span>
+                            </div>
+                            ${students.map(st => `
+                                <div class="report-item">
+                                    <div>
+                                        <span class="st-name">${st.name}</span>
+                                        <span class="st-id">ID: ${st.uniID}</span>
+                                    </div>
+                                    <span class="st-time">${st.timestamp}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                content.innerHTML = html;
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeReportModal() {
+            playClick();
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        function clearLocalReport() {
+            if(confirm("هل أنت متأكد من مسح سجلات هذا الجهاز؟")) {
+                localStorage.removeItem(LOCAL_LOG_KEY);
+                openReportModal(); 
+            }
+        }
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch((err) => console.log(err));
