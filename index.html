@@ -1,89 +1,392 @@
-// --- كود Google Apps Script النهائي ---
-
-function doGet(e) {
-  var action = (e && e.parameter) ? e.parameter.action : "check";
-
-  // 1. طلب جلب قائمة الطلاب (يتم عند فتح الموقع)
-  if (action == "get_students") {
-    return getStudentsData();
-  } 
-  // 2. طلب تسجيل الحضور
-  else {
-    return handleAttendance(e);
-  }
-}
-
-function doPost(e) {
-  return handleAttendance(e);
-}
-
-// دالة جلب الأسماء (سريعة ومخصصة للقراءة)
-function getStudentsData() {
-  try {
-    var doc = SpreadsheetApp.getActiveSpreadsheet();
-    // يجب أن يكون اسم الورقة "Students" بالضبط
-    var sheet = doc.getSheetByName("Students");
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>نظام الحضور - جامعة الريادة</title>
     
-    // إرجاع كائن فارغ إذا لم توجد الورقة
-    if (!sheet) return ContentService.createTextOutput("{}").setMimeType(ContentService.MimeType.JSON);
-
-    var data = sheet.getDataRange().getValues();
-    var studentsMap = {};
-
-    // نفترض: العمود الأول (A) للكود، العمود الثاني (B) للاسم
-    // نتجاهل الصف الأول (العناوين) ونبدأ من 1
-    for (var i = 1; i < data.length; i++) {
-      var id = String(data[i][0]).trim();
-      var name = String(data[i][1]).trim();
-      if (id) studentsMap[id] = name;
-    }
-
-    return ContentService.createTextOutput(JSON.stringify(studentsMap))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (e) {
-    return ContentService.createTextOutput("{}").setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-// دالة تسجيل الحضور (إنشاء شيت المادة والكتابة)
-function handleAttendance(e) {
-  var lock = LockService.getScriptLock();
-  lock.tryLock(3000); // قفل سريع لمنع التضارب
-
-  try {
-    var doc = SpreadsheetApp.getActiveSpreadsheet();
-    var p = e.parameter;
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    var subject = p.subject;
-    var sheet;
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
-    // تحديد الشيت بناءً على اسم المادة
-    if (subject && subject !== "") {
-      sheet = doc.getSheetByName(subject);
-      if (!sheet) {
-        sheet = doc.insertSheet(subject);
-        sheet.appendRow(["التاريخ", "الوقت", "الاسم", "ID", "كود الجلسة", "المادة", "IP", "الموقع"]);
-      }
-    } else {
-      sheet = doc.getSheetByName("Sheet1");
-      if (!sheet) sheet = doc.insertSheet("Sheet1");
-    }
+    <style>
+        /* --- التصميم العام (CSS) --- */
+        :root { 
+            --primary: #0ea5e9; 
+            --primary-dark: #0284c7;
+            --text-main: #1e293b; 
+            --glass-bg: rgba(255, 255, 255, 0.95); 
+            --danger: #ef4444;
+            --success: #10b981;
+        }
 
-    var now = new Date();
-    var date = Utilities.formatDate(now, "GMT+2", "dd/MM/yyyy");
-    var time = Utilities.formatDate(now, "GMT+2", "hh:mm:ss a");
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: #0f172a; 
+            color: var(--text-main); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            overflow-x: hidden; 
+        }
+        
+        /* الخلفية */
+        .bg-image { 
+            background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; 
+            background-size: cover; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; 
+            filter: blur(8px) brightness(0.7); 
+            transform: scale(1.1); 
+        }
+        
+        /* البطاقة الرئيسية */
+        .app-card { 
+            background: var(--glass-bg); 
+            width: 90%; 
+            max-width: 400px; 
+            border-radius: 24px; 
+            padding: 30px 25px; 
+            text-align: center; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4); 
+            position: relative; 
+            min-height: 350px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            transition: all 0.3s ease;
+        }
+        
+        h2 { margin: 0 0 10px 0; color: #0f172a; font-weight: 900; }
+        p { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+        
+        /* الحقول */
+        .modern-input { 
+            width: 100%; padding: 15px; 
+            border: 2px solid #e2e8f0; border-radius: 12px; 
+            font-family: 'Cairo'; font-size: 16px; text-align: center; 
+            outline: none; margin-bottom: 15px; transition: 0.3s; 
+            background: #f8fafc; font-weight: bold;
+        }
+        .modern-input:focus { border-color: var(--primary); background: white; }
+        
+        select.modern-input { 
+            appearance: none; 
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
+            background-repeat: no-repeat; 
+            background-position: left 1rem center; 
+            background-size: 1em; 
+        }
 
-    // تسجيل البيانات
-    sheet.appendRow([date, time, p.name, p.id, p.code, subject, p.ip, p.location]);
+        /* الأزرار */
+        .btn-main { 
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            color: white; width: 100%; padding: 15px; 
+            border-radius: 14px; font-weight: 800; font-size: 16px; 
+            border: none; cursor: pointer; font-family: 'Cairo'; 
+            transition: 0.2s; display: flex; align-items: center; 
+            justify-content: center; gap: 10px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);
+        }
+        .btn-main:disabled { background: #94a3b8; cursor: not-allowed; opacity: 0.8; box-shadow: none; }
+        .btn-main:active { transform: scale(0.98); }
 
-    return ContentService.createTextOutput(JSON.stringify({"result":"success"}))
-      .setMimeType(ContentService.MimeType.JSON);
+        /* الأقسام */
+        .section { display: none; animation: fadeIn 0.4s ease-out; width: 100%; }
+        .section.active { display: block; }
+        
+        .student-info-box { 
+            background: #f1f5f9; padding: 15px; border-radius: 15px; 
+            margin-bottom: 20px; text-align: right; 
+            border-right: 4px solid var(--primary); 
+        }
+        .lbl { font-size: 11px; color: #64748b; font-weight: bold; }
+        .val { font-size: 16px; font-weight: 900; color: #1e293b; }
 
-  } catch (e) {
-    // إرجاع نجاح وهمي لعدم تعطيل الواجهة
-    return ContentService.createTextOutput(JSON.stringify({"result":"success"}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
-  }
-}
+        .alert-box { 
+            background: #fee2e2; color: #ef4444; padding: 12px; 
+            border-radius: 12px; font-size: 13px; font-weight: bold; 
+            margin-bottom: 15px; display: none; text-align: center; 
+            border: 1px solid #fecaca; animation: shake 0.3s;
+        }
+
+        /* الكاميرا */
+        #qr-reader { 
+            width: 100%; border-radius: 15px; overflow: hidden; 
+            margin-bottom: 15px; display: none; background: #000; 
+            border: 2px solid #334155;
+        }
+        
+        /* مانع الديسك توب */
+        #desktop-blocker { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #0f172a; color: #ef4444; z-index: 99999; 
+            display: none; flex-direction: column; align-items: center; 
+            justify-content: center; text-align: center; 
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    </style>
+</head>
+<body>
+
+    <div id="desktop-blocker">
+        <i class="fa-solid fa-mobile-screen-button" style="font-size:50px; margin-bottom:20px;"></i>
+        <h2>عذراً</h2>
+        <p>هذا النظام متاح فقط من الهواتف الذكية.</p>
+    </div>
+
+    <div class="bg-image"></div>
+    <audio id="successSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+    <audio id="beepSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3"></audio>
+
+    <div class="app-card">
+        
+        <div id="screenEntry" class="section active">
+            <i class="fa-solid fa-shield-halved" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h2>تسجيل الحضور الآمن</h2>
+            <p>أدخل الكود الجامعي للتحقق</p>
+            
+            <div id="entryAlert" class="alert-box"></div>
+
+            <input type="number" id="uniID" class="modern-input" placeholder="الكود الجامعي (ID)">
+            
+            <button id="checkBtn" onclick="checkIDOnline()" class="btn-main">
+                <span id="btnText">تحقق ومتابعة</span>
+                <i class="fa-solid fa-arrow-left" id="btnIcon"></i>
+                <i class="fa-solid fa-circle-notch fa-spin" id="btnLoader" style="display:none"></i>
+            </button>
+        </div>
+
+        <div id="screenAction" class="section">
+            <h2 style="font-size: 18px;">بيانات الطالب</h2>
+            
+            <div class="student-info-box">
+                <div class="lbl">الاسم</div>
+                <div class="val" id="dispName">--</div>
+                <div style="margin-top:8px;"></div>
+                <div class="lbl">الرقم الجامعي</div>
+                <div class="val" id="dispID">--</div>
+            </div>
+
+            <select id="yearSelect" class="modern-input" onchange="updateSubjects()">
+                <option value="" disabled selected>-- اختر الفرقة --</option>
+                <option value="first_year">الفرقة الأولى</option>
+                <option value="second_year">الفرقة الثانية</option>
+            </select>
+
+            <select id="subjectSelect" class="modern-input" disabled>
+                <option value="" disabled selected>-- اختر المادة --</option>
+            </select>
+
+            <div id="qr-reader"></div>
+            
+            <button id="scanBtn" onclick="startScanner()" class="btn-main" style="background: #334155;">
+                مسح الكود <i class="fa-solid fa-camera"></i>
+            </button>
+
+            <div id="scanResultBadge" style="display:none; background:#ecfdf5; color:#10b981; padding:10px; border-radius:10px; margin-bottom:10px; font-weight:bold;">
+                <i class="fa-solid fa-check-circle"></i> تم مسح الكود
+            </div>
+            <input type="hidden" id="qrCodeVal">
+
+            <button id="submitBtn" onclick="finalSubmit()" class="btn-main" style="margin-top:10px; display:none; background: var(--success);">
+                تأكيد الحضور <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+            <button onclick="resetApp()" style="background:none; border:none; color:#64748b; margin-top:15px; cursor:pointer; font-weight:bold;">إلغاء العملية</button>
+        </div>
+
+        <div id="screenSuccess" class="section">
+            <i class="fa-solid fa-circle-check" style="font-size: 70px; color: var(--success); margin-bottom: 20px; animation: slideUp 0.5s;"></i>
+            <h2 style="color:var(--success);">تم التسجيل!</h2>
+            <p>تم حفظ بيانات الحضور بنجاح.</p>
+            <button onclick="resetApp()" class="btn-main">طالب جديد</button>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // ============================================================
+        // لقد قمت بإضافة الرابط الخاص بك هنا تلقائياً
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1ntSw05_regu9_kN2fHLJanjIFizsOcgSxzWfwG2YcjKgIddCKqV32az8acZCJrMz/exec";
+        // ============================================================
+
+        let userIP = "MobileIP";
+        // محاولة جلب IP المستخدم في الخلفية
+        fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>userIP=d.ip).catch(()=>{});
+
+        // كود منع تشغيل الموقع على الكمبيوتر
+        function isMobile() { 
+            return /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent); 
+        }
+        if (!isMobile()) { document.getElementById('desktop-blocker').style.display = 'flex'; }
+
+        // --- دالة التحقق الآمن (أونلاين - Privacy Mode) ---
+        function checkIDOnline() {
+            const id = document.getElementById('uniID').value.trim();
+            const alertBox = document.getElementById('entryAlert');
+            const btn = document.getElementById('checkBtn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnLoader = document.getElementById('btnLoader');
+
+            alertBox.style.display = 'none';
+
+            if (!id) {
+                alertBox.innerText = "أدخل الكود الجامعي أولاً.";
+                alertBox.style.display = 'block';
+                return;
+            }
+
+            // تفعيل وضع التحميل في الزر
+            btn.disabled = true;
+            btnText.innerText = "جاري التحقق...";
+            btnIcon.style.display = 'none';
+            btnLoader.style.display = 'inline-block';
+
+            // إرسال طلب للسيرفر للبحث عن الطالب
+            fetch(SCRIPT_URL + "?action=check_id&id=" + id)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === true) {
+                        // تم العثور على الطالب
+                        document.getElementById('dispName').innerText = data.name;
+                        document.getElementById('dispID').innerText = id;
+                        switchSection('screenAction');
+                    } else {
+                        // لم يتم العثور عليه
+                        alertBox.innerHTML = "❌ الكود غير صحيح أو غير مسجل.";
+                        alertBox.style.display = 'block';
+                        if(navigator.vibrate) navigator.vibrate(200);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alertBox.innerText = "⚠️ خطأ في الاتصال، تأكد من الإنترنت.";
+                    alertBox.style.display = 'block';
+                })
+                .finally(() => {
+                    // إعادة الزر لوضعه الطبيعي
+                    btn.disabled = false;
+                    btnText.innerText = "تحقق ومتابعة";
+                    btnIcon.style.display = 'inline-block';
+                    btnLoader.style.display = 'none';
+                });
+        }
+
+        // --- بيانات المواد الدراسية ---
+        const subjectsData = {
+            "first_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "اناتومى نظرى", "اناتومى عملى", "تقييم صحى نظرى", "تقييم صحى عملى", "مصطلحات طبية", "فسيولوجى", "تكنولوجيا المعلومات"],
+            "second_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "تمريض حالات حرجة 1 نظرى", "تمريض حالات حرجة 1 عملى", "امراض باطنة", "باثولوجى", "علم الأدوية", "الكتابة التقنية"]
+        };
+
+        function updateSubjects() {
+            const y = document.getElementById("yearSelect").value;
+            const s = document.getElementById("subjectSelect");
+            s.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>';
+            if(y && subjectsData[y]) {
+                subjectsData[y].forEach(sub => {
+                    const opt = document.createElement("option");
+                    opt.value = sub; opt.text = sub; s.appendChild(opt);
+                });
+                s.disabled = false;
+            } else { s.disabled = true; }
+        }
+
+        // --- إعدادات الماسح الضوئي (QR Scanner) ---
+        let html5QrCode;
+        function startScanner() {
+            document.getElementById('qr-reader').style.display = "block";
+            document.getElementById('scanBtn').style.display = "none";
+            
+            html5QrCode = new Html5Qrcode("qr-reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            
+            html5QrCode.start({ facingMode: "environment" }, config, 
+            (decodedText) => {
+                // عند نجاح المسح
+                html5QrCode.stop();
+                document.getElementById('qr-reader').style.display = "none";
+                document.getElementById('beepSound').play().catch(()=>{});
+                
+                document.getElementById('qrCodeVal').value = decodedText;
+                document.getElementById('scanResultBadge').style.display = "block";
+                document.getElementById('submitBtn').style.display = "flex";
+                
+                if(navigator.vibrate) navigator.vibrate(50);
+            })
+            .catch(err => {
+                alert("يرجى السماح للكاميرا بالعمل.");
+                document.getElementById('scanBtn').style.display = "flex";
+            });
+        }
+
+        // --- الإرسال النهائي (سريع - Fire & Forget) ---
+        function finalSubmit() {
+            const sub = document.getElementById('subjectSelect').value;
+            if(!sub) { alert("من فضلك اختر المادة الدراسية."); return; }
+
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.disabled = true;
+
+            const params = new URLSearchParams({
+                id: document.getElementById('dispID').innerText,
+                name: document.getElementById('dispName').innerText,
+                code: document.getElementById('qrCodeVal').value,
+                subject: sub,
+                action: 'register',
+                ip: userIP
+            });
+
+            // إرسال البيانات باستخدام no-cors (أسرع طريقة ممكنة)
+            fetch(SCRIPT_URL + "?" + params.toString(), { mode: 'no-cors' });
+
+            // تشغيل صوت النجاح والاحتفال
+            document.getElementById('successSound').play().catch(()=>{});
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            
+            // الانتقال لشاشة النجاح فوراً
+            switchSection('screenSuccess');
+        }
+
+        // --- دوال مساعدة للتنقل بين الشاشات ---
+        function switchSection(id) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function resetApp() {
+            // إعادة تصفير النموذج
+            document.getElementById('uniID').value = '';
+            document.getElementById('entryAlert').style.display = 'none';
+            document.getElementById('scanResultBadge').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('scanBtn').style.display = 'flex';
+            document.getElementById('subjectSelect').disabled = true;
+            document.getElementById('yearSelect').value = "";
+            document.getElementById('subjectSelect').innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>';
+
+            // إيقاف الكاميرا إذا كانت تعمل
+            if(html5QrCode) {
+                try { html5QrCode.stop(); } catch(e){}
+            }
+            document.getElementById('qr-reader').style.display = "none";
+            
+            // العودة للشاشة الرئيسية
+            switchSection('screenEntry');
+        }
+    </script>
+</body>
+</html>
