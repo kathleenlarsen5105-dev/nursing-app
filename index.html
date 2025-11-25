@@ -49,95 +49,41 @@
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
 
-        /* === الأزرار الرئيسية والمعدلة (تصميم حديث) === */
+        /* === تصميم الأزرار الحديث === */
         .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; padding: 15px; border-radius: 20px; font-size: 16px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.5); transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; z-index: 5; margin-bottom: 20px; }
         .btn-main:active { transform: scale(0.97); }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; pointer-events: none; }
-
         .btn-secondary { background: #ffffff; color: var(--primary-dark); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: 2px solid #e0f2fe; cursor: pointer; font-family: 'Cairo'; margin-top: 10px; box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
         
-        /* شبكة الأزرار الفرعية */
-        .admin-controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .admin-sub-btn {
-            border-radius: 18px;
-            padding: 12px 10px;
-            font-size: 12px;
-            font-weight: 800;
-            border: none;
-            cursor: pointer;
-            font-family: 'Cairo';
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            height: 85px;
-        }
-
+        /* شبكة الأزرار */
+        .admin-controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .admin-sub-btn { border-radius: 18px; padding: 12px 10px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); height: 85px; }
         .admin-sub-btn:active { transform: scale(0.95); }
-
-        /* زر دخول المسؤول (أزرق فاتح) */
         .btn-admin-login { background: #f0f9ff; color: var(--primary-dark); border: 1px solid #bae6fd; }
-        /* زر خروج المسؤول (أحمر فاتح) */
         .btn-admin-logout { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
         
-        /* زر سجل الحضور (متغير الحالة) */
         .btn-report { transition: all 0.3s; }
         .btn-report.locked { background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; cursor: not-allowed; }
         .btn-report.unlocked { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; cursor: pointer; }
 
-        /* زر تنظيم الامتحانات (بنفسجي فاتح - تصميم مميز) */
-        .btn-exams {
-            grid-column: span 2; /* يأخذ العرض الكامل */
-            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
-            color: #7c3aed;
-            border: 1px solid #ddd6fe;
-            flex-direction: row; 
-            height: 60px;
-            margin-top: 5px;
-        }
-
-        /* زر التحديث الجديد (أسفل الامتحانات) */
-        .btn-refresh {
-            grid-column: span 2; /* يأخذ العرض الكامل */
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe); /* أزرق سماوي فاتح */
-            color: #0ea5e9;
-            border: 1px solid #bae6fd;
-            flex-direction: row;
-            height: 55px;
-            margin-top: 5px;
-        }
-
+        .btn-exams { grid-column: span 2; background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #7c3aed; border: 1px solid #ddd6fe; flex-direction: row; height: 60px; margin-top: 5px; }
+        .btn-refresh { grid-column: span 2; background: linear-gradient(135deg, #f0f9ff, #e0f2fe); color: #0ea5e9; border: 1px solid #bae6fd; flex-direction: row; height: 55px; margin-top: 5px; }
+        
         .sub-btn-icon { font-size: 20px; margin-bottom: 2px; }
         .btn-exams .sub-btn-icon, .btn-refresh .sub-btn-icon { margin-bottom: 0; font-size: 18px; }
 
-        /* MODAL STYLES - NEW REPORT DESIGN */
+        /* MODAL & REPORT DESIGN */
         #reportModal .modal-box { max-width: 380px; padding: 0; overflow: hidden; background: #f8fafc; }
         .report-modal-header { padding: 20px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
         .report-modal-body { padding: 15px; max-height: 50vh; overflow-y: auto; }
         .report-modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #e2e8f0; }
         
-        .modern-report-item {
-            background: white;
-            border-radius: 12px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #e2e8f0;
-            transition: 0.2s;
-        }
+        /* تجميع المواد */
+        .report-subject-header { background: #f1f5f9; color: var(--primary-dark); padding: 10px 15px; border-radius: 10px; font-weight: 900; font-size: 14px; margin-top: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 4px solid var(--primary); }
+        .report-subject-count { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+
+        .modern-report-item { background: white; border-radius: 12px; padding: 12px 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; transition: 0.2s; }
         .modern-report-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        
         .rep-info { display: flex; flex-direction: column; gap: 2px; text-align: right; }
         .rep-name { font-weight: 800; font-size: 13px; color: #334155; }
         .rep-id { font-size: 11px; color: #64748b; font-family: 'Outfit'; letter-spacing: 0.5px; }
@@ -145,7 +91,6 @@
         .rep-time { background: #f1f5f9; color: #475569; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; font-family: 'Outfit'; }
         .rep-delete { width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; transition: 0.2s; }
         .rep-delete:active { transform: scale(0.9); background: #fecaca; }
-
         .btn-close-report { width: 100%; background: #334155; color: white; padding: 14px; border-radius: 14px; font-weight: 800; border: none; cursor: pointer; }
         .btn-clear-all { color: #ef4444; background: none; border: none; font-size: 12px; font-weight: 800; cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: 0.2s; }
         .btn-clear-all:hover { background: #fee2e2; }
@@ -155,12 +100,13 @@
         .exam-loader { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #7c3aed; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Base Styles */
+        /* Inputs & Layout */
         .input-group { margin-bottom: 15px; text-align: right; position: relative; z-index: 5; }
         .modern-input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; font-size: 14px; outline: none; transition: 0.3s; background: #f8fafc; }
         .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
+        /* Dropdowns (Fixed Visibility) */
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; margin-bottom: 20px; -webkit-tap-highlight-color: transparent; }
         .custom-select-label { display: block; text-align: right; margin-bottom: 8px; font-size: 13px; color: #475569; font-weight: 800; margin-right: 5px; }
         .custom-select-trigger { position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px 20px; font-size: 15px; font-weight: 700; color: #334155; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); }
@@ -171,10 +117,14 @@
         .custom-select-wrapper.open .trigger-icon { background: var(--primary); color: white; }
         .arrow-icon { font-size: 12px; color: #94a3b8; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
         .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
+        
+        /* Fixed Hidden State */
         .custom-options-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 99990; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s; }
         .custom-select-wrapper.open .custom-options-overlay { opacity: 1; visibility: visible; pointer-events: all; }
+        
         .custom-options { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-radius: 30px 30px 0 0; padding: 25px 20px 40px 20px; z-index: 99999; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(100%); visibility: hidden; pointer-events: none; transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), visibility 0.4s; max-height: 70vh; overflow-y: auto; }
         .custom-select-wrapper.open .custom-options { transform: translateY(0); visibility: visible; pointer-events: all; }
+        
         .sheet-handle { width: 40px; height: 5px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 20px auto; }
         .options-title { text-align: center; font-weight: 800; color: #1e293b; margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
         .custom-option { padding: 16px 20px; margin-bottom: 10px; font-size: 15px; font-weight: 700; color: #475569; border-radius: 16px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; background: #f8fafc; }
@@ -183,6 +133,7 @@
         .custom-option.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; background: #10b981; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
         .custom-select-wrapper.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(100%); }
 
+        /* Misc */
         .ticket-container { background: white; border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #f1f5f9; }
         .ticket-container::before, .ticket-container::after { content: ''; position: absolute; top: 110px; width: 24px; height: 24px; background: #0f172a; border-radius: 50%; z-index: 20; }
         .ticket-container::before { left: -12px; } .ticket-container::after { right: -12px; }
@@ -606,7 +557,7 @@
 
     <script>
         const CONFIG = {
-            sheetApiUrl: "https://script.google.com/macros/s/AKfycbyLYX8GLe1KB_a87Wq5h4wMWRvCMSeOcnTr6DKtDqv7Wiqu2bQU92KsZq6SEK6RMyCN/exec",
+            sheetApiUrl: "https://script.google.com/macros/s/AKfycbw28j5fGLJJfPlHwrjcO6BSrUP-HHuYDoePUvdkVGqywCL4KRH51gg-m-AX5w5mRO0G/exec", // <--- ضع رابط الاسكريبت هنا
             adminPassword: "RYADA", 
             gps: { targetLat: 30.38583, targetLong: 30.48888, allowedDistanceKm: 1.5 }
         };
@@ -968,59 +919,68 @@
         function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); }
         function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); }; switchScreen('screenError'); }
 
-        // NEW REPORT LOGIC
+        // NEW REPORT LOGIC (Grouped & Sorted)
         async function openReportModal() { 
-            playClick(); document.getElementById('reportModal').style.display = 'flex'; 
-            const d = new Date().toLocaleDateString('en-GB'); document.getElementById('reportDateDisplay').innerText = `(${d})`; 
+            playClick(); 
+            document.getElementById('reportModal').style.display = 'flex'; 
+            const d = new Date().toLocaleDateString('en-GB'); 
+            document.getElementById('reportDateDisplay').innerText = `(${d})`; 
             const contentDiv = document.getElementById('reportContent');
-            contentDiv.innerHTML = '<div style="padding:20px; text-align:center;"><i class="fa-solid fa-circle-notch fa-spin" style="color:var(--primary); font-size:24px;"></i><br>جاري جلب السجل...</div>';
+            contentDiv.innerHTML = '<div style="padding:20px; text-align:center;"><i class="fa-solid fa-circle-notch fa-spin" style="color:var(--primary); font-size:24px;"></i><br>جاري جلب البيانات...</div>';
             try {
                 const response = await fetch(`${CONFIG.sheetApiUrl}?action=getReport&date=${encodeURIComponent(d)}`);
                 const remoteData = await response.json();
-                
                 if (!remoteData || remoteData.length === 0) { contentDiv.innerHTML = '<div class="empty-state">لا يوجد سجلات حضور مسجلة اليوم.</div>'; return; }
                 
-                // Sort by newest
-                remoteData.sort((a, b) => {
-                    const timeA = a.timestamp || "00:00";
-                    const timeB = b.timestamp || "00:00";
-                    return timeB.localeCompare(timeA);
+                // Grouping by Subject
+                const groupedData = {};
+                remoteData.forEach(item => {
+                    const subj = item.subject || 'غير محدد';
+                    if (!groupedData[subj]) { groupedData[subj] = []; }
+                    groupedData[subj].push(item);
                 });
 
-                let h = '';
-                remoteData.forEach((item) => {
-                    h += `
-                    <div class="modern-report-item" id="row-${item.uniID}">
-                        <div class="rep-info">
-                            <span class="rep-name">${item.name}</span>
-                            <div class="rep-meta">
-                                <span class="rep-id">${item.uniID}</span>
-                                <span class="rep-time">${item.timestamp || '--:--'}</span>
-                            </div>
-                        </div>
-                        <button class="rep-delete" onclick="deleteEntry('${item.uniID}', this)"><i class="fa-solid fa-trash"></i></button>
+                let finalHtml = '';
+                for (const [subject, students] of Object.entries(groupedData)) {
+                    // Sorting by newest first
+                    students.sort((a, b) => {
+                        const timeA = a.timestamp || "00:00";
+                        const timeB = b.timestamp || "00:00";
+                        return timeB.localeCompare(timeA);
+                    });
+
+                    finalHtml += `
+                    <div class="report-subject-header">
+                        <span>${subject}</span>
+                        <span class="report-subject-count">${students.length}</span>
                     </div>`;
-                });
-                contentDiv.innerHTML = h;
+
+                    students.forEach((item) => {
+                        finalHtml += `
+                        <div class="modern-report-item" id="row-${item.uniID}">
+                            <div class="rep-info">
+                                <span class="rep-name">${item.name}</span>
+                                <div class="rep-meta">
+                                    <span class="rep-id">${item.uniID}</span>
+                                    <span class="rep-time">${item.timestamp || '--:--'}</span>
+                                </div>
+                            </div>
+                            <button class="rep-delete" onclick="deleteEntry('${item.uniID}', this)"><i class="fa-solid fa-trash"></i></button>
+                        </div>`;
+                    });
+                }
+                contentDiv.innerHTML = finalHtml;
             } catch (e) { contentDiv.innerHTML = '<div class="alert-box" style="color:#ef4444;">فشل الاتصال.</div>'; }
         }
 
         async function deleteEntry(id, btn) {
             if(!confirm("هل أنت متأكد من حذف هذا الطالب من السجل؟")) return;
-            
             const item = btn.closest('.modern-report-item');
-            item.style.opacity = '0.5';
-            item.style.pointerEvents = 'none';
-            
+            item.style.opacity = '0.5'; item.style.pointerEvents = 'none';
             try {
-                // Backend Call
                 await fetch(`${CONFIG.sheetApiUrl}?action=delete&id=${id}`, { method: 'POST' });
-                item.remove();
-                playSuccess();
-            } catch(e) {
-                alert("فشل الحذف من السيرفر");
-                item.style.opacity = '1';
-            }
+                item.remove(); playSuccess();
+            } catch(e) { alert("فشل الحذف من السيرفر"); item.style.opacity = '1'; }
         }
 
         async function clearAllReport() {
@@ -1039,4 +999,4 @@
         if (!isMobileDevice()) { document.getElementById('desktop-blocker').style.display = 'flex'; throw new Error("Desktop access denied."); }
     </script>
 </body>
-</html>
+</html>https://script.google.com/macros/s/AKfycbw28j5fGLJJfPlHwrjcO6BSrUP-HHuYDoePUvdkVGqywCL4KRH51gg-m-AX5w5mRO0G/exec
