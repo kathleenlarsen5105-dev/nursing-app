@@ -69,53 +69,90 @@
         .sub-btn-icon { font-size: 20px; margin-bottom: 2px; }
         .btn-exams .sub-btn-icon, .btn-refresh .sub-btn-icon { margin-bottom: 0; font-size: 18px; }
 
-        /* === MODAL Styles (Updated) === */
-        #reportModal .modal-box { max-width: 380px; padding: 0; overflow: hidden; background: #f8fafc; }
-        .report-modal-header { padding: 15px 20px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .report-modal-body { padding: 15px; overflow-y: auto; background: #f8fafc; scrollbar-width: thin; }
+        /* === تصميم السجل التفاعلي الجديد (Modal) === */
+        #reportModal .modal-box { 
+            max-width: 400px; height: 85vh; padding: 0; background: #f8fafc; 
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        .report-modal-header { 
+            padding: 15px 20px; background: white; border-bottom: 1px solid #e2e8f0; 
+            display: flex; justify-content: space-between; align-items: center; 
+            flex-shrink: 0; z-index: 20;
+        }
+
         .report-modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #e2e8f0; z-index: 10; }
-        
-        /* === تصميم سجل الحضور العصري والمقسم === */
-        .subject-group-title {
-            background: linear-gradient(90deg, #f1f5f9 0%, #ffffff 100%);
-            padding: 10px 15px;
-            margin: 15px 0 10px 0;
-            border-radius: 12px;
-            font-weight: 900;
-            color: var(--primary-dark);
-            font-size: 13px;
-            border-right: 4px solid var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-            position: sticky;
-            top: 0;
-            z-index: 5;
+
+        /* زر الحذف الأيقونة فقط */
+        .btn-icon-danger {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: #fee2e2; color: #ef4444; font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s;
+        }
+        .btn-icon-danger:hover { background: #ef4444; color: white; transform: rotate(15deg); }
+
+        /* حاوية المحتوى المتحركة */
+        .report-views-container {
+            flex: 1; position: relative; overflow: hidden; width: 100%;
+        }
+        .report-view {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow-y: auto; padding: 15px;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            background: #f8fafc;
         }
 
-        .count-badge { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; }
+        /* فيو 1: كروت المواد */
+        #viewSubjects { transform: translateX(0); z-index: 10; }
+        #viewStudents { transform: translateX(-100%); z-index: 20; background: #f8fafc; }
 
-        .student-report-card {
-            background: white;
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 4px 15px -3px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+        /* كلاسات التحريك */
+        .slide-out { transform: translateX(100%) !important; }
+        .slide-in { transform: translateX(0) !important; }
+
+        /* تصميم كارت المادة الكبير */
+        .subject-big-card {
+            background: white; border-radius: 20px; padding: 20px;
+            margin-bottom: 15px; cursor: pointer;
+            border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: space-between;
+            transition: 0.2s; position: relative; overflow: hidden;
         }
-        .student-report-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -5px rgba(0,0,0,0.1); }
+        .subject-big-card:active { transform: scale(0.98); background: #f0f9ff; }
+        .subject-big-card::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+            background: var(--primary); border-radius: 4px 0 0 4px;
+        }
+        .sub-card-info h3 { font-size: 16px; font-weight: 800; color: #1e293b; margin-bottom: 5px; }
+        .sub-card-info span { font-size: 12px; color: #64748b; font-weight: 600; }
+        .sub-arrow { width: 40px; height: 40px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
 
+        /* هيدر قائمة الطلاب */
+        .students-list-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 15px;
+            background: white; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0;
+        }
+        .btn-back-report {
+            width: 35px; height: 35px; border-radius: 10px; border: none;
+            background: #f1f5f9; color: #475569; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* كارت الطالب المحدث بالوقت واليوم */
+        .student-detailed-card {
+            background: white; border-radius: 14px; padding: 15px;
+            margin-bottom: 10px; border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); display: flex;
+            justify-content: space-between; align-items: center;
+        }
         .st-data-col { display: flex; flex-direction: column; gap: 4px; text-align: right; }
         .st-name { font-weight: 800; font-size: 13px; color: #1e293b; }
-        .st-meta-row { display: flex; gap: 10px; font-size: 10px; color: #64748b; font-weight: 600; align-items: center; }
-        .st-tag { background: #f8fafc; padding: 2px 6px; border-radius: 6px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 4px; }
-
-        /* أزرار الحذف والتحكم */
+        .std-time-badge {
+            background: #ecfdf5; color: #059669; padding: 4px 8px; border-radius: 6px;
+            font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 5px;
+        }
         .btn-delete-item {
             width: 38px; height: 38px;
             background: #fff1f2; color: #f43f5e;
@@ -124,9 +161,8 @@
             cursor: pointer; transition: all 0.2s; font-size: 14px; flex-shrink: 0; margin-right: 10px;
         }
         .btn-delete-item:active { transform: scale(0.9); background: #f43f5e; color: white; }
-
+        
         /* أزرار الفوتر الجديدة */
-        .report-footer-actions { display: flex; flex-direction: column; gap: 10px; }
         .btn-refresh-list {
             background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; width: 100%; padding: 14px;
             border-radius: 16px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo';
@@ -137,11 +173,6 @@
             background: #f1f5f9; color: #475569; width: 100%; padding: 12px;
             border-radius: 16px; font-weight: 700; border: 1px solid #e2e8f0; cursor: pointer; font-family: 'Cairo'; font-size: 13px;
         }
-        .btn-clear-stylish {
-            background: #fee2e2; color: #ef4444; padding: 6px 12px; border-radius: 20px;
-            font-size: 11px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;
-        }
-        .btn-clear-stylish:hover { background: #ef4444; color: white; }
 
 
         /* Other Modals */
@@ -281,33 +312,48 @@
     </div>
 
     <div id="reportModal" class="modal-overlay">
-        <div class="modal-box" style="padding:0; height: 80vh; display: flex; flex-direction: column;">
+        <div class="modal-box">
             
             <div class="report-modal-header">
                 <div style="display:flex; flex-direction:column; align-items:flex-start;">
-                    <div class="modal-title" style="margin:0; font-size:16px;">سجل الحضور اليومي</div>
-                    <div style="font-size:10px; color:#94a3b8; font-weight:bold;">مصنف حسب المواد - الأحدث أولاً</div>
+                    <div class="modal-title" style="margin:0; font-size:16px;">سجل الحضور</div>
+                    <div id="reportDateDisplay" style="font-size:11px; color:#94a3b8; font-weight:bold;">--</div>
                 </div>
-                <button onclick="clearAllReport()" class="btn-clear-stylish">
-                    <i class="fa-solid fa-trash-can"></i> مسح السجل
+                <button onclick="clearAllReport()" class="btn-icon-danger">
+                    <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
 
-            <div id="reportContent" class="report-modal-body" style="flex: 1; background: #f8fafc;"></div>
+            <div class="report-views-container">
+                
+                <div id="viewSubjects" class="report-view slide-in">
+                    <div id="subjectsContainer"></div>
+                </div>
+
+                <div id="viewStudents" class="report-view">
+                    <div class="students-list-header">
+                        <button onclick="showSubjectsView()" class="btn-back-report">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <span id="currentSubjectTitle" style="font-weight:800; font-size:14px; color:var(--primary-dark)">اسم المادة</span>
+                    </div>
+                    <div id="studentsContainer"></div>
+                </div>
+
+            </div>
 
             <div class="report-modal-footer">
-                <div class="report-footer-actions">
-                    <button onclick="openReportModal()" class="btn-refresh-list">
-                        تحديث القائمة <i class="fa-solid fa-rotate"></i>
-                    </button>
-                    <button onclick="closeReportModal()" class="btn-close-stylish">
-                        إغلاق السجل
-                    </button>
-                </div>
+                <button onclick="openReportModal()" class="btn-refresh-list">
+                    تحديث <i class="fa-solid fa-rotate"></i>
+                </button>
+                <button onclick="closeReportModal()" class="btn-close-stylish" style="margin-top:10px;">
+                    إغلاق
+                </button>
             </div>
 
         </div>
     </div>
+
     <div id="examModal" class="modal-overlay">
         <div class="modal-box">
             <div class="exam-loader"></div>
@@ -612,11 +658,7 @@
 
     <script>
         const CONFIG = {
-            // =========================================================
-            // هام: ضع رابط Apps Script الخاص بشيت "سجل الحضور" هنا
-            // =========================================================
-            sheetApiUrl: "https://script.google.com/macros/s/AKfycbxYgB4FcWzVbtiM9TRsO6wQI6VyaMcBuWy2hYpv6vQL-pW4JCN7JKIDrYExLiGwbIbY/exec",
-            
+            sheetApiUrl: "https://script.google.com/macros/s/AKfycbzQFeKU-3bBjZ8vZ1ST03CaZkKoorDv9oA29Tm6mCx2Arr_1zXLDSFrTC4-Sv6gWJkm/exec",
             adminPassword: "RYADA", 
             gps: { targetLat: 30.38583, targetLong: 30.48888, allowedDistanceKm: 1.5 }
         };
@@ -624,6 +666,9 @@
         const LOCAL_STORAGE_DB_KEY = "offline_students_db_v2";
         let studentsDB = {};
         let wakeLock = null;
+
+        // متغير لتخزين البيانات مؤقتاً للتنقل
+        let cachedReportData = [];
 
         const savedDB = localStorage.getItem(LOCAL_STORAGE_DB_KEY);
         if (savedDB) {
@@ -715,8 +760,6 @@
             
             document.getElementById('scanNameDisplay').innerText = '--';
             document.getElementById('scanIDDisplay').innerText = '--';
-            
-            console.log("🧹 Application State Deeply Reset");
         }
 
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(e => userIP = "Hidden IP");
@@ -987,134 +1030,138 @@
         function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); }
         function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); }; switchScreen('screenError'); }
 
-        // === UPDATED REPORT & DELETE LOGIC ===
+        // === UPDATED REPORT LOGIC ===
+
         async function openReportModal() { 
             playClick(); 
             document.getElementById('reportModal').style.display = 'flex'; 
-            
+            showSubjectsView(); 
+
             const d = new Date().toLocaleDateString('en-GB'); 
-            const contentDiv = document.getElementById('reportContent');
+            document.getElementById('reportDateDisplay').innerText = d;
             
-            contentDiv.innerHTML = `
+            const container = document.getElementById('subjectsContainer');
+            container.innerHTML = `
                 <div style="text-align:center; padding:50px 20px;">
                     <i class="fa-solid fa-circle-notch fa-spin" style="font-size:30px; color:var(--primary); margin-bottom:15px;"></i>
-                    <div style="font-weight:bold; color:#64748b;">جاري تحديث البيانات...</div>
+                    <div style="font-weight:bold; color:#64748b;">جاري جلب المواد...</div>
                 </div>`;
             
             try {
                 const response = await fetch(`${CONFIG.sheetApiUrl}?action=getReport&date=${encodeURIComponent(d)}`);
-                let data = await response.json();
+                const data = await response.json();
                 
                 if (!data || data.length === 0) { 
-                    contentDiv.innerHTML = `
+                    container.innerHTML = `
                         <div class="empty-state" style="margin-top:50px;">
-                            <i class="fa-solid fa-clipboard-list" style="font-size:40px; margin-bottom:15px; opacity:0.3;"></i><br>
-                            لا يوجد حضور مسجل اليوم حتى الآن.
+                            <i class="fa-solid fa-folder-open" style="font-size:40px; margin-bottom:15px; opacity:0.3;"></i><br>
+                            لا توجد سجلات اليوم.
                         </div>`; 
                     return; 
                 }
 
-                data.reverse(); // Newest first
-
-                const groupedData = {};
-                data.forEach(student => {
-                    const subject = student.subject || "مادة غير محددة";
-                    if (!groupedData[subject]) { groupedData[subject] = []; }
-                    groupedData[subject].push(student);
-                });
-
-                let finalHtml = '';
-                
-                for (const [subject, students] of Object.entries(groupedData)) {
-                    finalHtml += `
-                        <div class="subject-section">
-                            <div class="subject-group-title">
-                                <span><i class="fa-solid fa-book-bookmark"></i> ${subject}</span>
-                                <span class="count-badge">${students.length} طالب</span>
-                            </div>
-                    `;
-
-                    students.forEach(item => {
-                        finalHtml += `
-                            <div class="student-report-card">
-                                <div class="st-data-col">
-                                    <div class="st-name">${item.name}</div>
-                                    <div class="st-meta-row">
-                                        <div class="st-tag">
-                                            <i class="fa-solid fa-fingerprint" style="color:var(--primary)"></i> 
-                                            <span style="font-family:'Outfit';">${item.uniID}</span>
-                                        </div>
-                                        <div class="st-tag">
-                                            <i class="fa-regular fa-clock" style="color:#f59e0b"></i> 
-                                            <span style="font-family:'Outfit';">${item.timestamp.split(' ')[1] || item.timestamp}</span>
-                                        </div>
-                                    </div>
-                                    <div class="st-meta-row" style="margin-top:2px;">
-                                        <div class="st-tag" style="background:#f0f9ff; border-color:#bae6fd;">
-                                            <i class="fa-solid fa-key" style="font-size:9px; color:#0ea5e9;"></i> 
-                                            <span>كود الجلسة: <span style="font-family:'Outfit'; font-weight:700;">${item.code.split('(')[0].trim()}</span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn-delete-item" onclick="deleteEntry('${item.uniID}', this)">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        `;
-                    });
-
-                    finalHtml += `</div>`;
-                }
-
-                contentDiv.innerHTML = finalHtml;
+                data.reverse(); 
+                cachedReportData = data; 
+                renderSubjectsList(data);
                 
             } catch (e) { 
-                console.error(e);
-                contentDiv.innerHTML = '<div style="color:#ef4444; text-align:center; padding:30px;">حدث خطأ في الاتصال بالسيرفر.<br>تأكد من الانترنت.</div>'; 
+                container.innerHTML = '<div style="color:#ef4444; text-align:center; padding:30px;">خطأ في الاتصال.</div>'; 
             }
         }
 
+        function renderSubjectsList(data) {
+            const grouped = {};
+            data.forEach(item => {
+                const subj = item.subject || "غير محدد";
+                if (!grouped[subj]) grouped[subj] = [];
+                grouped[subj].push(item);
+            });
+
+            let html = '';
+            for (const [subject, students] of Object.entries(grouped)) {
+                html += `
+                    <div class="subject-big-card" onclick="openSubjectDetails('${subject}')">
+                        <div class="sub-card-info">
+                            <h3>${subject}</h3>
+                            <span><i class="fa-solid fa-users"></i> عدد الحضور: ${students.length}</span>
+                        </div>
+                        <div class="sub-arrow">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('subjectsContainer').innerHTML = html;
+        }
+
+        function openSubjectDetails(subjectName) {
+            playClick();
+            
+            const students = cachedReportData.filter(s => s.subject === subjectName);
+            
+            document.getElementById('currentSubjectTitle').innerText = subjectName;
+            const container = document.getElementById('studentsContainer');
+            
+            let html = '';
+            students.forEach(item => {
+                html += `
+                    <div class="student-detailed-card">
+                        <div class="st-data-col">
+                            <div class="st-name">${item.name}</div>
+                            <div style="font-size:11px; color:#64748b;">${item.uniID}</div>
+                            
+                            <div class="std-time-badge">
+                                <i class="fa-regular fa-clock"></i> ${item.time} (${item.day})
+                            </div>
+                        </div>
+                        <button class="btn-delete-item" onclick="deleteEntry('${item.uniID}', this)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+
+            document.getElementById('viewSubjects').style.transform = 'translateX(100%)';
+            document.getElementById('viewStudents').style.transform = 'translateX(0)';
+        }
+
+        function showSubjectsView() {
+            playClick();
+            document.getElementById('viewSubjects').style.transform = 'translateX(0)';
+            document.getElementById('viewStudents').style.transform = 'translateX(-100%)';
+        }
+
         async function deleteEntry(id, btn) {
-            if(!confirm("⚠️ تأكيد الحذف:\nسيتم مسح الطالب نهائياً من سجل جوجل شيت ومن النظام.\nهل أنت متأكد؟")) return;
-            
-            const card = btn.closest('.student-report-card');
-            const originalIcon = btn.innerHTML;
-            
-            card.style.opacity = '0.6';
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
-            btn.style.pointerEvents = 'none';
+            if(!confirm("حذف الطالب؟")) return;
+            const card = btn.closest('.student-detailed-card');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             
             try {
                 await fetch(CONFIG.sheetApiUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
+                    method: 'POST', mode: 'no-cors',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body: `action=delete&id=${id}`
                 });
                 
-                card.style.transition = '0.3s';
-                card.style.transform = 'translateX(50px)';
-                card.style.opacity = '0';
+                cachedReportData = cachedReportData.filter(s => s.uniID != id);
                 
-                setTimeout(() => {
-                    card.remove();
-                    playSuccess();
+                card.style.opacity = '0';
+                setTimeout(() => { 
+                    card.remove(); 
+                    if(document.querySelectorAll('.student-detailed-card').length === 0) showSubjectsView();
                 }, 300);
                 
-            } catch(e) {
-                alert("فشل الحذف، تأكد من الاتصال.");
-                card.style.opacity = '1';
-                btn.innerHTML = originalIcon;
-                btn.style.pointerEvents = 'auto';
-            }
+            } catch(e) { alert("فشل الحذف"); }
         }
 
         async function clearAllReport() {
             if(!confirm("تحذير: هل تريد حذف جميع سجلات اليوم؟ لا يمكن التراجع.")) return;
-            document.getElementById('reportContent').innerHTML = '<div style="padding:20px; text-align:center;">جاري الحذف...</div>';
+            document.getElementById('subjectsContainer').innerHTML = '<div style="padding:20px; text-align:center;">جاري الحذف...</div>';
             try {
                 await fetch(`${CONFIG.sheetApiUrl}?action=clearAll`, { method: 'POST', mode: 'no-cors' });
-                document.getElementById('reportContent').innerHTML = '<div class="empty-state">تم تنظيف السجل بنجاح.</div>';
+                document.getElementById('subjectsContainer').innerHTML = '<div class="empty-state">تم تنظيف السجل بنجاح.</div>';
                 playSuccess();
             } catch(e) { alert("خطأ في الاتصال"); openReportModal(); }
         }
@@ -1126,7 +1173,3 @@
     </script>
 </body>
 </html>
-
-
-
-
