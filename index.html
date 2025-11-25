@@ -21,7 +21,6 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
-        /* تم الحفاظ على التصميم الأصلي مع بعض التحسينات البسيطة */
         #desktop-blocker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; color: #ef4444; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Cairo'; }
         :root { --primary: #0ea5e9; --primary-dark: #0284c7; --text-main: #1e293b; --text-sub: #64748b; --glass-bg: rgba(255, 255, 255, 0.95); --danger: #ef4444; --success: #10b981; --warning: #f59e0b; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -65,22 +64,30 @@
         .particle:nth-child(4) { width: 40px; height: 40px; left: 70%; animation-duration: 20s; animation-delay: 1s; }
         .particle:nth-child(5) { width: 25px; height: 25px; left: 90%; animation-duration: 15s; animation-delay: 3s; }
         @keyframes floatUp { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translateY(-600px) translateX(20px) rotate(360deg); opacity: 0; } }
-        .custom-select-wrapper { position: relative; user-select: none; width: 100%; z-index: 10; -webkit-tap-highlight-color: transparent; }
-        .custom-select-trigger { position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 16px 20px; font-size: 15px; font-weight: 700; color: #334155; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; }
-        .custom-select-trigger:active { transform: scale(0.98); background: #f1f5f9; }
-        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); background: #fff; }
-        .arrow-icon { transition: transform 0.3s; font-size: 14px; color: #94a3b8; }
+        
+        /* --- MODERN DROPDOWN CSS --- */
+        .custom-select-wrapper { position: relative; user-select: none; width: 100%; margin-bottom: 20px; -webkit-tap-highlight-color: transparent; }
+        .custom-select-label { display: block; text-align: right; margin-bottom: 8px; font-size: 13px; color: #475569; font-weight: 800; margin-right: 5px; }
+        .custom-select-trigger { position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px 20px; font-size: 15px; font-weight: 700; color: #334155; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); }
+        .custom-select-trigger:active { transform: scale(0.98); }
+        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.15); background: #f0f9ff; }
+        .trigger-content { display: flex; align-items: center; gap: 12px; }
+        .trigger-icon { width: 32px; height: 32px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 14px; transition: 0.3s; }
+        .custom-select-wrapper.open .trigger-icon { background: var(--primary); color: white; }
+        .arrow-icon { font-size: 12px; color: #94a3b8; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
         .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
-        .custom-select-wrapper.open .custom-options::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: -1; animation: fadeIn 0.3s forwards; }
-        .custom-options { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-radius: 25px 25px 0 0; padding: 20px 20px 40px 20px; z-index: 99999; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); transform: translateY(120%); transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1); visibility: visible; display: block !important; max-height: 60vh; overflow-y: auto; }
+        .custom-options-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 99990; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .custom-select-wrapper.open .custom-options-overlay { opacity: 1; visibility: visible; }
+        .custom-options { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-radius: 30px 30px 0 0; padding: 25px 20px 40px 20px; z-index: 99999; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(110%); transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1); max-height: 70vh; overflow-y: auto; }
         .custom-select-wrapper.open .custom-options { transform: translateY(0); }
-        .custom-options::after { content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 50px; height: 5px; background: #e2e8f0; border-radius: 10px; }
-        .custom-option { padding: 18px 20px; font-size: 16px; font-weight: 700; color: #334155; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .custom-option:last-child { border-bottom: none; }
-        .custom-option:hover, .custom-option:active { background: #f0f9ff; color: var(--primary-dark); }
-        .custom-option.selected { color: var(--primary); background: #f0f9ff; border-radius: 12px; border-bottom: none; }
-        .custom-option.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
-        .custom-select-wrapper.disabled { opacity: 0.6; pointer-events: none; filter: grayscale(100%); }
+        .sheet-handle { width: 40px; height: 5px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 20px auto; }
+        .options-title { text-align: center; font-weight: 800; color: #1e293b; margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
+        .custom-option { padding: 16px 20px; margin-bottom: 10px; font-size: 15px; font-weight: 700; color: #475569; border-radius: 16px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; background: #f8fafc; }
+        .custom-option:hover { background: #f1f5f9; }
+        .custom-option.selected { background: #ecfdf5; color: #059669; border-color: #d1fae5; }
+        .custom-option.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; background: #10b981; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .custom-select-wrapper.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(100%); }
+
         .ticket-container { background: white; border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #f1f5f9; }
         .ticket-container::before, .ticket-container::after { content: ''; position: absolute; top: 110px; width: 24px; height: 24px; background: #0f172a; border-radius: 50%; z-index: 20; }
         .ticket-container::before { left: -12px; } .ticket-container::after { right: -12px; }
@@ -353,13 +360,24 @@
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">الفرقة الدراسية:</label>
-                        <div class="custom-select-wrapper" id="yearSelectWrapper">
-                            <div class="custom-select-trigger"><span>-- اختر الفرقة --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="first_year">الفرقة الأولى</div>
-                                <div class="custom-option" data-value="second_year">الفرقة الثانية</div>
+                    <div class="custom-select-wrapper" id="yearSelectWrapper">
+                        <label class="custom-select-label">الفرقة الدراسية</label>
+                        <div class="custom-select-trigger">
+                            <div class="trigger-content">
+                                <div class="trigger-icon"><i class="fa-solid fa-layer-group"></i></div>
+                                <span class="trigger-text">-- اختر الفرقة --</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="custom-options-overlay" onclick="closeSelect(this)"></div>
+                        <div class="custom-options">
+                            <div class="sheet-handle"></div>
+                            <div class="options-title">اختر الفرقة الدراسية</div>
+                            <div class="custom-option" data-value="first_year">
+                                <span>الفرقة الأولى</span>
+                            </div>
+                            <div class="custom-option" data-value="second_year">
+                                <span>الفرقة الثانية</span>
                             </div>
                         </div>
                         <select id="yearSelect" style="display:none;">
@@ -369,18 +387,25 @@
                         </select>
                     </div>
 
-                    <div class="input-group">
-                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">المادة الدراسية:</label>
-                        <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
-                            <div class="custom-select-trigger"><span>-- اختر الفرقة أولاً --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
-                            <div class="custom-options" id="subjectOptionsContainer">
+                    <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
+                        <label class="custom-select-label">المادة الدراسية</label>
+                        <div class="custom-select-trigger">
+                            <div class="trigger-content">
+                                <div class="trigger-icon"><i class="fa-solid fa-book-open"></i></div>
+                                <span class="trigger-text">-- اختر الفرقة أولاً --</span>
                             </div>
+                            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="custom-options-overlay" onclick="closeSelect(this)"></div>
+                        <div class="custom-options">
+                            <div class="sheet-handle"></div>
+                            <div class="options-title">اختر المادة الدراسية</div>
+                            <div id="subjectOptionsContainer"></div>
                         </div>
                         <select id="subjectSelect" style="display:none;" onchange="checkSubjectSelection()">
                             <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
                         </select>
                     </div>
-
                     <div id="qr-reader">
                         <div class="scanner-laser"></div>
                     </div>
@@ -461,44 +486,22 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        // الإعدادات الرئيسية (سهلة التعديل)
-        // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         const CONFIG = {
             sheetApiUrl: "https://script.google.com/macros/s/AKfycbyLYX8GLe1KB_a87Wq5h4wMWRvCMSeOcnTr6DKtDqv7Wiqu2bQU92KsZq6SEK6RMyCN/exec",
-            adminPassword: "RYADA", // قم بتغيير كلمة المرور هنا
-            gps: {
-                targetLat: 30.38583,
-                targetLong: 30.48888,
-                allowedDistanceKm: 1.5 // زيادة المسافة قليلاً لتحسين التجربة
-            }
+            adminPassword: "RYADA", 
+            gps: { targetLat: 30.38583, targetLong: 30.48888, allowedDistanceKm: 1.5 }
         };
-        // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         
         const LOCAL_STORAGE_DB_KEY = "offline_students_db_v2";
         let studentsDB = {};
-        let wakeLock = null; // متغير لمنع انطفاء الشاشة
+        let wakeLock = null;
 
-        // التحميل من الذاكرة المحلية
         const savedDB = localStorage.getItem(LOCAL_STORAGE_DB_KEY);
         if (savedDB) {
-            try {
-                studentsDB = JSON.parse(savedDB);
-                console.log("⚡ تم تحميل الأسماء محلياً:", Object.keys(studentsDB).length);
-            } catch(e) { console.error("Error parsing DB", e); }
+            try { studentsDB = JSON.parse(savedDB); console.log("⚡ تم تحميل الأسماء محلياً:", Object.keys(studentsDB).length); } catch(e) { console.error("Error parsing DB", e); }
         }
 
-        // تحديث قاعدة البيانات في الخلفية
-        fetch(CONFIG.sheetApiUrl)
-            .then(r => r.json())
-            .then(d => { 
-                if(!d.error) {
-                    studentsDB = d; 
-                    localStorage.setItem(LOCAL_STORAGE_DB_KEY, JSON.stringify(d));
-                    console.log("✅ تم تحديث قاعدة البيانات:", Object.keys(d).length);
-                }
-            })
-            .catch(e => console.log("DB Update Error", e));
+        fetch(CONFIG.sheetApiUrl).then(r => r.json()).then(d => { if(!d.error) { studentsDB = d; localStorage.setItem(LOCAL_STORAGE_DB_KEY, JSON.stringify(d)); console.log("✅ تم تحديث قاعدة البيانات:", Object.keys(d).length); } }).catch(e => console.log("DB Update Error", e));
 
         const subjectsData = {
             "first_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "اناتومى نظرى", "اناتومى عملى", "تقييم صحى نظرى", "تقييم صحى عملى", "مصطلحات طبية", "فسيولوجى", "تكنولوجيا المعلومات"],
@@ -507,13 +510,12 @@
 
         const storageKey = "nursing_final_secure_v47"; 
         const DOCTOR_MODE_KEY = "is_doctor_bypass_enabled"; 
-        const DATA_ENTRY_TIMEOUT_SEC = 20; // زيادة الوقت قليلاً
+        const DATA_ENTRY_TIMEOUT_SEC = 20; 
         const TIMEOUT_BLOCK_KEY = "timeout_blocked_forever_v47_" + new Date().toLocaleDateString('en-GB'); 
         const SESSION_END_TIME_KEY = "data_entry_deadline_v2";
         const TEMP_NAME_KEY = "temp_student_name";
         const TEMP_ID_KEY = "temp_student_id";
         const TEMP_CODE_KEY = "temp_session_code";
-        
         const MAX_ATTEMPTS = 3;
         const ATTEMPTS_KEY = "daily_attempts_v47_" + new Date().toLocaleDateString('en-GB');
 
@@ -528,28 +530,12 @@
         
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(e => userIP = "Hidden IP");
 
-        // دوال مساعدة
         function playClick() { document.getElementById('clickSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate(10); }
         function playSuccess() { document.getElementById('successSound').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([50, 50, 50]); }
         function playBeep() { document.getElementById('beepSound').play().catch(e=>{}); }
-        
-        // تحويل الأرقام العربية إلى إنجليزية
-        function convertArabicToEnglish(s) {
-            return s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
-        }
-
-        // منع انطفاء الشاشة
-        async function requestWakeLock() {
-            try {
-                wakeLock = await navigator.wakeLock.request('screen');
-            } catch (err) {
-                console.log(`${err.name}, ${err.message}`);
-            }
-        }
-        function releaseWakeLock() {
-            if (wakeLock !== null) { wakeLock.release().then(() => { wakeLock = null; }); }
-        }
-
+        function convertArabicToEnglish(s) { return s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)); }
+        async function requestWakeLock() { try { wakeLock = await navigator.wakeLock.request('screen'); } catch (err) { console.log(`${err.name}, ${err.message}`); } }
+        function releaseWakeLock() { if (wakeLock !== null) { wakeLock.release().then(() => { wakeLock = null; }); } }
         function getAttemptsLeft() { let used = parseInt(localStorage.getItem(ATTEMPTS_KEY) || "0"); return Math.max(0, MAX_ATTEMPTS - used); }
         function decrementAttempts() { let used = parseInt(localStorage.getItem(ATTEMPTS_KEY) || "0"); used++; localStorage.setItem(ATTEMPTS_KEY, used.toString()); updateUIForAttempts(); return MAX_ATTEMPTS - used; }
         function updateUIForAttempts() { const left = getAttemptsLeft(); document.getElementById('attemptsCountValEntry').innerText = left; }
@@ -618,51 +604,27 @@
             const attemptsBadge = document.getElementById('attemptsDisplayEntry');
             
             if (isAdmin) { 
-                badge.style.display = 'block'; 
-                loginBtn.style.display = 'none'; 
-                logoutBtn.style.display = 'block'; 
-                reportBtn.style.display = 'block'; 
-                reportBtn.disabled = false;
-                reportBtn.className = 'btn-secondary';
-                reportBtn.style.background = '#ecfdf5';
-                reportBtn.style.color = '#15803d';
-                reportBtn.style.borderColor = '#d1fae5';
-                reportBtn.innerHTML = '<i class="fa-solid fa-list-check"></i> سجل حضور اليوم';
+                badge.style.display = 'block'; loginBtn.style.display = 'none'; logoutBtn.style.display = 'block'; reportBtn.style.display = 'block'; 
+                reportBtn.disabled = false; reportBtn.className = 'btn-secondary'; reportBtn.style.background = '#ecfdf5'; reportBtn.style.color = '#15803d'; reportBtn.style.borderColor = '#d1fae5'; reportBtn.innerHTML = '<i class="fa-solid fa-list-check"></i> سجل حضور اليوم';
                 if(attemptsBadge) attemptsBadge.style.display = 'none'; 
             } else { 
-                badge.style.display = 'none'; 
-                loginBtn.style.display = 'block'; 
-                logoutBtn.style.display = 'none'; 
-                reportBtn.style.display = 'block';
-                reportBtn.disabled = true;
-                reportBtn.className = 'btn-secondary';
-                reportBtn.style.background = '#ffffff';
-                reportBtn.style.color = '#94a3b8';
-                reportBtn.style.borderColor = '#e2e8f0';
-                reportBtn.innerHTML = '<i class="fa-solid fa-lock"></i> سجل حضور اليوم (مقفل)';
-                adminFloating.style.display = 'none'; 
-                if(attemptsBadge) attemptsBadge.style.display = 'inline-flex'; 
+                badge.style.display = 'none'; loginBtn.style.display = 'block'; logoutBtn.style.display = 'none'; reportBtn.style.display = 'block';
+                reportBtn.disabled = true; reportBtn.className = 'btn-secondary'; reportBtn.style.background = '#ffffff'; reportBtn.style.color = '#94a3b8'; reportBtn.style.borderColor = '#e2e8f0'; reportBtn.innerHTML = '<i class="fa-solid fa-lock"></i> سجل حضور اليوم (مقفل)';
+                adminFloating.style.display = 'none'; if(attemptsBadge) attemptsBadge.style.display = 'inline-flex'; 
             }
             updateUIForAttempts();
         }
 
         async function startProcess(skip = false) {
             playClick();
-            if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
-                if (getAttemptsLeft() <= 0) { 
-                    showError("⛔ لقد استنفذت جميع محاولاتك اليوم (3 محاولات).<br>تم حظرك.", true); 
-                    return; 
-                } 
-            }
+            if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { if (getAttemptsLeft() <= 0) { showError("⛔ لقد استنفذت جميع محاولاتك اليوم (3 محاولات).<br>تم حظرك.", true); return; } }
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true') { generateCodeAndShowDataEntry(); return; }
             const isOnline = await checkRealConnection(); if (!isOnline) { showConnectionLostModal(); return; }
             if (localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') { showError("⏳ لقد انتهت المهلة المحددة سابقاً.<br>لا يمكنك التسجيل.", true); return; }
             if (localStorage.getItem(storageKey) === new Date().toLocaleDateString('en-GB')) { showError("⛔ تم تسجيل الحضور اليوم مسبقاً.", true); return; }
             
             switchScreen('screenLoading');
-            if (navigator.geolocation) { 
-                navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 5000 }); 
-            } else { showError("الجهاز لا يدعم GPS.", false); }
+            if (navigator.geolocation) { navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 5000 }); } else { showError("الجهاز لا يدعم GPS.", false); }
         }
 
         function checkPosition(position) {
@@ -683,7 +645,6 @@
             if (savedDeadline) sessionEndTime = parseInt(savedDeadline); else { sessionEndTime = Date.now() + (DATA_ENTRY_TIMEOUT_SEC * 1000); sessionStorage.setItem(SESSION_END_TIME_KEY, sessionEndTime.toString()); }
             const circle = document.getElementById('timerProgress'); const text = document.getElementById('timerNumber'); const circumference = 2 * Math.PI * 35; 
             if(countdownInterval) clearInterval(countdownInterval);
-            
             countdownInterval = setInterval(() => {
                 const now = Date.now(); const remainingMs = sessionEndTime - now; const secondsLeft = Math.max(0, Math.ceil(remainingMs / 1000));
                 const percent = Math.max(0, remainingMs / (DATA_ENTRY_TIMEOUT_SEC * 1000)); const offset = circumference - (percent * circumference);
@@ -699,10 +660,8 @@
 
         async function handleIdSubmit() {
             playClick(); 
-            // تحويل الأرقام العربية إلى إنجليزية قبل المعالجة
             let rawId = document.getElementById('uniID').value.trim();
             const uniIdVal = convertArabicToEnglish(rawId);
-            
             const alertBox = document.getElementById('dataEntryAlert');
             if (!uniIdVal) { alertBox.innerText = "⚠️ يرجى إدخال الكود الجامعي."; alertBox.style.display = 'block'; return; }
             if(Object.keys(studentsDB).length === 0) { alertBox.innerText = "⚠️ جاري تحميل البيانات.."; alertBox.style.display = 'block'; return; }
@@ -718,23 +677,15 @@
         async function submitToGoogle() {
             playClick(); 
             const btn = document.getElementById('submitBtn'); 
-            
-            // منع التكرار
             if(btn.disabled && btn.innerText.includes('جاري')) return;
-            
             const originalText = "تأكيد الحضور <i class='fa-solid fa-paper-plane'></i>";
             const selectedSubject = document.getElementById('subjectSelect').value; const sessionPassVal = document.getElementById('sessionPass').value;
             if(!attendanceData.uniID || !sessionPassVal || !selectedSubject) { alert("بيانات ناقصة"); return; }
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true' && localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') { showError("محظور"); return; }
-            
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الفحص...'; btn.disabled = true;
-            
             const isOnline = await checkRealConnection(); if (!isOnline) { btn.innerHTML = originalText; btn.disabled = false; showConnectionLostModal(); return; }
-            
             const now = new Date(); document.getElementById('receiptName').innerText = attendanceData.name; document.getElementById('receiptID').innerText = attendanceData.uniID; document.getElementById('receiptSubject').innerText = selectedSubject; document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB'); document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
-            
             const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`; const formParams = new URLSearchParams(); formParams.append("id", attendanceData.uniID); formParams.append("name", attendanceData.name); formParams.append("code", finalCodeValue); formParams.append("ip", userIP); formParams.append("subject", selectedSubject); 
-            
             currentAbortController = new AbortController(); const timeoutId = setTimeout(() => currentAbortController.abort(), 12000); 
             try {
                 await fetch(CONFIG.sheetApiUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formParams.toString(), signal: currentAbortController.signal });
@@ -750,91 +701,55 @@
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
         async function goBackToWelcome() { playClick(); if (geo_watch_id) navigator.geolocation.clearWatch(geo_watch_id); if(countdownInterval) clearInterval(countdownInterval); await stopCameraSafely(); sessionStorage.removeItem(SESSION_END_TIME_KEY); sessionStorage.removeItem(TEMP_NAME_KEY); sessionStorage.removeItem(TEMP_ID_KEY); sessionStorage.removeItem(TEMP_CODE_KEY); processIsActive = false; releaseWakeLock(); document.getElementById('uniID').value = ''; document.getElementById('startScanCard').style.display = 'flex'; hideConnectionLostModal(); switchScreen('screenWelcome'); }
         
+        // --- MODERN DROPDOWN LOGIC ---
+        function closeSelect(overlay) { const wrapper = overlay.parentElement; wrapper.classList.remove('open'); }
         function setupCustomSelects() {
             const yearWrapper = document.getElementById('yearSelectWrapper');
             const subjectWrapper = document.getElementById('subjectSelectWrapper');
             const allWrappers = [yearWrapper, subjectWrapper];
-
             function toggleSelect(wrapper, event) {
                 event.stopPropagation();
                 if (!wrapper.classList.contains('open')) {
                     allWrappers.forEach(w => w.classList.remove('open'));
-                    if (!wrapper.classList.contains('disabled')) {
-                        wrapper.classList.add('open');
-                        playClick();
-                    }
-                } else {
-                    wrapper.classList.remove('open');
-                }
+                    if (!wrapper.classList.contains('disabled')) { wrapper.classList.add('open'); playClick(); }
+                } else { wrapper.classList.remove('open'); }
             }
-
             yearWrapper.querySelector('.custom-select-trigger').addEventListener('click', (e) => toggleSelect(yearWrapper, e));
             subjectWrapper.querySelector('.custom-select-trigger').addEventListener('click', (e) => toggleSelect(subjectWrapper, e));
-
             yearWrapper.querySelectorAll('.custom-option').forEach(op => {
                 op.addEventListener('click', function(e) {
                     e.stopPropagation();
                     yearWrapper.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
                     this.classList.add('selected');
-                    yearWrapper.querySelector('.custom-select-trigger span').textContent = this.textContent;
+                    yearWrapper.querySelector('.trigger-text').textContent = this.querySelector('span').textContent;
                     yearWrapper.classList.remove('open');
                     document.getElementById('yearSelect').value = this.getAttribute('data-value');
                     playClick();
                     updateSubjects();
                 });
             });
-
-            window.addEventListener('click', (e) => {
-                allWrappers.forEach(wrapper => {
-                    if (wrapper.classList.contains('open')) {
-                        wrapper.classList.remove('open');
-                    }
-                });
-            });
         }
-
         function updateSubjects() { 
             const y = document.getElementById("yearSelect").value; 
             const sWrapper = document.getElementById('subjectSelectWrapper'); 
             const sOptions = document.getElementById('subjectOptionsContainer'); 
-            const sTrigger = sWrapper.querySelector('.custom-select-trigger span'); 
+            const sTriggerText = sWrapper.querySelector('.trigger-text'); 
             const sReal = document.getElementById("subjectSelect"); 
-            
             sReal.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>'; 
-            sOptions.innerHTML = ''; 
-            sTrigger.textContent = '-- اختر المادة --'; 
-            
+            sOptions.innerHTML = ''; sTriggerText.textContent = '-- اختر المادة --'; 
             if (y && subjectsData[y]) { 
-                sReal.disabled = false; 
-                sWrapper.classList.remove('disabled'); 
+                sReal.disabled = false; sWrapper.classList.remove('disabled'); 
                 subjectsData[y].forEach(sub => { 
-                    const opt = document.createElement("option"); 
-                    opt.value = sub; 
-                    opt.text = sub; 
-                    sReal.appendChild(opt); 
-                    
-                    const cOpt = document.createElement('div'); 
-                    cOpt.className = 'custom-option'; 
-                    cOpt.textContent = sub; 
-                    cOpt.setAttribute('data-value', sub); 
-                    
+                    const opt = document.createElement("option"); opt.value = sub; opt.text = sub; sReal.appendChild(opt); 
+                    const cOpt = document.createElement('div'); cOpt.className = 'custom-option'; cOpt.innerHTML = `<span>${sub}</span>`; cOpt.setAttribute('data-value', sub); 
                     cOpt.addEventListener('click', function(e) { 
-                        e.stopPropagation();
-                        sOptions.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
-                        this.classList.add('selected');
-                        sTrigger.textContent = this.textContent; 
-                        sWrapper.classList.remove('open'); 
-                        sReal.value = this.getAttribute('data-value'); 
-                        playClick();
-                        checkSubjectSelection(); 
-                    }); 
-                    sOptions.appendChild(cOpt); 
+                        e.stopPropagation(); sOptions.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+                        this.classList.add('selected'); sTriggerText.textContent = this.querySelector('span').textContent; 
+                        sWrapper.classList.remove('open'); sReal.value = this.getAttribute('data-value'); 
+                        playClick(); checkSubjectSelection(); 
+                    }); sOptions.appendChild(cOpt); 
                 }); 
-            } else { 
-                sReal.disabled = true; 
-                sWrapper.classList.add('disabled'); 
-                sTrigger.textContent = '-- اختر الفرقة أولاً --'; 
-            } 
+            } else { sReal.disabled = true; sWrapper.classList.add('disabled'); sTriggerText.textContent = '-- اختر الفرقة أولاً --'; } 
             checkSubjectSelection(); 
         }
 
@@ -842,22 +757,7 @@
         async function stopCameraSafely() { if(html5QrCode && html5QrCode.isScanning) { try { await html5QrCode.stop(); } catch(e) {} } document.getElementById('qr-reader').style.display = 'none'; releaseWakeLock(); }
         function retryCamera() { document.getElementById('cameraErrorModal').style.display = 'none'; startQrScanner(); }
         async function startQrScanner() { playClick(); requestWakeLock(); await stopCameraSafely(); document.getElementById('startScanCard').style.display = 'none'; document.getElementById('qr-reader').style.display = 'block'; document.getElementById('qr-reader').innerHTML = '<div class="scanner-laser" style="display:block"></div>'; document.getElementById('submitBtn').disabled = true; document.getElementById('sessionPass').value = ''; html5QrCode = new Html5Qrcode("qr-reader"); try { await html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (t) => { playBeep(); html5QrCode.stop().then(() => { document.getElementById('qr-reader').style.display = 'none'; document.getElementById('scanSuccessMsg').style.display = 'flex'; document.getElementById('sessionPass').value = t; checkSubjectSelection(); if(navigator.vibrate) navigator.vibrate([100,50,100]); releaseWakeLock(); }); }); } catch (err) { await stopCameraSafely(); document.getElementById('startScanCard').style.display = 'none'; document.getElementById('retryCamBtn').style.display = 'flex'; document.getElementById('cameraErrorModal').style.display = 'flex'; } }
-        
-        function checkAdminPassword() { 
-            playClick(); 
-            if (document.getElementById('adminPassword').value === CONFIG.adminPassword) { 
-                sessionStorage.setItem(DOCTOR_MODE_KEY, 'true'); 
-                document.getElementById('toastMessage').style.display = 'block'; 
-                setTimeout(() => { document.getElementById('toastMessage').style.display = 'none'; }, 3000); 
-                updateUIForMode(); 
-                switchScreen('screenWelcome'); 
-            } else { 
-                document.getElementById('adminAlert').innerText = "❌ خطأ"; 
-                document.getElementById('adminAlert').style.display = 'block'; 
-                document.getElementById('adminPassword').value = ''; 
-            } 
-        }
-        
+        function checkAdminPassword() { playClick(); if (document.getElementById('adminPassword').value === CONFIG.adminPassword) { sessionStorage.setItem(DOCTOR_MODE_KEY, 'true'); document.getElementById('toastMessage').style.display = 'block'; setTimeout(() => { document.getElementById('toastMessage').style.display = 'none'; }, 3000); updateUIForMode(); switchScreen('screenWelcome'); } else { document.getElementById('adminAlert').innerText = "❌ خطأ"; document.getElementById('adminAlert').style.display = 'block'; document.getElementById('adminPassword').value = ''; } }
         function showError(msg, isPermanent = false) { if(countdownInterval) clearInterval(countdownInterval); document.getElementById('errorMsg').innerHTML = msg; const retryBtn = document.getElementById('retryBtn'); if(isPermanent) retryBtn.style.display = 'none'; else { retryBtn.style.display = 'inline-block'; retryBtn.onclick = function() { location.reload(); }; } switchScreen('screenError'); if(navigator.vibrate) navigator.vibrate(300); }
         function performLogout() { playClick(); sessionStorage.removeItem(DOCTOR_MODE_KEY); location.reload(); }
         function openLogoutModal() { playClick(); document.getElementById('customLogoutModal').style.display = 'flex'; }
@@ -869,28 +769,18 @@
         function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); }; switchScreen('screenError'); }
 
         async function openReportModal() { 
-            playClick(); 
-            document.getElementById('reportModal').style.display = 'flex'; 
-            const d = new Date().toLocaleDateString('en-GB'); 
-            document.getElementById('reportDateDisplay').innerText = `(${d})`; 
+            playClick(); document.getElementById('reportModal').style.display = 'flex'; 
+            const d = new Date().toLocaleDateString('en-GB'); document.getElementById('reportDateDisplay').innerText = `(${d})`; 
             const contentDiv = document.getElementById('reportContent');
             contentDiv.innerHTML = '<div style="padding:20px; text-align:center;"><i class="fa-solid fa-circle-notch fa-spin" style="color:var(--primary); font-size:24px;"></i><br>جاري جلب السجل من الخادم...</div>';
             try {
                 const response = await fetch(`${CONFIG.sheetApiUrl}?action=getReport&date=${encodeURIComponent(d)}`);
                 const remoteData = await response.json();
-                if (remoteData.length === 0) {
-                    contentDiv.innerHTML = '<div class="empty-state">لا يوجد سجلات حضور مسجلة اليوم على النظام.</div>';
-                } else {
+                if (remoteData.length === 0) { contentDiv.innerHTML = '<div class="empty-state">لا يوجد سجلات حضور مسجلة اليوم على النظام.</div>'; } else {
                     let h = ''; let g = remoteData.reduce((a, c) => { (a[c.subject] = a[c.subject] || []).push(c); return a }, {}); let i = 0; 
                     for (const [s, st] of Object.entries(g)) { 
-                        h += `<div class="report-group">
-                                <div class="report-header" onclick="toggleReportGroup('g_${i}',this)"><span>${s}</span><span class="report-count">${st.length}</span></div>
-                                <div id="g_${i}" class="report-list-container" style="display:none;">
-                                    ${st.map(x => `<div class="report-item"><div style="display:flex; flex-direction:column; align-items:flex-start;"><span class="st-name">${x.name}</span><span class="st-id english-num" style="font-size:10px; color:#94a3b8;">${x.uniID}</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="english-num" style="font-size:11px; color:#64748b; font-family:'Outfit'; direction:ltr;">${x.timestamp ? x.timestamp : '--:--'}</span></div></div>`).join('')}
-                                </div></div>`; 
-                        i++; 
-                    } 
-                    contentDiv.innerHTML = h;
+                        h += `<div class="report-group"><div class="report-header" onclick="toggleReportGroup('g_${i}',this)"><span>${s}</span><span class="report-count">${st.length}</span></div><div id="g_${i}" class="report-list-container" style="display:none;">${st.map(x => `<div class="report-item"><div style="display:flex; flex-direction:column; align-items:flex-start;"><span class="st-name">${x.name}</span><span class="st-id english-num" style="font-size:10px; color:#94a3b8;">${x.uniID}</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="english-num" style="font-size:11px; color:#64748b; font-family:'Outfit'; direction:ltr;">${x.timestamp ? x.timestamp : '--:--'}</span></div></div>`).join('')}</div></div>`; i++; 
+                    } contentDiv.innerHTML = h;
                 }
             } catch (e) { console.error(e); contentDiv.innerHTML = '<div class="alert-box" style="color:#ef4444;">فشل الاتصال بقاعدة البيانات.</div>'; }
         }
