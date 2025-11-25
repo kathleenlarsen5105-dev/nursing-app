@@ -265,8 +265,77 @@
         .admin-badge { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; padding: 5px 15px; border-radius: 20px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 10px rgba(239,68,68,0.3); z-index: 100; display: none; }
         .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
         .card-body-content { position: relative; min-height: 500px; z-index: 5; }
-        .academic-footer { margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(203, 213, 225, 0.6); display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 5; }
-        .uni-footer-label-large { font-size: 16px; color: var(--primary-dark); font-weight: 900; background: rgba(255, 255, 255, 0.9); padding: 12px 25px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 0 5px rgba(14, 165, 233, 0.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+        
+        /* === تعديلات الفوتر الساحر (طلب التعديل) === */
+        .academic-footer {
+            display: flex; justify-content: center; align-items: center;
+            margin-top: 30px; position: relative; z-index: 10;
+        }
+
+        .uni-footer-label-large {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e293b;
+            font-weight: 800;
+            font-size: 14px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            /* التدرج اللوني والحدود المضيئة */
+            border: 2px solid transparent;
+            background-image: linear-gradient(white, white), linear-gradient(45deg, #0ea5e9, #8b5cf6, #ec4899);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.3), 0 0 20px rgba(14, 165, 233, 0.2);
+            animation: magicFloat 3s ease-in-out infinite alternate;
+            display: flex; align-items: center; gap: 8px; margin-top: 5px;
+            white-space: nowrap;
+        }
+        
+        .uni-footer-label-large i {
+            color: transparent;
+            background: linear-gradient(45deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 16px;
+        }
+
+        /* === تنسيق نافذة الحذف المودرن (طلب التعديل) === */
+        .confirm-box-style {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-radius: 30px !important;
+            padding: 30px 20px !important;
+            box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.25) !important;
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .confirm-icon-animate {
+            width: 70px; height: 70px;
+            background: #fef2f2; color: #ef4444;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; margin: 0 auto 15px auto;
+            box-shadow: 0 0 0 8px #fff1f2;
+            animation: shake-icon 0.5s ease-in-out;
+        }
+
+        .btn-confirm-modern {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            color: white;
+            box-shadow: 0 8px 20px -5px rgba(239, 68, 68, 0.4);
+        }
+        .btn-cancel-modern { background: #f1f5f9; color: #64748b; }
+
+        @keyframes shake-icon {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+        @keyframes magicFloat {
+            0% { transform: translateY(0) scale(1); box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.3); }
+            100% { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 50px -10px rgba(139, 92, 246, 0.5); }
+        }
+
         .attempts-badge { background: #fff1f2; color: #be123c; font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 20px; border: 1px solid #fecdd3; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; }
         .admin-floating-back { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.9); color: #475569; border-radius: 50%; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; z-index: 1000; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .admin-floating-back:active { transform: scale(0.9); }
@@ -307,6 +376,20 @@
             <div class="modal-actions">
                 <button onclick="performLogout()" class="modal-btn btn-confirm">نعم</button>
                 <button onclick="closeLogoutModal()" class="modal-btn btn-cancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="modernConfirmModal" class="modal-overlay" style="z-index: 99999;">
+        <div class="modal-box confirm-box-style">
+            <div class="confirm-icon-animate">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <div class="modal-title" id="modernConfirmTitle">تأكيد الحذف</div>
+            <div class="modal-text" id="modernConfirmText">هل أنت متأكد من إتمام هذه العملية؟</div>
+            <div class="modal-actions">
+                <button id="btnConfirmYes" class="modal-btn btn-confirm-modern">نعم، احذف</button>
+                <button onclick="closeModernConfirm()" class="modal-btn btn-cancel-modern">تراجع</button>
             </div>
         </div>
     </div>
@@ -379,7 +462,7 @@
             <div class="modal-text">لا يوجد اتصال بالإنترنت.<br>جاري المحاولة...</div>
         </div>
     </div>
-     
+      
     <div id="toastMessage" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; z-index: 20000; animation: fadeIn 0.3s;">
         تم تفعيل وضع المسؤول بنجاح
     </div>
@@ -450,7 +533,7 @@
 
                         <div class="academic-footer">
                             <div class="uni-footer-label-large">
-                                <i class="fa-solid fa-building-columns" style="color:var(--primary)"></i> جامعة الريادة للعلوم والتكنولوجيا
+                                <i class="fa-solid fa-building-columns"></i> جامعة الريادة للعلوم والتكنولوجيا
                             </div>
                         </div>
 
@@ -666,8 +749,6 @@
         const LOCAL_STORAGE_DB_KEY = "offline_students_db_v2";
         let studentsDB = {};
         let wakeLock = null;
-
-        // متغير لتخزين البيانات مؤقتاً للتنقل
         let cachedReportData = [];
 
         const savedDB = localStorage.getItem(LOCAL_STORAGE_DB_KEY);
@@ -1030,8 +1111,6 @@
         function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); }
         function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); }; switchScreen('screenError'); }
 
-        // === UPDATED REPORT LOGIC ===
-
         async function openReportModal() { 
             playClick(); 
             document.getElementById('reportModal').style.display = 'flex'; 
@@ -1133,44 +1212,77 @@
             document.getElementById('viewStudents').style.transform = 'translateX(-100%)';
         }
 
-        async function deleteEntry(id, btn) {
-            if(!confirm("حذف الطالب؟")) return;
-            const card = btn.closest('.student-detailed-card');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        function closeReportModal() { playClick(); document.getElementById('reportModal').style.display = 'none'; }
+        
+        /* === MODAL & DELETE LOGIC (UPDATED) === */
+        let pendingAction = null;
+
+        function showModernConfirm(title, text, actionCallback) {
+            playClick(); 
+            document.getElementById('modernConfirmTitle').innerText = title;
+            document.getElementById('modernConfirmText').innerHTML = text;
             
-            try {
-                await fetch(CONFIG.sheetApiUrl, {
-                    method: 'POST', mode: 'no-cors',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: `action=delete&id=${id}`
-                });
-                
-                cachedReportData = cachedReportData.filter(s => s.uniID != id);
-                
-                card.style.opacity = '0';
-                setTimeout(() => { 
-                    card.remove(); 
-                    if(document.querySelectorAll('.student-detailed-card').length === 0) showSubjectsView();
-                }, 300);
-                
-            } catch(e) { alert("فشل الحذف"); }
+            const modal = document.getElementById('modernConfirmModal');
+            modal.style.display = 'flex';
+            
+            pendingAction = actionCallback;
+            
+            const yesBtn = document.getElementById('btnConfirmYes');
+            yesBtn.onclick = function() {
+                if (pendingAction) pendingAction();
+                closeModernConfirm();
+            };
+            
+            if(navigator.vibrate) navigator.vibrate(50);
+        }
+
+        function closeModernConfirm() {
+            playClick();
+            document.getElementById('modernConfirmModal').style.display = 'none';
+            pendingAction = null;
+        }
+
+        async function deleteEntry(id, btn) {
+            showModernConfirm(
+                "حذف سجل", 
+                "هل أنت متأكد من حذف هذا الطالب؟<br><span style='font-size:11px; color:#ef4444;'>لا يمكن التراجع عن هذا الإجراء.</span>", 
+                async function() {
+                    const card = btn.closest('.student-detailed-card');
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    try {
+                        await fetch(CONFIG.sheetApiUrl, {
+                            method: 'POST', mode: 'no-cors',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: `action=delete&id=${id}`
+                        });
+                        cachedReportData = cachedReportData.filter(s => s.uniID != id);
+                        card.style.opacity = '0';
+                        setTimeout(() => { 
+                            card.remove(); 
+                            if(document.querySelectorAll('.student-detailed-card').length === 0) showSubjectsView();
+                        }, 300);
+                    } catch(e) { alert("فشل الحذف"); }
+                }
+            );
         }
 
         async function clearAllReport() {
-            if(!confirm("تحذير: هل تريد حذف جميع سجلات اليوم؟ لا يمكن التراجع.")) return;
-            document.getElementById('subjectsContainer').innerHTML = '<div style="padding:20px; text-align:center;">جاري الحذف...</div>';
-            try {
-                await fetch(`${CONFIG.sheetApiUrl}?action=clearAll`, { method: 'POST', mode: 'no-cors' });
-                document.getElementById('subjectsContainer').innerHTML = '<div class="empty-state">تم تنظيف السجل بنجاح.</div>';
-                playSuccess();
-            } catch(e) { alert("خطأ في الاتصال"); openReportModal(); }
+            showModernConfirm(
+                "تصفيه السجل بالكامل",
+                "سيتم حذف <b>جميع الحضور</b> المسجل اليوم.<br>هل أنت متأكد تماماً؟",
+                async function() {
+                    document.getElementById('subjectsContainer').innerHTML = '<div style="padding:20px; text-align:center;">جاري الحذف...</div>';
+                    try {
+                        await fetch(`${CONFIG.sheetApiUrl}?action=clearAll`, { method: 'POST', mode: 'no-cors' });
+                        document.getElementById('subjectsContainer').innerHTML = '<div class="empty-state">تم تنظيف السجل بنجاح.</div>';
+                        playSuccess();
+                    } catch(e) { alert("خطأ في الاتصال"); openReportModal(); }
+                }
+            );
         }
 
-        function closeReportModal() { playClick(); document.getElementById('reportModal').style.display = 'none'; }
-        
         function isMobileDevice() { return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1); }
         if (!isMobileDevice()) { document.getElementById('desktop-blocker').style.display = 'flex'; throw new Error("Desktop access denied."); }
     </script>
 </body>
 </html>
-
