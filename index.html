@@ -49,113 +49,72 @@
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
 
-        /* === الأزرار الرئيسية والمعدلة (تصميم حديث) === */
+        /* === الأزرار === */
         .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; padding: 15px; border-radius: 20px; font-size: 16px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.5); transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; z-index: 5; margin-bottom: 20px; }
         .btn-main:active { transform: scale(0.97); }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; pointer-events: none; }
 
         .btn-secondary { background: #ffffff; color: var(--primary-dark); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: 2px solid #e0f2fe; cursor: pointer; font-family: 'Cairo'; margin-top: 10px; box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
         
-        /* شبكة الأزرار الفرعية */
-        .admin-controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .admin-sub-btn {
-            border-radius: 18px;
-            padding: 12px 10px;
-            font-size: 12px;
-            font-weight: 800;
-            border: none;
-            cursor: pointer;
-            font-family: 'Cairo';
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            height: 85px;
-        }
-
+        .admin-controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .admin-sub-btn { border-radius: 18px; padding: 12px 10px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); height: 85px; }
         .admin-sub-btn:active { transform: scale(0.95); }
-
-        /* زر دخول المسؤول (أزرق فاتح) */
         .btn-admin-login { background: #f0f9ff; color: var(--primary-dark); border: 1px solid #bae6fd; }
-        /* زر خروج المسؤول (أحمر فاتح) */
         .btn-admin-logout { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-        
-        /* زر سجل الحضور (متغير الحالة) */
         .btn-report { transition: all 0.3s; }
         .btn-report.locked { background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; cursor: not-allowed; }
         .btn-report.unlocked { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; cursor: pointer; }
-
-        /* زر تنظيم الامتحانات (بنفسجي فاتح - تصميم مميز) */
-        .btn-exams {
-            grid-column: span 2; /* يأخذ العرض الكامل */
-            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
-            color: #7c3aed;
-            border: 1px solid #ddd6fe;
-            flex-direction: row; 
-            height: 60px;
-            margin-top: 5px;
-        }
-
-        /* زر التحديث الجديد (أسفل الامتحانات) */
-        .btn-refresh {
-            grid-column: span 2; /* يأخذ العرض الكامل */
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe); /* أزرق سماوي فاتح */
-            color: #0ea5e9;
-            border: 1px solid #bae6fd;
-            flex-direction: row;
-            height: 55px;
-            margin-top: 5px;
-        }
-
+        .btn-exams { grid-column: span 2; background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #7c3aed; border: 1px solid #ddd6fe; flex-direction: row; height: 60px; margin-top: 5px; }
+        .btn-refresh { grid-column: span 2; background: linear-gradient(135deg, #f0f9ff, #e0f2fe); color: #0ea5e9; border: 1px solid #bae6fd; flex-direction: row; height: 55px; margin-top: 5px; }
         .sub-btn-icon { font-size: 20px; margin-bottom: 2px; }
         .btn-exams .sub-btn-icon, .btn-refresh .sub-btn-icon { margin-bottom: 0; font-size: 18px; }
 
-        /* MODAL STYLES - NEW REPORT DESIGN */
+        /* === MODAL & REPORT Styles (المحدث) === */
         #reportModal .modal-box { max-width: 380px; padding: 0; overflow: hidden; background: #f8fafc; }
         .report-modal-header { padding: 20px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
         .report-modal-body { padding: 15px; max-height: 50vh; overflow-y: auto; }
         .report-modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #e2e8f0; }
         
+        /* === تصميم سجل الحضور العصري === */
         .modern-report-item {
-            background: white;
+            background: #ffffff;
+            border-right: 5px solid var(--primary); /* خط ملون جانبي */
             border-radius: 12px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #e2e8f0;
-            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+            border: 1px solid #f1f5f9;
         }
-        .modern-report-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .modern-report-item:hover { transform: translateY(-3px); }
+
+        .rep-info { display: flex; flex-direction: column; gap: 5px; text-align: right; width: 100%; }
+        .rep-header { display: flex; justify-content: space-between; align-items: center; margin-left: 10px; }
+        .rep-name { font-weight: 800; font-size: 14px; color: #1e293b; }
         
-        .rep-info { display: flex; flex-direction: column; gap: 2px; text-align: right; }
-        .rep-name { font-weight: 800; font-size: 13px; color: #334155; }
-        .rep-id { font-size: 11px; color: #64748b; font-family: 'Outfit'; letter-spacing: 0.5px; }
-        .rep-meta { display: flex; align-items: center; gap: 10px; }
-        .rep-time { background: #f1f5f9; color: #475569; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; font-family: 'Outfit'; }
-        .rep-delete { width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; transition: 0.2s; }
-        .rep-delete:active { transform: scale(0.9); background: #fecaca; }
+        /* بادج المادة */
+        .subject-badge { background: #ecfdf5; color: #059669; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; border: 1px solid #d1fae5; }
+        
+        .rep-meta { display: flex; gap: 10px; font-size: 11px; color: #64748b; font-weight: 600; }
+        
+        /* زر الحذف */
+        .rep-delete { background: #fef2f2; color: #ef4444; width: 35px; height: 35px; border-radius: 10px; border: 1px solid #fee2e2; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .rep-delete:hover { background: #ef4444; color: white; }
+        .rep-delete:active { transform: scale(0.9); }
 
         .btn-close-report { width: 100%; background: #334155; color: white; padding: 14px; border-radius: 14px; font-weight: 800; border: none; cursor: pointer; }
         .btn-clear-all { color: #ef4444; background: none; border: none; font-size: 12px; font-weight: 800; cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: 0.2s; }
         .btn-clear-all:hover { background: #fee2e2; }
 
-        /* Exam Modal */
+        /* Other Modals */
         #examModal .modal-box { border: 2px solid #ddd6fe; background: #ffffff; }
         .exam-loader { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #7c3aed; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Base Styles */
+        /* Inputs & Selects */
         .input-group { margin-bottom: 15px; text-align: right; position: relative; z-index: 5; }
         .modern-input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; font-size: 14px; outline: none; transition: 0.3s; background: #f8fafc; }
         .modern-input:focus { border-color: var(--primary); background: white; }
@@ -183,6 +142,7 @@
         .custom-option.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; background: #10b981; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
         .custom-select-wrapper.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(100%); }
 
+        /* Ticket & Scanner */
         .ticket-container { background: white; border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #f1f5f9; }
         .ticket-container::before, .ticket-container::after { content: ''; position: absolute; top: 110px; width: 24px; height: 24px; background: #0f172a; border-radius: 50%; z-index: 20; }
         .ticket-container::before { left: -12px; } .ticket-container::after { right: -12px; }
@@ -335,10 +295,6 @@
     <div class="app-card">
         <div class="card-banner"></div>
         <div id="adminBadge" class="admin-badge"><i class="fa-solid fa-user-shield"></i> وضع المسؤول مفعل</div>
-
-        <div class="particles-container">
-            <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
-        </div>
 
         <div class="card-body">
             
@@ -606,7 +562,11 @@
 
     <script>
         const CONFIG = {
-            sheetApiUrl: "https://script.google.com/macros/s/AKfycbyKXsCl05zQe9jtwc4YrD9YOpybP1K2FMzfni7fOoFp3xZ7mY8PpcJ9sVnhMwKqtvGU/exec",
+            // =========================================================
+            // هام: ضع رابط Apps Script الخاص بشيت "سجل الحضور" هنا
+            // =========================================================
+            sheetApiUrl: "https://script.google.com/macros/s/AKfycbw1gjyzVymol2Wds5Hf5EHSxOhsGzjTQcE1wx9lj7lyP0LaEBoIuXuBynn615evIvMH/exec",
+            
             adminPassword: "RYADA", 
             gps: { targetLat: 30.38583, targetLong: 30.48888, allowedDistanceKm: 1.5 }
         };
@@ -620,6 +580,9 @@
             try { studentsDB = JSON.parse(savedDB); console.log("⚡ تم تحميل الأسماء محلياً:", Object.keys(studentsDB).length); } catch(e) { console.error("Error parsing DB", e); }
         }
 
+        // جلب الأسماء (يفضل وضع رابط منفصل إذا كانت الأسماء في شيت آخر)
+        // هنا نفترض أن نفس السكريبت يعيد الأسماء في حالة معينة، أو نستخدمه لتحديث البيانات
+        // للتبسيط، الكود الحالي سيحاول جلب البيانات من نفس الرابط
         fetch(CONFIG.sheetApiUrl).then(r => r.json()).then(d => { if(!d.error) { studentsDB = d; localStorage.setItem(LOCAL_STORAGE_DB_KEY, JSON.stringify(d)); console.log("✅ تم تحديث قاعدة البيانات:", Object.keys(d).length); } }).catch(e => console.log("DB Update Error", e));
 
         const subjectsData = {
@@ -647,7 +610,6 @@
         let attendanceData = {}; 
         let processIsActive = false; 
         
-        // --- SAFE CLICK & EXAM MODAL ---
         let isProcessingClick = false;
         function safeClick(element, callback) {
             if (isProcessingClick) return;
@@ -674,7 +636,6 @@
             }
         }
 
-        // --- DEEP RESET FUNCTION (THE FIX) ---
         function resetApplicationState() {
             attendanceData = {};
             sessionStorage.removeItem(TEMP_NAME_KEY);
@@ -703,6 +664,7 @@
             btn.disabled = true;
             btn.style.opacity = "0.6";
             btn.style.cursor = "not-allowed";
+            btn.innerHTML = 'تأكيد الحضور <i class="fa-solid fa-paper-plane"></i>';
             
             document.getElementById('scanNameDisplay').innerText = '--';
             document.getElementById('scanIDDisplay').innerText = '--';
@@ -880,18 +842,29 @@
             const selectedSubject = document.getElementById('subjectSelect').value; const sessionPassVal = document.getElementById('sessionPass').value;
             if(!attendanceData.uniID || !sessionPassVal || !selectedSubject) { alert("بيانات ناقصة"); return; }
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true' && localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') { showError("محظور"); return; }
+            
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الفحص...'; btn.disabled = true;
             const isOnline = await checkRealConnection(); if (!isOnline) { btn.innerHTML = originalText; btn.disabled = false; showConnectionLostModal(); return; }
+            
             const now = new Date(); document.getElementById('receiptName').innerText = attendanceData.name; document.getElementById('receiptID').innerText = attendanceData.uniID; document.getElementById('receiptSubject').innerText = selectedSubject; document.getElementById('receiptDate').innerText = now.toLocaleDateString('en-GB'); document.getElementById('receiptTime').innerText = now.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
-            const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`; const formParams = new URLSearchParams(); formParams.append("id", attendanceData.uniID); formParams.append("name", attendanceData.name); formParams.append("code", finalCodeValue); formParams.append("ip", userIP); formParams.append("subject", selectedSubject); 
-            currentAbortController = new AbortController(); const timeoutId = setTimeout(() => currentAbortController.abort(), 12000); 
+            
+            const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`; 
+            
+            // === NEW: Send Data for Writing ===
+            const formParams = new URLSearchParams(); 
+            formParams.append("action", "register"); // Key change
+            formParams.append("id", attendanceData.uniID); 
+            formParams.append("name", attendanceData.name); 
+            formParams.append("code", finalCodeValue); 
+            formParams.append("ip", userIP); 
+            formParams.append("subject", selectedSubject); // Included Subject
+            
             try {
-                await fetch(CONFIG.sheetApiUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formParams.toString(), signal: currentAbortController.signal });
-                clearTimeout(timeoutId); processIsActive = false; releaseWakeLock();
+                await fetch(CONFIG.sheetApiUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formParams.toString() });
+                processIsActive = false; releaseWakeLock();
                 if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB')); }
                 
                 resetApplicationState();
-                
                 switchScreen('screenSuccess'); playSuccess(); confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
             } catch (error) { btn.innerHTML = originalText; btn.disabled = false; showConnectionLostModal(); }
         }
@@ -968,58 +941,87 @@
         function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); }
         function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); }; switchScreen('screenError'); }
 
-        // NEW REPORT LOGIC
+        // === REPORT & DELETE LOGIC ===
         async function openReportModal() { 
-            playClick(); document.getElementById('reportModal').style.display = 'flex'; 
-            const d = new Date().toLocaleDateString('en-GB'); document.getElementById('reportDateDisplay').innerText = `(${d})`; 
+            playClick(); 
+            document.getElementById('reportModal').style.display = 'flex'; 
+            
+            const d = new Date().toLocaleDateString('en-GB'); 
             const contentDiv = document.getElementById('reportContent');
-            contentDiv.innerHTML = '<div style="padding:20px; text-align:center;"><i class="fa-solid fa-circle-notch fa-spin" style="color:var(--primary); font-size:24px;"></i><br>جاري جلب السجل...</div>';
+            
+            contentDiv.innerHTML = '<div style="text-align:center; padding:30px;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:25px; color:var(--primary);"></i><br><br>جاري جلب السجل...</div>';
+            
             try {
+                // Fetch report from Google Sheet
                 const response = await fetch(`${CONFIG.sheetApiUrl}?action=getReport&date=${encodeURIComponent(d)}`);
-                const remoteData = await response.json();
+                const data = await response.json();
                 
-                if (!remoteData || remoteData.length === 0) { contentDiv.innerHTML = '<div class="empty-state">لا يوجد سجلات حضور مسجلة اليوم.</div>'; return; }
+                if (!data || data.length === 0) { 
+                    contentDiv.innerHTML = '<div class="empty-state">لا يوجد حضور مسجل اليوم.</div>'; 
+                    return; 
+                }
                 
-                // Sort by newest
-                remoteData.sort((a, b) => {
-                    const timeA = a.timestamp || "00:00";
-                    const timeB = b.timestamp || "00:00";
-                    return timeB.localeCompare(timeA);
-                });
-
-                let h = '';
-                remoteData.forEach((item) => {
-                    h += `
-                    <div class="modern-report-item" id="row-${item.uniID}">
+                let html = '';
+                data.forEach(item => {
+                    html += `
+                    <div class="modern-report-item">
                         <div class="rep-info">
-                            <span class="rep-name">${item.name}</span>
+                            <div class="rep-header">
+                                <span class="rep-name">${item.name}</span>
+                                <span class="subject-badge">${item.subject}</span>
+                            </div>
                             <div class="rep-meta">
-                                <span class="rep-id">${item.uniID}</span>
-                                <span class="rep-time">${item.timestamp || '--:--'}</span>
+                                <span><i class="fa-solid fa-id-card"></i> ${item.uniID}</span>
+                                <span><i class="fa-regular fa-clock"></i> ${item.timestamp}</span>
                             </div>
                         </div>
-                        <button class="rep-delete" onclick="deleteEntry('${item.uniID}', this)"><i class="fa-solid fa-trash"></i></button>
+                        <button class="rep-delete" onclick="deleteEntry('${item.uniID}', this)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </div>`;
                 });
-                contentDiv.innerHTML = h;
-            } catch (e) { contentDiv.innerHTML = '<div class="alert-box" style="color:#ef4444;">فشل الاتصال.</div>'; }
+                contentDiv.innerHTML = html;
+                
+            } catch (e) { 
+                contentDiv.innerHTML = '<div style="color:red; text-align:center;">خطأ في الاتصال بالسيرفر</div>'; 
+            }
         }
 
         async function deleteEntry(id, btn) {
-            if(!confirm("هل أنت متأكد من حذف هذا الطالب من السجل؟")) return;
+            if(!confirm("هل أنت متأكد من حذف هذا الطالب من سجل اليوم؟\n(سيتم الحذف نهائياً من Google Sheet)")) return;
             
-            const item = btn.closest('.modern-report-item');
-            item.style.opacity = '0.5';
-            item.style.pointerEvents = 'none';
+            const card = btn.closest('.modern-report-item');
+            
+            // Visual feedback
+            card.style.opacity = '0.5';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.style.pointerEvents = 'none';
             
             try {
-                // Backend Call
-                await fetch(`${CONFIG.sheetApiUrl}?action=delete&id=${id}`, { method: 'POST' });
-                item.remove();
+                // Send delete request
+                await fetch(CONFIG.sheetApiUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `action=delete&id=${id}`
+                });
+                
+                // Remove card on success (optimistic UI update since no-cors)
+                card.style.transform = 'translateX(100px)';
+                setTimeout(() => {
+                    card.remove();
+                    if(document.querySelectorAll('.modern-report-item').length === 0) {
+                         document.getElementById('reportContent').innerHTML = '<div class="empty-state">تم حذف جميع السجلات.</div>';
+                    }
+                }, 300);
                 playSuccess();
+                
             } catch(e) {
-                alert("فشل الحذف من السيرفر");
-                item.style.opacity = '1';
+                alert("فشل الحذف");
+                card.style.opacity = '1';
+                card.style.transform = 'none';
+                btn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                btn.style.pointerEvents = 'auto';
             }
         }
 
@@ -1027,7 +1029,7 @@
             if(!confirm("تحذير: هل تريد حذف جميع سجلات اليوم؟ لا يمكن التراجع.")) return;
             document.getElementById('reportContent').innerHTML = '<div style="padding:20px; text-align:center;">جاري الحذف...</div>';
             try {
-                await fetch(`${CONFIG.sheetApiUrl}?action=clearAll`, { method: 'POST' });
+                await fetch(`${CONFIG.sheetApiUrl}?action=clearAll`, { method: 'POST', mode: 'no-cors' });
                 document.getElementById('reportContent').innerHTML = '<div class="empty-state">تم تنظيف السجل بنجاح.</div>';
                 playSuccess();
             } catch(e) { alert("خطأ في الاتصال"); openReportModal(); }
