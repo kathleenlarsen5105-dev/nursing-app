@@ -4,19 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>نظام كشف الحضور - كلية التمريض</title>
+    
     <meta property="og:title" content="جامعة الريادة - كلية التمريض">
     <meta property="og:description" content="نظام تسجيل الحضور الذكي.">
     <meta property="og:image" content="https://k.top4top.io/p_3615d3vek1.png">
+    
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="icon" href="icon.png" type="image/png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <style>
+        /* نفس التصميم السابق تماماً */
         #desktop-blocker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; color: #ef4444; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Cairo'; }
         :root { --primary: #0ea5e9; --primary-dark: #0284c7; --text-main: #1e293b; --text-sub: #64748b; --glass-bg: rgba(255, 255, 255, 0.95); --danger: #ef4444; --success: #10b981; --warning: #f59e0b; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -457,10 +462,36 @@
 
     <script>
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        // ضع رابط السكربت الجديد هنا بعد التحديث:
+        // الرابط النهائي (مع CacheService & Hybrid Logging)
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        const SHEET_API_URL = "YOUR_WEB_APP_URL_HERE"; 
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyLYX8GLe1KB_a87Wq5h4wMWRvCMSeOcnTr6DKtDqv7Wiqu2bQU92KsZq6SEK6RMyCN/exec";
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        
+        // --- 1. مفتاح التخزين المحلي (للسرعة القصوى) ---
+        const LOCAL_STORAGE_DB_KEY = "offline_students_db_v1";
+        let studentsDB = {};
+
+        // --- 2. محاولة التحميل من الهاتف فوراً ---
+        const savedDB = localStorage.getItem(LOCAL_STORAGE_DB_KEY);
+        if (savedDB) {
+            try {
+                studentsDB = JSON.parse(savedDB);
+                console.log("⚡ تم تحميل الأسماء من ذاكرة الهاتف بسرعة:", Object.keys(studentsDB).length);
+            } catch(e) { console.error("Error parsing local DB", e); }
+        }
+
+        // --- 3. التحديث في الخلفية (Fetch) ---
+        fetch(SHEET_API_URL)
+            .then(r => r.json())
+            .then(d => { 
+                if(!d.error) {
+                    studentsDB = d; 
+                    // حفظ النسخة الجديدة في الهاتف
+                    localStorage.setItem(LOCAL_STORAGE_DB_KEY, JSON.stringify(d));
+                    console.log("✅ تم تحديث قاعدة البيانات من السيرفر:", Object.keys(d).length);
+                }
+            })
+            .catch(e => { console.log("DB Load Error (Using Offline Version)", e); });
 
         const subjectsData = {
             "first_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "اناتومى نظرى", "اناتومى عملى", "تقييم صحى نظرى", "تقييم صحى عملى", "مصطلحات طبية", "فسيولوجى", "تكنولوجيا المعلومات"],
@@ -476,6 +507,7 @@
         const TEMP_NAME_KEY = "temp_student_name";
         const TEMP_ID_KEY = "temp_student_id";
         const TEMP_CODE_KEY = "temp_session_code";
+        
         const MAX_ATTEMPTS = 3;
         const ATTEMPTS_KEY = "daily_attempts_v46_" + new Date().toLocaleDateString('en-GB');
 
@@ -635,41 +667,17 @@
             }, 100); 
         }
 
-        // === دالة البحث الآمن (Server-Side) ===
         async function handleIdSubmit() {
-            playClick(); 
-            const uniIdVal = document.getElementById('uniID').value.trim(); 
-            const alertBox = document.getElementById('dataEntryAlert');
-            const nextBtn = document.getElementById('nextStepBtn');
-
-            if (!uniIdVal) { 
-                alertBox.innerText = "⚠️ يرجى إدخال الكود الجامعي."; alertBox.style.display = 'block'; return; 
-            }
-
-            // تغيير نص الزر لإظهار حالة التحميل
-            nextBtn.disabled = true;
-            nextBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري البحث...';
-            alertBox.style.display = 'none';
-
-            try {
-                // إرسال طلب للسيرفر للبحث عن هذا الكود تحديداً
-                const response = await fetch(`${SHEET_API_URL}?action=getName&id=${encodeURIComponent(uniIdVal)}`);
-                const studentName = await response.text();
-
-                if (studentName && studentName !== "Not Found" && studentName !== "Error DB") {
-                    attendanceData.uniID = uniIdVal; attendanceData.name = studentName;
-                    sessionStorage.setItem(TEMP_ID_KEY, uniIdVal); sessionStorage.setItem(TEMP_NAME_KEY, studentName);
-                    document.getElementById('scanNameDisplay').innerText = studentName; document.getElementById('scanIDDisplay').innerText = uniIdVal; 
-                    if(countdownInterval) clearInterval(countdownInterval); stopCameraSafely(); switchScreen('screenScanQR'); playSuccess();
-                } else {
-                    alertBox.innerText = "❌ الكود غير صحيح أو غير مسجل."; alertBox.style.display = 'block'; if(navigator.vibrate) navigator.vibrate(300);
-                }
-            } catch (error) {
-                alertBox.innerText = "⚠️ خطأ في الاتصال. حاول مرة أخرى."; alertBox.style.display = 'block';
-            } finally {
-                nextBtn.disabled = false;
-                nextBtn.innerHTML = 'التالي <i class="fa-solid fa-arrow-left"></i>';
-            }
+            playClick(); const uniIdVal = document.getElementById('uniID').value.trim(); const alertBox = document.getElementById('dataEntryAlert');
+            if (!uniIdVal) { alertBox.innerText = "⚠️ يرجى إدخال الكود الجامعي."; alertBox.style.display = 'block'; return; }
+            if(Object.keys(studentsDB).length === 0) { alertBox.innerText = "⚠️ جاري تحميل البيانات.."; alertBox.style.display = 'block'; return; }
+            const studentName = studentsDB[uniIdVal];
+            if (studentName) {
+                attendanceData.uniID = uniIdVal; attendanceData.name = studentName;
+                sessionStorage.setItem(TEMP_ID_KEY, uniIdVal); sessionStorage.setItem(TEMP_NAME_KEY, studentName);
+                document.getElementById('scanNameDisplay').innerText = studentName; document.getElementById('scanIDDisplay').innerText = uniIdVal; 
+                if(countdownInterval) clearInterval(countdownInterval); stopCameraSafely(); switchScreen('screenScanQR'); playSuccess();
+            } else { alertBox.innerText = "❌ الكود غير صحيح."; alertBox.style.display = 'block'; if(navigator.vibrate) navigator.vibrate(300); }
         }
 
         async function submitToGoogle() {
