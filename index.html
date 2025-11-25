@@ -22,7 +22,8 @@
 
     <style>
         /* === الأساسيات === */
-        #desktop-blocker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; color: #ef4444; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Cairo'; }
+        /* تصميم جديد لمنع الدخول */
+        #desktop-blocker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; color: #ef4444; z-index: 99999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Cairo'; }
         :root { --primary: #0ea5e9; --primary-dark: #0284c7; --text-main: #1e293b; --text-sub: #64748b; --glass-bg: rgba(255, 255, 255, 0.95); --danger: #ef4444; --success: #10b981; --warning: #f59e0b; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { background-color: #0f172a !important; height: 100vh; overflow-y: auto; overflow-x: hidden; }
@@ -351,6 +352,18 @@
         .btn-delete-single { background: #fee2e2; color: #b91c1c; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; transition: 0.2s; font-size: 12px; display: flex; align-items: center; justify-content: center; }
         .btn-delete-single:active { transform: scale(0.9); }
         .empty-state { padding: 30px; font-weight: 700; color: var(--text-sub); background: #f8fafc; border-radius: 12px; }
+
+        /* === NEW TOAST STYLE === */
+        #toastMessage {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
+            background: rgba(0, 0, 0, 0.8); color: white; padding: 10px 20px; 
+            border-radius: 20px; font-size: 12px; display: none; z-index: 20000; 
+            animation: fadeIn 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -362,8 +375,8 @@
 <body>
     <div id="desktop-blocker">
         <i class="fa-solid fa-mobile-screen-button" style="font-size:50px; margin-bottom:20px;"></i>
-        <h2 style="margin-bottom:10px">عذراً</h2>
-        <p>هذا النظام متاح فقط من الهواتف الذكية.</p>
+        <h2 style="margin-bottom:10px">عذراً، وصول غير مصرح به</h2>
+        <p>النظام متاح فقط من هواتف Android و iPhone الذكية.</p>
     </div>
 
     <div class="bg-image"></div>
@@ -466,9 +479,7 @@
         </div>
     </div>
     
-    <div id="toastMessage" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; z-index: 20000; animation: fadeIn 0.3s;">
-        تم تفعيل وضع المسؤول بنجاح
-    </div>
+    <div id="toastNotification" style="display:none;"></div> 
 
     <div id="adminFloatingBack" class="admin-floating-back" onclick="goBackToWelcome()">
         <i class="fa-solid fa-arrow-right"></i>
@@ -987,7 +998,7 @@
                 if (remainingMs <= 0) {
                     clearInterval(countdownInterval); if (sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true') { text.innerText = "0"; return; }
                     const left = decrementAttempts(); document.getElementById('nextStepBtn').disabled = true; hideConnectionLostModal(); processIsActive = false; releaseWakeLock();
-                    if (left === 0) { localStorage.setItem(TIMEOUT_BLOCK_KEY, 'true'); showError("⏳ انتهى الوقت. لقد استنفذت جميع المحاولات.<br>تم إغلاق التسجيل.", true); } else { showError(`⏳ انتهى الوقت.<br>تم خصم محاولة. المتبقي: ${left}`, false); }
+                    if (left === 0) { localStorage.setItem(TIMEOUT_BLOCK_KEY, 'true'); showError("⏳ انتهى الوقت. لقد استنفدت جميع المحاولات.<br>تم إغلاق التسجيل.", true); } else { showError(`⏳ انتهى الوقت.<br>تم خصم محاولة. المتبقي: ${left}`, false); }
                 }
             }, 100);
         }
@@ -1014,7 +1025,7 @@
             if(btn.disabled && btn.innerText.includes('جاري')) return;
             const originalText = "تأكيد الحضور <i class='fa-solid fa-paper-plane'></i>";
             const selectedSubject = document.getElementById('subjectSelect').value; const sessionPassVal = document.getElementById('sessionPass').value;
-            if(!attendanceData.uniID || !sessionPassVal || !selectedSubject) { alert("بيانات ناقصة"); return; }
+            if(!attendanceData.uniID || !sessionPassVal || !selectedSubject) { showToast("يرجى اختيار المادة ومسح الكود.", 3000, '#f59e0b'); return; }
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true' && localStorage.getItem(TIMEOUT_BLOCK_KEY) === 'true') { showError("محظور"); return; }
             
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري الفحص...'; btn.disabled = true;
@@ -1103,7 +1114,7 @@
         async function stopCameraSafely() { if(html5QrCode && html5QrCode.isScanning) { try { await html5QrCode.stop(); } catch(e) {} } document.getElementById('qr-reader').style.display = 'none'; releaseWakeLock(); }
         function retryCamera() { document.getElementById('cameraErrorModal').style.display = 'none'; startQrScanner(); }
         async function startQrScanner() { playClick(); requestWakeLock(); await stopCameraSafely(); document.getElementById('startScanCard').style.display = 'none'; document.getElementById('qr-reader').style.display = 'block'; document.getElementById('qr-reader').innerHTML = '<div class="scanner-laser" style="display:block"></div>'; document.getElementById('submitBtn').disabled = true; document.getElementById('sessionPass').value = ''; html5QrCode = new Html5Qrcode("qr-reader"); try { await html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (t) => { playBeep(); html5QrCode.stop().then(() => { document.getElementById('qr-reader').style.display = 'none'; document.getElementById('scanSuccessMsg').style.display = 'flex'; document.getElementById('sessionPass').value = t; checkSubjectSelection(); if(navigator.vibrate) navigator.vibrate([100,50,100]); releaseWakeLock(); }); }); } catch (err) { await stopCameraSafely(); document.getElementById('startScanCard').style.display = 'none'; document.getElementById('retryCamBtn').style.display = 'flex'; document.getElementById('cameraErrorModal').style.display = 'flex'; } }
-        function checkAdminPassword() { playClick(); if (document.getElementById('adminPassword').value === CONFIG.adminPassword) { sessionStorage.setItem(DOCTOR_MODE_KEY, 'true'); document.getElementById('toastMessage').style.display = 'block'; setTimeout(() => { document.getElementById('toastMessage').style.display = 'none'; }, 3000); updateUIForMode(); switchScreen('screenWelcome'); } else { document.getElementById('adminAlert').innerText = "❌ خطأ"; document.getElementById('adminAlert').style.display = 'block'; document.getElementById('adminPassword').value = ''; } }
+        function checkAdminPassword() { playClick(); if (document.getElementById('adminPassword').value === CONFIG.adminPassword) { sessionStorage.setItem(DOCTOR_MODE_KEY, 'true'); showToast('تم تفعيل وضع المسؤول بنجاح.', 3000, '#10b981'); updateUIForMode(); switchScreen('screenWelcome'); } else { document.getElementById('adminAlert').innerText = "❌ خطأ"; document.getElementById('adminAlert').style.display = 'block'; document.getElementById('adminPassword').value = ''; } }
         function showError(msg, isPermanent = false) { if(countdownInterval) clearInterval(countdownInterval); document.getElementById('errorMsg').innerHTML = msg; const retryBtn = document.getElementById('retryBtn'); if(isPermanent) retryBtn.style.display = 'none'; else { retryBtn.style.display = 'inline-block'; retryBtn.onclick = function() { location.reload(); }; } switchScreen('screenError'); if(navigator.vibrate) navigator.vibrate(300); }
         function performLogout() { playClick(); sessionStorage.removeItem(DOCTOR_MODE_KEY); location.reload(); }
         function openLogoutModal() { playClick(); document.getElementById('customLogoutModal').style.display = 'flex'; }
@@ -1111,7 +1122,13 @@
         function showConnectionLostModal() { document.getElementById('connectionLostModal').style.display = 'flex'; }
         function hideConnectionLostModal() { document.getElementById('connectionLostModal').style.display = 'none'; }
         async function checkRealConnection() { try { await fetch('https://jsonplaceholder.typicode.com/posts/1?t=' + Date.now(), { method: 'HEAD', cache: 'no-store' }); return true; } catch (e) { return false; } }
-        function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); }
+        function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); 
+            if (!isMobileDevice()) {
+                document.getElementById('desktop-blocker').style.display = 'flex'; 
+                document.body.style.overflow = 'hidden';
+                throw new Error("Desktop access denied.");
+            }
+        }
         function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); }; switchScreen('screenError'); }
 
         async function openReportModal() {
@@ -1296,9 +1313,94 @@
                 }
             );
         }
+        
+        /* === NEW SECURITY FUNCTIONS === */
 
-        function isMobileDevice() { return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1); }
-        if (!isMobileDevice()) { document.getElementById('desktop-blocker').style.display = 'flex'; throw new Error("Desktop access denied."); }
+        // 1. A better check for mobile devices (Android/iPhone only)
+        function isMobileDevice() {
+            const ua = navigator.userAgent.toLowerCase();
+            // Check for target mobile OS/devices (Android, iPhone, iPod)
+            const isTargetMobile = /android|iphone|ipod/i.test(ua);
+            // Exclude common desktop/tablet identifiers (Windows, Mac, Linux, X11, iPad, Tablet, Kindle)
+            const isExcluded = /windows|macintosh|ipad|tablet|x11|kindle/i.test(ua);
+            
+            // Return true only if it's a target mobile AND not explicitly excluded
+            return (isTargetMobile && !isExcluded);
+        }
+        
+        // Utility function for toast messages
+        function showToast(message, duration = 3000, bgColor = '#334155') {
+            const toast = document.getElementById('toastNotification');
+            toast.style.backgroundColor = bgColor;
+            toast.innerText = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, duration);
+        }
+
+        // 2. DevTools/Debugging Detection and Blocking
+        (function() {
+            let devtoolsOpen = false;
+            const threshold = 160; 
+
+            const checkDevTools = () => {
+                // Check using size difference (common for desktop debugging)
+                if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+                    if (!devtoolsOpen) {
+                        devtoolsOpen = true;
+                        // BLOCK THE APP
+                        const blocker = document.getElementById('desktop-blocker');
+                        blocker.innerHTML = '<i class="fa-solid fa-code" style="font-size:50px; margin-bottom:20px; color:#f59e0b;"></i><h2>تنبيه أمني</h2><p>تم اكتشاف محاولة تصحيح (Debugging). تم حظر النظام.</p>';
+                        blocker.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                        throw new Error("DevTools Detected and Blocked.");
+                    }
+                }
+            };
+            
+            // Add listeners for resizing (opening/closing devtools) and F12/Ctrl+Shift+I
+            window.addEventListener('resize', checkDevTools);
+            window.addEventListener('keydown', (e) => {
+                // F12 (123) or Ctrl+Shift+I (73) or Cmd+Option+I (73 on Mac)
+                if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73) || (e.metaKey && e.altKey && e.keyCode === 73)) {
+                    e.preventDefault();
+                    if(!devtoolsOpen) showToast('أدوات المطور محظورة.', 2000, '#ef4444');
+                }
+            });
+
+            // Run initial check
+            checkDevTools();
+        })();
+
+        // 3. Disable Right-Click (Context Menu)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showToast('إجراء محظور لأسباب أمنية.', 2000, '#ef4444');
+        });
+
+        // 4. Disable Copy, Cut, and Paste
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            showToast('النسخ محظور لأسباب أمنية.', 2000, '#ef4444');
+        });
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            showToast('القص محظور لأسباب أمنية.', 2000, '#ef4444');
+        });
+        document.addEventListener('paste', function(e) {
+            e.preventDefault();
+            showToast('اللصق محظور لأسباب أمنية.', 2000, '#ef4444');
+        });
+        
+        
+        // Final Mobile Check (must be at the end to ensure it runs last)
+        // If it's not a mobile device, it will display the desktop-blocker and throw an error.
+        if (!isMobileDevice()) { 
+            document.getElementById('desktop-blocker').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden';
+            throw new Error("Desktop access denied.");
+        }
     </script>
 </body>
 </html>
