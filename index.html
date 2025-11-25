@@ -65,7 +65,7 @@
         .particle:nth-child(5) { width: 25px; height: 25px; left: 90%; animation-duration: 15s; animation-delay: 3s; }
         @keyframes floatUp { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translateY(-600px) translateX(20px) rotate(360deg); opacity: 0; } }
         
-        /* --- MODERN DROPDOWN CSS --- */
+        /* --- MODERN DROPDOWN CSS (FIXED) --- */
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; margin-bottom: 20px; -webkit-tap-highlight-color: transparent; }
         .custom-select-label { display: block; text-align: right; margin-bottom: 8px; font-size: 13px; color: #475569; font-weight: 800; margin-right: 5px; }
         .custom-select-trigger { position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px 20px; font-size: 15px; font-weight: 700; color: #334155; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); }
@@ -76,10 +76,15 @@
         .custom-select-wrapper.open .trigger-icon { background: var(--primary); color: white; }
         .arrow-icon { font-size: 12px; color: #94a3b8; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
         .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
-        .custom-options-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 99990; opacity: 0; visibility: hidden; transition: all 0.3s; }
-        .custom-select-wrapper.open .custom-options-overlay { opacity: 1; visibility: visible; }
-        .custom-options { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-radius: 30px 30px 0 0; padding: 25px 20px 40px 20px; z-index: 99999; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(110%); transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1); max-height: 70vh; overflow-y: auto; }
-        .custom-select-wrapper.open .custom-options { transform: translateY(0); }
+        
+        /* FIX: Ensure overlay is hidden */
+        .custom-options-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 99990; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s; }
+        .custom-select-wrapper.open .custom-options-overlay { opacity: 1; visibility: visible; pointer-events: all; }
+        
+        /* FIX: Ensure menu is completely hidden and doesn't block clicks */
+        .custom-options { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-radius: 30px 30px 0 0; padding: 25px 20px 40px 20px; z-index: 99999; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(100%); visibility: hidden; pointer-events: none; transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), visibility 0.4s; max-height: 70vh; overflow-y: auto; }
+        .custom-select-wrapper.open .custom-options { transform: translateY(0); visibility: visible; pointer-events: all; }
+        
         .sheet-handle { width: 40px; height: 5px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 20px auto; }
         .options-title { text-align: center; font-weight: 800; color: #1e293b; margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
         .custom-option { padding: 16px 20px; margin-bottom: 10px; font-size: 15px; font-weight: 700; color: #475569; border-radius: 16px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; background: #f8fafc; }
@@ -701,7 +706,6 @@
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
         async function goBackToWelcome() { playClick(); if (geo_watch_id) navigator.geolocation.clearWatch(geo_watch_id); if(countdownInterval) clearInterval(countdownInterval); await stopCameraSafely(); sessionStorage.removeItem(SESSION_END_TIME_KEY); sessionStorage.removeItem(TEMP_NAME_KEY); sessionStorage.removeItem(TEMP_ID_KEY); sessionStorage.removeItem(TEMP_CODE_KEY); processIsActive = false; releaseWakeLock(); document.getElementById('uniID').value = ''; document.getElementById('startScanCard').style.display = 'flex'; hideConnectionLostModal(); switchScreen('screenWelcome'); }
         
-        // --- MODERN DROPDOWN LOGIC ---
         function closeSelect(overlay) { const wrapper = overlay.parentElement; wrapper.classList.remove('open'); }
         function setupCustomSelects() {
             const yearWrapper = document.getElementById('yearSelectWrapper');
