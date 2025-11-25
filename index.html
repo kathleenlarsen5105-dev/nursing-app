@@ -348,33 +348,31 @@
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">الفرقة الدراسية:</label>
-                        <div class="custom-select-wrapper" id="yearSelectWrapper">
-                            <div class="custom-select-trigger"><span>-- اختر الفرقة --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="first_year">الفرقة الأولى</div>
-                                <div class="custom-option" data-value="second_year">الفرقة الثانية</div>
-                            </div>
-                        </div>
-                        <select id="yearSelect" style="display:none;">
-                            <option value="" disabled selected>-- اختر الفرقة --</option>
-                            <option value="first_year">الفرقة الأولى</option>
-                            <option value="second_year">الفرقة الثانية</option>
-                        </select>
-                    </div>
+<div class="modern-selection-container">
+    
+    <label class="section-label">اختر الفرقة الدراسية</label>
+    <div class="year-cards-grid">
+        <div class="year-card" onclick="selectYear(this, 'first_year')">
+            <div class="yc-icon">1</div>
+            <div class="yc-text">الفرقة الأولى</div>
+            <div class="yc-check"><i class="fa-solid fa-circle-check"></i></div>
+        </div>
+        <div class="year-card" onclick="selectYear(this, 'second_year')">
+            <div class="yc-icon">2</div>
+            <div class="yc-text">الفرقة الثانية</div>
+            <div class="yc-check"><i class="fa-solid fa-circle-check"></i></div>
+        </div>
+    </div>
 
-                    <div class="input-group">
-                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">المادة الدراسية:</label>
-                        <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
-                            <div class="custom-select-trigger"><span>-- اختر الفرقة أولاً --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
-                            <div class="custom-options" id="subjectOptionsContainer">
-                            </div>
-                        </div>
-                        <select id="subjectSelect" style="display:none;" onchange="checkSubjectSelection()">
-                            <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
-                        </select>
-                    </div>
+    <div id="subjectsSection" class="subjects-wrapper" style="display:none;">
+        <label class="section-label" style="margin-top:15px;">اختر المادة الدراسية</label>
+        <div id="subjectsGrid" class="subjects-grid">
+            </div>
+    </div>
+
+    <select id="yearSelect" style="display:none;"><option value="" disabled selected></option></select>
+    <select id="subjectSelect" style="display:none;"><option value="" disabled selected></option></select>
+</div>
 
                     <div id="qr-reader">
                         <div class="scanner-laser"></div>
