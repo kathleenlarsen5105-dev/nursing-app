@@ -21,58 +21,16 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
-        /* === الأساسيات وتعديل الخلفية المتحركة === */
+        /* === الأساسيات === */
         #desktop-blocker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; color: #ef4444; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Cairo'; }
         :root { --primary: #0ea5e9; --primary-dark: #0284c7; --text-main: #1e293b; --text-sub: #64748b; --glass-bg: rgba(255, 255, 255, 0.95); --danger: #ef4444; --success: #10b981; --warning: #f59e0b; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { background-color: #0f172a !important; height: 100vh; overflow-y: auto; overflow-x: hidden; }
         body { font-family: 'Cairo', sans-serif; min-height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--text-main); background-color: transparent !important; position: relative; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); -webkit-user-select: none; user-select: none; touch-action: manipulation; }
         
-        /* === تعديل 1: خلفية متدرجة متحركة === */
-        .bg-image { 
-            background: linear-gradient(-45deg, #0f172a, #1e3a8a, #0f172a, #334155);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: -1; 
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* === تعديل 2: تحسين الكارت الزجاجي === */
-        .app-card { 
-            background: rgba(255, 255, 255, 0.85); /* شفافية أقل للوضوح */
-            width: 90%; 
-            max-width: 400px; 
-            border-radius: 30px; 
-            box-shadow: 
-                0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-                0 2px 4px -1px rgba(0, 0, 0, 0.06),
-                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            text-align: center; 
-            position: relative; 
-            overflow: visible; /* تعديل للسماح للظلال */
-            animation: slideUp 0.6s ease-out; 
-            margin: 60px auto 40px auto; 
-        }
-        
-        /* تم إضافة overflow hidden داخلي للحفاظ على شكل الهيدر */
-        .card-inner-wrapper {
-            border-radius: 30px;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-        }
-
-        .card-banner { width: 100%; height: 140px; background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; position: relative; z-index: 2; }
+        .bg-image { background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; filter: blur(12px) brightness(0.9); transform: scale(1.2); z-index: -1; position: fixed; top: -10vh; left: -10vw; width: 120vw; height: 120vh; pointer-events: none; }
+        .app-card { background: var(--glass-bg); width: 90%; max-width: 400px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); text-align: center; position: relative; overflow: hidden; animation: slideUp 0.6s ease-out; margin: 50px auto 40px auto; }
+        .card-banner { width: 100%; height: 140px; background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center center; background-size: cover; position: relative; border-radius: 24px 24px 0 0; overflow: hidden; z-index: 2; }
         .card-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(255,255,255,1), transparent); }
         .card-body { padding: 0 25px 30px 25px; position: relative; z-index: 2; }
         
@@ -91,33 +49,9 @@
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
 
-        /* === تعديل 3: الزر الرئيسي المشع === */
-        .btn-main { 
-            background: linear-gradient(135deg, #3b82f6, #0ea5e9);
-            color: white; 
-            width: 100%; 
-            padding: 16px; 
-            border-radius: 20px; 
-            font-size: 16px; 
-            font-weight: 800; 
-            border: none; 
-            cursor: pointer; 
-            font-family: 'Cairo'; 
-            box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4); 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px; 
-            position: relative; 
-            z-index: 5; 
-            margin-bottom: 20px; 
-            overflow: hidden;
-        }
+        /* === الأزرار === */
+        .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; padding: 15px; border-radius: 20px; font-size: 16px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.5); transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; z-index: 5; margin-bottom: 20px; }
         .btn-main:active { transform: scale(0.97); }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 15px 30px -5px rgba(14, 165, 233, 0.6); }
-        .btn-main::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s; }
-        .btn-main:hover::after { left: 100%; }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; pointer-events: none; }
 
         .btn-secondary { background: #ffffff; color: var(--primary-dark); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: 2px solid #e0f2fe; cursor: pointer; font-family: 'Cairo'; margin-top: 10px; box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
@@ -246,31 +180,10 @@
         .exam-loader { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #7c3aed; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* === تعديل 4: حقول الإدخال المحسنة === */
+        /* Inputs & Selects */
         .input-group { margin-bottom: 15px; text-align: right; position: relative; z-index: 5; }
-        
-        .modern-input { 
-            width: 100%; 
-            padding: 14px 20px; 
-            border: 2px solid #f1f5f9; 
-            background: #f8fafc; 
-            border-radius: 16px; 
-            font-family: 'Cairo'; 
-            font-size: 15px; 
-            font-weight: 600; 
-            color: #334155; 
-            outline: none; 
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .modern-input:focus { 
-            border-color: #3b82f6; 
-            background: #ffffff; 
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); 
-            transform: scale(1.01);
-        }
-
+        .modern-input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; font-size: 14px; outline: none; transition: 0.3s; background: #f8fafc; }
+        .modern-input:focus { border-color: var(--primary); background: white; }
         .modern-input.locked { background: #f1f5f9; color: #64748b; text-align: center; font-weight: bold; cursor: not-allowed; letter-spacing: 1px; }
         
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; margin-bottom: 20px; -webkit-tap-highlight-color: transparent; }
@@ -559,268 +472,266 @@
     </div>
 
     <div class="app-card">
-        <div class="card-inner-wrapper">
-            <div class="card-banner"></div>
-            <div id="adminBadge" class="admin-badge"><i class="fa-solid fa-user-shield"></i> وضع المسؤول مفعل</div>
+        <div class="card-banner"></div>
+        <div id="adminBadge" class="admin-badge"><i class="fa-solid fa-user-shield"></i> وضع المسؤول مفعل</div>
 
-            <div class="card-body">
-                
-                <div class="hero-icon-wrapper" id="heroIconWrapper">
-                    <img src="https://k.top4top.io/p_3615d3vek1.png" class="hero-img" id="heroImage">
-                    <div class="status-icon-container" id="statusIconContainer">
-                        <i class="fa-solid fa-user-nurse hero-icon" id="statusIcon"></i>
+        <div class="card-body">
+            
+            <div class="hero-icon-wrapper" id="heroIconWrapper">
+                <img src="https://k.top4top.io/p_3615d3vek1.png" class="hero-img" id="heroImage">
+                <div class="status-icon-container" id="statusIconContainer">
+                    <i class="fa-solid fa-user-nurse hero-icon" id="statusIcon"></i>
+                </div>
+            </div>
+            
+            <div class="info-bar">
+                <div class="info-pill"><i class="fa-regular fa-clock"></i> <span id="currentTime">--:--:--</span></div>
+                <div class="info-pill"><i class="fa-regular fa-calendar"></i> <span id="currentDate">--/--/----</span></div>
+            </div>
+
+            <div class="card-body-content">
+                <div id="screenWelcome" class="section active">
+                    
+                    <div class="faculty-title-box">
+                        <span class="faculty-title-text">جامعة الريادة - كلية التمريض</span>
                     </div>
-                </div>
-                
-                <div class="info-bar">
-                    <div class="info-pill"><i class="fa-regular fa-clock"></i> <span id="currentTime">--:--:--</span></div>
-                    <div class="info-pill"><i class="fa-regular fa-calendar"></i> <span id="currentDate">--/--/----</span></div>
-                </div>
 
-                <div class="card-body-content">
-                    <div id="screenWelcome" class="section active">
-                        
-                        <div class="faculty-title-box">
-                            <span class="faculty-title-text">جامعة الريادة - كلية التمريض</span>
-                        </div>
+                    <h1>نظام كشف الحضور</h1>
+                    <p>مرحباً بك. يرجى الضغط بالأسفل لتسجيل حضور المحاضرة الحالية.</p>
+                    
+                    <div style="position: relative; z-index: 2;">
+                        <button onclick="safeClick(this, () => startProcess(false))" class="btn-main" id="mainActionBtn">
+                            تسجيل الحضور <i class="fa-solid fa-fingerprint"></i>
+                        </button>
 
-                        <h1>نظام كشف الحضور</h1>
-                        <p>مرحباً بك. يرجى الضغط بالأسفل لتسجيل حضور المحاضرة الحالية.</p>
-                        
-                        <div style="position: relative; z-index: 2;">
-                            <button onclick="safeClick(this, () => startProcess(false))" class="btn-main" id="mainActionBtn">
-                                تسجيل الحضور <i class="fa-solid fa-fingerprint"></i>
+                        <div class="admin-controls-grid">
+                            <button id="btnAdminLogin" onclick="safeClick(this, () => switchScreen('screenAdminLogin'))" class="admin-sub-btn btn-admin-login">
+                                <i class="fa-solid fa-lock sub-btn-icon"></i>
+                                <span>دخول المسؤول</span>
+                            </button>
+                            
+                            <button id="btnAdminLogout" onclick="safeClick(this, openLogoutModal)" class="admin-sub-btn btn-admin-logout" style="display:none;">
+                                <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal sub-btn-icon"></i>
+                                <span>خروج المسؤول</span>
                             </button>
 
-                            <div class="admin-controls-grid">
-                                <button id="btnAdminLogin" onclick="safeClick(this, () => switchScreen('screenAdminLogin'))" class="admin-sub-btn btn-admin-login">
-                                    <i class="fa-solid fa-lock sub-btn-icon"></i>
-                                    <span>دخول المسؤول</span>
-                                </button>
-                                
-                                <button id="btnAdminLogout" onclick="safeClick(this, openLogoutModal)" class="admin-sub-btn btn-admin-logout" style="display:none;">
-                                    <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal sub-btn-icon"></i>
-                                    <span>خروج المسؤول</span>
-                                </button>
+                            <button id="btnViewReport" onclick="handleReportClick()" class="admin-sub-btn btn-report locked">
+                                <i id="reportIcon" class="fa-solid fa-lock sub-btn-icon"></i>
+                                <span>سجل الحضور</span>
+                            </button>
 
-                                <button id="btnViewReport" onclick="handleReportClick()" class="admin-sub-btn btn-report locked">
-                                    <i id="reportIcon" class="fa-solid fa-lock sub-btn-icon"></i>
-                                    <span>سجل الحضور</span>
-                                </button>
+                            <button onclick="openExamModal()" class="admin-sub-btn btn-exams">
+                                <i class="fa-solid fa-file-pen sub-btn-icon"></i>
+                                <span style="font-size: 13px;">تنظيم الامتحانات</span>
+                            </button>
 
-                                <button onclick="openExamModal()" class="admin-sub-btn btn-exams">
-                                    <i class="fa-solid fa-file-pen sub-btn-icon"></i>
-                                    <span style="font-size: 13px;">تنظيم الامتحانات</span>
-                                </button>
-
-                                <button onclick="safeClick(this, () => location.reload())" class="admin-sub-btn btn-refresh">
-                                    <i class="fa-solid fa-rotate-right sub-btn-icon"></i>
-                                    <span style="font-size: 13px;">تحديث النظام</span>
-                                </button>
-                            </div>
-
-                            <div class="academic-footer">
-                                <div class="uni-footer-label-large">
-                                    <i class="fa-solid fa-building-columns"></i> جامعة الريادة للعلوم والتكنولوجيا
-                                </div>
-                            </div>
-
+                            <button onclick="safeClick(this, () => location.reload())" class="admin-sub-btn btn-refresh">
+                                <i class="fa-solid fa-rotate-right sub-btn-icon"></i>
+                                <span style="font-size: 13px;">تحديث النظام</span>
+                            </button>
                         </div>
-                        <div class="uni-watermark"></div>
-                    </div>
 
-                    <div id="screenAdminLogin" class="section">
-                        <h1>دخول المسؤول</h1>
-                        <p>أدخل كلمة المرور.</p>
-                        <div id="adminAlert" style="display:none;" class="alert-box"></div>
-                        <div class="input-group"><input type="password" id="adminPassword" class="modern-input" placeholder="كلمة المرور" required></div>
-                        <button onclick="checkAdminPassword()" class="btn-main">تفعيل <i class="fa-solid fa-key"></i></button>
-                        <button onclick="goBackToWelcome()" class="btn-secondary" style="margin-top:10px;">العودة <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal"></i></button>
-                    </div>
-
-                    <div id="screenLoading" class="section">
-                        <h1 style="margin-top: 10px;">جاري التحقق...</h1>
-                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size:40px; color:var(--primary); margin: 20px 0;"></i>
-                        <p>يرجى السماح للمتصفح بتحديد موقعك الجغرافي.</p>
-                    </div>
-
-                    <div id="screenDataEntry" class="section">
-                        <div class="circular-timer">
-                            <svg class="timer-svg" viewBox="0 0 80 80">
-                                <circle class="timer-circle-bg" cx="40" cy="40" r="35"></circle>
-                                <circle class="timer-circle-fg" id="timerProgress" cx="40" cy="40" r="35"></circle>
-                            </svg>
-                            <div class="timer-text-box">
-                                <span class="timer-number" id="timerNumber">15</span>
-                                <span class="timer-label">ثانية</span>
+                        <div class="academic-footer">
+                            <div class="uni-footer-label-large">
+                                <i class="fa-solid fa-building-columns"></i> جامعة الريادة للعلوم والتكنولوجيا
                             </div>
                         </div>
-                        <div class="attempts-badge" id="attemptsDisplayEntry">
-                            <i class="fa-solid fa-heart-pulse"></i> المتبقي: <span id="attemptsCountValEntry">3</span> محاولات
-                        </div>
-                        <h1 style="font-size:20px; margin-top:5px;">بيانات الطالب / الطالبة</h1>
-                        <div id="dataEntryAlert" class="alert-box" style="display:none; margin-bottom: 25px; color:#ef4444; font-weight:bold;"></div>
-                        
-                        <div class="input-group">
-                            <input type="text" id="uniID" class="modern-input" placeholder="أدخل الكود الجامعي" readonly style="text-align:center; font-size:20px; letter-spacing:2px; font-weight:bold; background:white;">
-                        </div>
-                        
-                        <div class="input-group"><input type="text" id="attendanceCode" class="modern-input locked" readonly></div>
-                        
-                        <div class="custom-keypad">
-                            <button type="button" class="key-btn" onclick="addKey('1')">1</button>
-                            <button type="button" class="key-btn" onclick="addKey('2')">2</button>
-                            <button type="button" class="key-btn" onclick="addKey('3')">3</button>
-                            <button type="button" class="key-btn" onclick="addKey('4')">4</button>
-                            <button type="button" class="key-btn" onclick="addKey('5')">5</button>
-                            <button type="button" class="key-btn" onclick="addKey('6')">6</button>
-                            <button type="button" class="key-btn" onclick="addKey('7')">7</button>
-                            <button type="button" class="key-btn" onclick="addKey('8')">8</button>
-                            <button type="button" class="key-btn" onclick="addKey('9')">9</button>
-                            <button type="button" class="key-btn action-btn" onclick="clearKey()">C</button>
-                            <button type="button" class="key-btn" onclick="addKey('0')">0</button>
-                            <button type="button" class="key-btn delete-btn" onclick="backspaceKey()"><i class="fa-solid fa-delete-left"></i></button>
-                        </div>
 
-                        <button type="button" onclick="handleIdSubmit()" class="btn-main" id="nextStepBtn" style="margin-top:20px;">التالي <i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="uni-watermark"></div>
+                </div>
+
+                <div id="screenAdminLogin" class="section">
+                    <h1>دخول المسؤول</h1>
+                    <p>أدخل كلمة المرور.</p>
+                    <div id="adminAlert" style="display:none;" class="alert-box"></div>
+                    <div class="input-group"><input type="password" id="adminPassword" class="modern-input" placeholder="كلمة المرور" required></div>
+                    <button onclick="checkAdminPassword()" class="btn-main">تفعيل <i class="fa-solid fa-key"></i></button>
+                    <button onclick="goBackToWelcome()" class="btn-secondary" style="margin-top:10px;">العودة <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal"></i></button>
+                </div>
+
+                <div id="screenLoading" class="section">
+                    <h1 style="margin-top: 10px;">جاري التحقق...</h1>
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size:40px; color:var(--primary); margin: 20px 0;"></i>
+                    <p>يرجى السماح للمتصفح بتحديد موقعك الجغرافي.</p>
+                </div>
+
+                <div id="screenDataEntry" class="section">
+                    <div class="circular-timer">
+                        <svg class="timer-svg" viewBox="0 0 80 80">
+                            <circle class="timer-circle-bg" cx="40" cy="40" r="35"></circle>
+                            <circle class="timer-circle-fg" id="timerProgress" cx="40" cy="40" r="35"></circle>
+                        </svg>
+                        <div class="timer-text-box">
+                            <span class="timer-number" id="timerNumber">15</span>
+                            <span class="timer-label">ثانية</span>
+                        </div>
+                    </div>
+                    <div class="attempts-badge" id="attemptsDisplayEntry">
+                        <i class="fa-solid fa-heart-pulse"></i> المتبقي: <span id="attemptsCountValEntry">3</span> محاولات
+                    </div>
+                    <h1 style="font-size:20px; margin-top:5px;">بيانات الطالب / الطالبة</h1>
+                    <div id="dataEntryAlert" class="alert-box" style="display:none; margin-bottom: 25px; color:#ef4444; font-weight:bold;"></div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="uniID" class="modern-input" placeholder="أدخل الكود الجامعي" readonly style="text-align:center; font-size:20px; letter-spacing:2px; font-weight:bold; background:white;">
                     </div>
                     
-                    <div id="screenScanQR" class="section">
-                        <h1 style="font-size:20px; margin-top:10px;">مسح رمز الحضور</h1>
-                        
-                        <div class="student-info-card">
-                            <div class="student-info-item">
-                                <div class="student-info-icon"><i class="fa-solid fa-user-graduate"></i></div>
-                                <span class="student-info-label">اسم الطالب / الطالبة</span>
-                                <span class="student-info-value" id="scanNameDisplay">--</span>
-                            </div>
-                            <div class="student-info-item">
-                                <div class="student-info-icon"><i class="fa-solid fa-id-card"></i></div>
-                                <span class="student-info-label">الكود الجامعي (ID)</span>
-                                <span class="student-info-value" id="scanIDDisplay">--</span>
-                            </div>
-                        </div>
-
-                        <div class="custom-select-wrapper" id="yearSelectWrapper">
-                            <label class="custom-select-label">الفرقة الدراسية</label>
-                            <div class="custom-select-trigger" data-default-text="-- اختر الفرقة --">
-                                <div class="trigger-content">
-                                    <div class="trigger-icon"><i class="fa-solid fa-layer-group"></i></div>
-                                    <span class="trigger-text">-- اختر الفرقة --</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-down arrow-icon"></i>
-                            </div>
-                            <div class="custom-options-overlay" onclick="closeSelect(this)"></div>
-                            <div class="custom-options">
-                                <div class="sheet-handle"></div>
-                                <div class="options-title">اختر الفرقة الدراسية</div>
-                                <div class="custom-option" data-value="first_year">
-                                    <span>الفرقة الأولى</span>
-                                </div>
-                                <div class="custom-option" data-value="second_year">
-                                    <span>الفرقة الثانية</span>
-                                </div>
-                            </div>
-                            <select id="yearSelect" style="display:none;">
-                                <option value="" disabled selected>-- اختر الفرقة --</option>
-                                <option value="first_year">الفرقة الأولى</option>
-                                <option value="second_year">الفرقة الثانية</option>
-                            </select>
-                        </div>
-
-                        <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
-                            <label class="custom-select-label">المادة الدراسية</label>
-                            <div class="custom-select-trigger" data-default-text="-- اختر الفرقة أولاً --">
-                                <div class="trigger-content">
-                                    <div class="trigger-icon"><i class="fa-solid fa-book-open"></i></div>
-                                    <span class="trigger-text">-- اختر الفرقة أولاً --</span>
-                                </div>
-                                <i class="fa-solid fa-chevron-down arrow-icon"></i>
-                            </div>
-                            <div class="custom-options-overlay" onclick="closeSelect(this)"></div>
-                            <div class="custom-options">
-                                <div class="sheet-handle"></div>
-                                <div class="options-title">اختر المادة الدراسية</div>
-                                <div id="subjectOptionsContainer"></div>
-                            </div>
-                            <select id="subjectSelect" style="display:none;" onchange="checkSubjectSelection()">
-                                <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
-                            </select>
-                        </div>
-
-                        <div id="qr-reader">
-                            <div class="scanner-laser"></div>
-                        </div>
-
-                        <div id="startScanCard" class="qr-card-trigger" onclick="safeClick(this, startQrScanner)">
-                            <div class="qr-card-icon"><i class="fa-solid fa-camera"></i></div>
-                            <div>
-                                <div class="qr-card-text">اضغط لفتح الكاميرا</div>
-                                <div class="qr-card-sub">وجه الكاميرا نحو الرمز</div>
-                            </div>
-                        </div>
-                        
-                        <div id="scanSuccessMsg" class="scan-success-badge">
-                            <i class="fa-solid fa-check-circle"></i> تم مسح الكود بنجاح
-                        </div>
-
-                        <button type="button" id="retryCamBtn" class="btn-secondary" onclick="startQrScanner()" style="display:none; background: #fee2e2; color: #ef4444; margin-bottom: 15px;"><i class="fa-solid fa-rotate-right"></i> إعادة تشغيل الكاميرا</button>
-
-                        <input type="hidden" id="sessionPass" required>
-                        <button type="button" id="submitBtn" class="btn-main" disabled style="opacity:0.6; cursor:not-allowed;">تأكيد الحضور <i class="fa-solid fa-paper-plane"></i></button>
+                    <div class="input-group"><input type="text" id="attendanceCode" class="modern-input locked" readonly></div>
+                    
+                    <div class="custom-keypad">
+                        <button type="button" class="key-btn" onclick="addKey('1')">1</button>
+                        <button type="button" class="key-btn" onclick="addKey('2')">2</button>
+                        <button type="button" class="key-btn" onclick="addKey('3')">3</button>
+                        <button type="button" class="key-btn" onclick="addKey('4')">4</button>
+                        <button type="button" class="key-btn" onclick="addKey('5')">5</button>
+                        <button type="button" class="key-btn" onclick="addKey('6')">6</button>
+                        <button type="button" class="key-btn" onclick="addKey('7')">7</button>
+                        <button type="button" class="key-btn" onclick="addKey('8')">8</button>
+                        <button type="button" class="key-btn" onclick="addKey('9')">9</button>
+                        <button type="button" class="key-btn action-btn" onclick="clearKey()">C</button>
+                        <button type="button" class="key-btn" onclick="addKey('0')">0</button>
+                        <button type="button" class="key-btn delete-btn" onclick="backspaceKey()"><i class="fa-solid fa-delete-left"></i></button>
                     </div>
 
-                    <div id="screenSuccess" class="section">
-                        <h1 style="color:#10b981; margin-bottom: 15px;">تم التسجيل بنجاح</h1>
+                    <button type="button" onclick="handleIdSubmit()" class="btn-main" id="nextStepBtn" style="margin-top:20px;">التالي <i class="fa-solid fa-arrow-left"></i></button>
+                </div>
+                
+                <div id="screenScanQR" class="section">
+                    <h1 style="font-size:20px; margin-top:10px;">مسح رمز الحضور</h1>
+                    
+                    <div class="student-info-card">
+                        <div class="student-info-item">
+                            <div class="student-info-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                            <span class="student-info-label">اسم الطالب / الطالبة</span>
+                            <span class="student-info-value" id="scanNameDisplay">--</span>
+                        </div>
+                        <div class="student-info-item">
+                            <div class="student-info-icon"><i class="fa-solid fa-id-card"></i></div>
+                            <span class="student-info-label">الكود الجامعي (ID)</span>
+                            <span class="student-info-value" id="scanIDDisplay">--</span>
+                        </div>
+                    </div>
+
+                    <div class="custom-select-wrapper" id="yearSelectWrapper">
+                        <label class="custom-select-label">الفرقة الدراسية</label>
+                        <div class="custom-select-trigger" data-default-text="-- اختر الفرقة --">
+                            <div class="trigger-content">
+                                <div class="trigger-icon"><i class="fa-solid fa-layer-group"></i></div>
+                                <span class="trigger-text">-- اختر الفرقة --</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="custom-options-overlay" onclick="closeSelect(this)"></div>
+                        <div class="custom-options">
+                            <div class="sheet-handle"></div>
+                            <div class="options-title">اختر الفرقة الدراسية</div>
+                            <div class="custom-option" data-value="first_year">
+                                <span>الفرقة الأولى</span>
+                            </div>
+                            <div class="custom-option" data-value="second_year">
+                                <span>الفرقة الثانية</span>
+                            </div>
+                        </div>
+                        <select id="yearSelect" style="display:none;">
+                            <option value="" disabled selected>-- اختر الفرقة --</option>
+                            <option value="first_year">الفرقة الأولى</option>
+                            <option value="second_year">الفرقة الثانية</option>
+                        </select>
+                    </div>
+
+                    <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
+                        <label class="custom-select-label">المادة الدراسية</label>
+                        <div class="custom-select-trigger" data-default-text="-- اختر الفرقة أولاً --">
+                            <div class="trigger-content">
+                                <div class="trigger-icon"><i class="fa-solid fa-book-open"></i></div>
+                                <span class="trigger-text">-- اختر الفرقة أولاً --</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        </div>
+                        <div class="custom-options-overlay" onclick="closeSelect(this)"></div>
+                        <div class="custom-options">
+                            <div class="sheet-handle"></div>
+                            <div class="options-title">اختر المادة الدراسية</div>
+                            <div id="subjectOptionsContainer"></div>
+                        </div>
+                        <select id="subjectSelect" style="display:none;" onchange="checkSubjectSelection()">
+                            <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
+                        </select>
+                    </div>
+
+                    <div id="qr-reader">
+                        <div class="scanner-laser"></div>
+                    </div>
+
+                    <div id="startScanCard" class="qr-card-trigger" onclick="safeClick(this, startQrScanner)">
+                        <div class="qr-card-icon"><i class="fa-solid fa-camera"></i></div>
+                        <div>
+                            <div class="qr-card-text">اضغط لفتح الكاميرا</div>
+                            <div class="qr-card-sub">وجه الكاميرا نحو الرمز</div>
+                        </div>
+                    </div>
+                    
+                    <div id="scanSuccessMsg" class="scan-success-badge">
+                        <i class="fa-solid fa-check-circle"></i> تم مسح الكود بنجاح
+                    </div>
+
+                    <button type="button" id="retryCamBtn" class="btn-secondary" onclick="startQrScanner()" style="display:none; background: #fee2e2; color: #ef4444; margin-bottom: 15px;"><i class="fa-solid fa-rotate-right"></i> إعادة تشغيل الكاميرا</button>
+
+                    <input type="hidden" id="sessionPass" required>
+                    <button type="button" id="submitBtn" class="btn-main" disabled style="opacity:0.6; cursor:not-allowed;">تأكيد الحضور <i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+
+                <div id="screenSuccess" class="section">
+                    <h1 style="color:#10b981; margin-bottom: 15px;">تم التسجيل بنجاح</h1>
+                    
+                    <div class="ticket-container">
+                        <div class="ticket-header">
+                            <div class="ticket-icon"><i class="fa-solid fa-check"></i></div>
+                            <div style="font-weight: 900; font-size: 18px;">تأكيد حضور</div>
+                        </div>
                         
-                        <div class="ticket-container">
-                            <div class="ticket-header">
-                                <div class="ticket-icon"><i class="fa-solid fa-check"></i></div>
-                                <div style="font-weight: 900; font-size: 18px;">تأكيد حضور</div>
+                        <div class="ticket-body">
+                            <div class="verified-badge">VERIFIED</div>
+                            
+                            <div class="t-row">
+                                <span class="t-label">اسم الطالب / الطالبة</span>
+                                <span class="t-value" id="receiptName">--</span>
                             </div>
                             
-                            <div class="ticket-body">
-                                <div class="verified-badge">VERIFIED</div>
-                                
-                                <div class="t-row">
-                                    <span class="t-label">اسم الطالب / الطالبة</span>
-                                    <span class="t-value" id="receiptName">--</span>
-                                </div>
-                                
-                                <div class="t-row">
-                                    <span class="t-label">الكود الجامعي (ID)</span>
-                                    <span class="t-value english-num" id="receiptID">--</span>
-                                </div>
-                                
-                                <div class="ticket-dashed-line"></div>
-                                
-                                <div class="t-row">
-                                    <span class="t-label">المادة الدراسية</span>
-                                    <span class="t-value" id="receiptSubject" style="color:var(--primary)">--</span>
-                                </div>
-                                
-                                <div class="t-row">
-                                    <span class="t-label">التاريخ</span>
-                                    <span class="t-value english-num" id="receiptDate">--</span>
-                                </div>
-                                
-                                <div class="t-row">
-                                    <span class="t-label">وقت التسجيل</span>
-                                    <span class="t-value english-num" id="receiptTime">--</span>
-                                </div>
+                            <div class="t-row">
+                                <span class="t-label">الكود الجامعي (ID)</span>
+                                <span class="t-value english-num" id="receiptID">--</span>
+                            </div>
+                            
+                            <div class="ticket-dashed-line"></div>
+                            
+                            <div class="t-row">
+                                <span class="t-label">المادة الدراسية</span>
+                                <span class="t-value" id="receiptSubject" style="color:var(--primary)">--</span>
+                            </div>
+                            
+                            <div class="t-row">
+                                <span class="t-label">التاريخ</span>
+                                <span class="t-value english-num" id="receiptDate">--</span>
+                            </div>
+                            
+                            <div class="t-row">
+                                <span class="t-label">وقت التسجيل</span>
+                                <span class="t-value english-num" id="receiptTime">--</span>
                             </div>
                         </div>
-
-                        <div style="color:#64748b; font-weight:700; font-size:12px; margin-top:10px;">
-                            <i class="fa-solid fa-circle-check" style="color:#10b981;"></i> تم حفظ البيانات في النظام بنجاح
-                        </div>
                     </div>
 
-                    <div id="screenError" class="section">
-                        <h1 style="color:#ef4444;">تنبيه</h1>
-                        <div id="errorMsg" class="alert-box"></div>
-                        <button id="retryBtn" class="btn-main" style="background:#334155; margin-top:20px;">حاول مرة أخرى</button>
+                    <div style="color:#64748b; font-weight:700; font-size:12px; margin-top:10px;">
+                        <i class="fa-solid fa-circle-check" style="color:#10b981;"></i> تم حفظ البيانات في النظام بنجاح
                     </div>
+                </div>
+
+                <div id="screenError" class="section">
+                    <h1 style="color:#ef4444;">تنبيه</h1>
+                    <div id="errorMsg" class="alert-box"></div>
+                    <button id="retryBtn" class="btn-main" style="background:#334155; margin-top:20px;">حاول مرة أخرى</button>
                 </div>
             </div>
         </div>
@@ -1303,6 +1214,7 @@
 
         function closeReportModal() { playClick(); document.getElementById('reportModal').style.display = 'none'; }
         
+        /* === MODAL & DELETE LOGIC (UPDATED) === */
         let pendingAction = null;
 
         function showModernConfirm(title, text, actionCallback) {
@@ -1374,3 +1286,4 @@
     </script>
 </body>
 </html>
+
