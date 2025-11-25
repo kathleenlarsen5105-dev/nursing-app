@@ -49,74 +49,105 @@
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
 
-        /* === الأزرار الرئيسية والمعدلة (Stairs Style) === */
+        /* === الأزرار الرئيسية والمعدلة (تصميم حديث) === */
         .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; padding: 15px; border-radius: 20px; font-size: 16px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.5); transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; z-index: 5; margin-bottom: 20px; }
         .btn-main:active { transform: scale(0.97); }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; pointer-events: none; }
 
         .btn-secondary { background: #ffffff; color: var(--primary-dark); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: 2px solid #e0f2fe; cursor: pointer; font-family: 'Cairo'; margin-top: 10px; box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
         
-        /* Grid Container for Admin Buttons (Stairs Effect) */
+        /* شبكة الأزرار الفرعية */
         .admin-controls-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
             margin-top: 10px;
         }
 
         .admin-sub-btn {
             border-radius: 18px;
-            padding: 15px 10px;
+            padding: 12px 10px;
             font-size: 12px;
             font-weight: 800;
             border: none;
             cursor: pointer;
             font-family: 'Cairo';
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            height: 90px;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            height: 85px;
         }
 
-        .admin-sub-btn:active { transform: scale(0.92); }
+        .admin-sub-btn:active { transform: scale(0.95); }
 
-        /* Login Button (Blueish) */
+        /* زر دخول المسؤول (أزرق فاتح) */
         .btn-admin-login {
             background: #f0f9ff;
             color: var(--primary-dark);
             border: 1px solid #bae6fd;
-            grid-column: span 2; /* Full width if needed, or put inside grid */
         }
 
-        /* Logout Button (Redish) */
+        /* زر خروج المسؤول (أحمر فاتح) */
         .btn-admin-logout {
             background: #fef2f2;
             color: #b91c1c;
             border: 1px solid #fecaca;
         }
         
-        /* Report Button (Greenish) - The "Lower Step" */
-        .btn-admin-report {
+        /* زر سجل الحضور (متغير الحالة) */
+        .btn-report {
+            transition: all 0.3s;
+        }
+        
+        /* حالة القفل (عادي) */
+        .btn-report.locked {
+            background: #f8fafc;
+            color: #94a3b8;
+            border: 1px solid #e2e8f0;
+            cursor: not-allowed; /* يظهر كأنه مقفل */
+        }
+
+        /* حالة الفتح (مسؤول) */
+        .btn-report.unlocked {
             background: #ecfdf5;
             color: #047857;
             border: 1px solid #a7f3d0;
-            transform: translateY(15px); /* This creates the stair effect */
+            cursor: pointer;
         }
 
-        .btn-admin-report:disabled {
-            background: #f8fafc;
-            color: #94a3b8;
-            border-color: #e2e8f0;
-            opacity: 0.8;
-            cursor: not-allowed;
-            transform: translateY(15px);
+        /* زر تنظيم الامتحانات (بنفسجي فاتح - تصميم مميز) */
+        .btn-exams {
+            grid-column: span 2; /* يأخذ العرض الكامل */
+            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+            flex-direction: row; /* أيقونة بجانب النص */
+            height: 60px;
+            margin-top: 5px;
         }
 
-        .sub-btn-icon { font-size: 24px; margin-bottom: 2px; }
+        .sub-btn-icon { font-size: 20px; margin-bottom: 2px; }
+        .btn-exams .sub-btn-icon { margin-bottom: 0; font-size: 18px; }
+
+        /* نافذة الامتحانات */
+        #examModal .modal-box {
+            border: 2px solid #ddd6fe;
+            background: #ffffff;
+        }
+        .exam-loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #7c3aed;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* === بقية التصميم === */
         .input-group { margin-bottom: 15px; text-align: right; position: relative; z-index: 5; }
@@ -143,10 +174,15 @@
         .custom-select-wrapper.open .trigger-icon { background: var(--primary); color: white; }
         .arrow-icon { font-size: 12px; color: #94a3b8; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
         .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
+        
+        /* FIX: Ensure overlay is hidden */
         .custom-options-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 99990; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s; }
         .custom-select-wrapper.open .custom-options-overlay { opacity: 1; visibility: visible; pointer-events: all; }
+        
+        /* FIX: Ensure menu is completely hidden */
         .custom-options { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-radius: 30px 30px 0 0; padding: 25px 20px 40px 20px; z-index: 99999; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(100%); visibility: hidden; pointer-events: none; transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), visibility 0.4s; max-height: 70vh; overflow-y: auto; }
         .custom-select-wrapper.open .custom-options { transform: translateY(0); visibility: visible; pointer-events: all; }
+        
         .sheet-handle { width: 40px; height: 5px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 20px auto; }
         .options-title { text-align: center; font-weight: 800; color: #1e293b; margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
         .custom-option { padding: 16px 20px; margin-bottom: 10px; font-size: 15px; font-weight: 700; color: #475569; border-radius: 16px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; background: #f8fafc; }
@@ -281,6 +317,15 @@
         </div>
     </div>
 
+    <div id="examModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="exam-loader"></div>
+            <div class="modal-title" style="color: #7c3aed;">جاري الإعداد</div>
+            <div class="modal-text">يتم تجهيز نظام الامتحانات حالياً...</div>
+            <button onclick="closeExamModal()" class="modal-btn btn-cancel">إغلاق</button>
+        </div>
+    </div>
+
     <div id="cameraErrorModal" class="modal-overlay">
         <div class="modal-box">
             <i class="fa-solid fa-camera-slash" style="font-size: 45px; color: #ef4444; margin-bottom: 15px;"></i>
@@ -344,7 +389,7 @@
                         </button>
 
                         <div class="admin-controls-grid">
-                            <button id="btnAdminLogin" onclick="safeClick(this, () => switchScreen('screenAdminLogin'))" class="admin-sub-btn btn-admin-login" style="grid-column: span 2;">
+                            <button id="btnAdminLogin" onclick="safeClick(this, () => switchScreen('screenAdminLogin'))" class="admin-sub-btn btn-admin-login">
                                 <i class="fa-solid fa-lock sub-btn-icon"></i>
                                 <span>دخول المسؤول</span>
                             </button>
@@ -354,9 +399,14 @@
                                 <span>خروج المسؤول</span>
                             </button>
 
-                            <button id="btnViewReport" onclick="safeClick(this, openReportModal)" class="admin-sub-btn btn-admin-report" style="display:none;" disabled>
-                                <i class="fa-solid fa-list-check sub-btn-icon"></i>
+                            <button id="btnViewReport" onclick="handleReportClick()" class="admin-sub-btn btn-report locked">
+                                <i id="reportIcon" class="fa-solid fa-lock sub-btn-icon"></i>
                                 <span>سجل الحضور</span>
+                            </button>
+
+                            <button onclick="openExamModal()" class="admin-sub-btn btn-exams">
+                                <i class="fa-solid fa-file-pen sub-btn-icon"></i>
+                                <span style="font-size: 13px;">تنظيم الامتحانات</span>
                             </button>
                         </div>
 
@@ -444,7 +494,7 @@
 
                     <div class="custom-select-wrapper" id="yearSelectWrapper">
                         <label class="custom-select-label">الفرقة الدراسية</label>
-                        <div class="custom-select-trigger">
+                        <div class="custom-select-trigger" data-default-text="-- اختر الفرقة --">
                             <div class="trigger-content">
                                 <div class="trigger-icon"><i class="fa-solid fa-layer-group"></i></div>
                                 <span class="trigger-text">-- اختر الفرقة --</span>
@@ -471,7 +521,7 @@
 
                     <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
                         <label class="custom-select-label">المادة الدراسية</label>
-                        <div class="custom-select-trigger">
+                        <div class="custom-select-trigger" data-default-text="-- اختر الفرقة أولاً --">
                             <div class="trigger-content">
                                 <div class="trigger-icon"><i class="fa-solid fa-book-open"></i></div>
                                 <span class="trigger-text">-- اختر الفرقة أولاً --</span>
@@ -611,31 +661,77 @@
         let attendanceData = {}; 
         let processIsActive = false; 
         
-        // --- SAFE CLICK IMPLEMENTATION (Debounce/Throttle) ---
+        // --- SAFE CLICK & EXAM MODAL ---
         let isProcessingClick = false;
         function safeClick(element, callback) {
             if (isProcessingClick) return;
-            if (element && (element.disabled || element.classList.contains('disabled'))) return;
+            if (element && (element.disabled || element.classList.contains('disabled') || element.classList.contains('locked'))) return;
             
             isProcessingClick = true;
-            if(element) {
-                element.style.pointerEvents = 'none';
-                element.style.opacity = '0.7';
-            }
-
-            // تنفيذ الدالة المطلوبة
-            if (typeof callback === 'function') {
-                callback();
-            }
-
-            // إعادة تفعيل الزر بعد فترة قصيرة
+            if(element) { element.style.pointerEvents = 'none'; element.style.opacity = '0.7'; }
+            if (typeof callback === 'function') callback();
             setTimeout(() => {
                 isProcessingClick = false;
-                if(element) {
-                    element.style.pointerEvents = 'auto';
-                    element.style.opacity = '1';
-                }
-            }, 600); // منع النقر المتكرر لمدة 0.6 ثانية
+                if(element) { element.style.pointerEvents = 'auto'; element.style.opacity = '1'; }
+            }, 600);
+        }
+
+        function openExamModal() { playClick(); document.getElementById('examModal').style.display = 'flex'; }
+        function closeExamModal() { playClick(); document.getElementById('examModal').style.display = 'none'; }
+
+        function handleReportClick() {
+            const btn = document.getElementById('btnViewReport');
+            if (btn.classList.contains('locked')) {
+                if(navigator.vibrate) navigator.vibrate(50);
+                // Optionally show a small tooltip or shake animation
+            } else {
+                safeClick(btn, openReportModal);
+            }
+        }
+
+        // --- DEEP RESET FUNCTION (THE FIX) ---
+        function resetApplicationState() {
+            // 1. Reset Data Variables
+            attendanceData = {};
+            
+            // 2. Clear Session Storage items related to a single transaction
+            sessionStorage.removeItem(TEMP_NAME_KEY);
+            sessionStorage.removeItem(TEMP_ID_KEY);
+            sessionStorage.removeItem(TEMP_CODE_KEY);
+            sessionStorage.removeItem(SESSION_END_TIME_KEY);
+            
+            // 3. Reset Input Fields
+            document.getElementById('uniID').value = '';
+            document.getElementById('attendanceCode').value = '';
+            document.getElementById('sessionPass').value = '';
+            
+            // 4. Reset Dropdowns to Default
+            // Year Dropdown
+            const yearWrapper = document.getElementById('yearSelectWrapper');
+            yearWrapper.querySelector('.trigger-text').textContent = '-- اختر الفرقة --';
+            yearWrapper.classList.remove('open');
+            yearWrapper.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+            document.getElementById('yearSelect').value = '';
+            
+            // Subject Dropdown
+            const subjectWrapper = document.getElementById('subjectSelectWrapper');
+            subjectWrapper.querySelector('.trigger-text').textContent = '-- اختر الفرقة أولاً --';
+            subjectWrapper.classList.add('disabled');
+            subjectWrapper.classList.remove('open');
+            document.getElementById('subjectOptionsContainer').innerHTML = '';
+            document.getElementById('subjectSelect').innerHTML = '<option value="" disabled selected>-- اختر الفرقة أولاً --</option>';
+            
+            // 5. Reset Submit Button
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.style.opacity = "0.6";
+            btn.style.cursor = "not-allowed";
+            
+            // 6. Reset UI Texts
+            document.getElementById('scanNameDisplay').innerText = '--';
+            document.getElementById('scanIDDisplay').innerText = '--';
+            
+            console.log("🧹 Application State Deeply Reset");
         }
 
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(e => userIP = "Hidden IP");
@@ -710,22 +806,31 @@
             const loginBtn = document.getElementById('btnAdminLogin');
             const logoutBtn = document.getElementById('btnAdminLogout');
             const reportBtn = document.getElementById('btnViewReport'); 
+            const reportIcon = document.getElementById('reportIcon');
             const adminFloating = document.getElementById('adminFloatingBack');
             const attemptsBadge = document.getElementById('attemptsDisplayEntry');
             
             if (isAdmin) { 
                 badge.style.display = 'block'; 
                 loginBtn.style.display = 'none'; 
-                logoutBtn.style.display = 'flex'; // Changed to flex for new layout
-                reportBtn.style.display = 'flex'; // Changed to flex
-                reportBtn.disabled = false; 
-                // Report button style handled in CSS now
+                logoutBtn.style.display = 'flex'; 
+                
+                // Unlock Report Button
+                reportBtn.classList.remove('locked');
+                reportBtn.classList.add('unlocked');
+                reportIcon.className = 'fa-solid fa-list-check sub-btn-icon';
+                
                 if(attemptsBadge) attemptsBadge.style.display = 'none'; 
             } else { 
                 badge.style.display = 'none'; 
                 loginBtn.style.display = 'flex'; 
                 logoutBtn.style.display = 'none'; 
-                reportBtn.style.display = 'none'; // Hide report button for users
+                
+                // Lock Report Button
+                reportBtn.classList.remove('unlocked');
+                reportBtn.classList.add('locked');
+                reportIcon.className = 'fa-solid fa-lock sub-btn-icon';
+                
                 adminFloating.style.display = 'none'; 
                 if(attemptsBadge) attemptsBadge.style.display = 'inline-flex'; 
             }
@@ -734,6 +839,9 @@
 
         async function startProcess(skip = false) {
             playClick();
+            // Ensure fresh start
+            resetApplicationState(); 
+            
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { if (getAttemptsLeft() <= 0) { showError("⛔ لقد استنفذت جميع محاولاتك اليوم (3 محاولات).<br>تم حظرك.", true); return; } }
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) === 'true') { generateCodeAndShowDataEntry(); return; }
             const isOnline = await checkRealConnection(); if (!isOnline) { showConnectionLostModal(); return; }
@@ -751,9 +859,16 @@
 
         function generateCodeAndShowDataEntry() {
             playClick();
+            // Always generate a fresh code and reset data container
+            attendanceData = {}; 
             let code = (Math.floor(142 + Math.random() * 1280) * 7); if (code < 1000) code += 7000;
-            attendanceData.code = code.toString(); document.getElementById('attendanceCode').value = code; sessionStorage.setItem(TEMP_CODE_KEY, code.toString());
+            
+            attendanceData.code = code.toString(); 
+            document.getElementById('attendanceCode').value = code; 
+            
+            sessionStorage.setItem(TEMP_CODE_KEY, code.toString());
             const newEndTime = Date.now() + (DATA_ENTRY_TIMEOUT_SEC * 1000); sessionEndTime = newEndTime; sessionStorage.setItem(SESSION_END_TIME_KEY, newEndTime.toString());
+            
             switchScreen('screenDataEntry'); startCountdown(); 
         }
 
@@ -808,6 +923,10 @@
                 await fetch(CONFIG.sheetApiUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formParams.toString(), signal: currentAbortController.signal });
                 clearTimeout(timeoutId); processIsActive = false; releaseWakeLock();
                 if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { localStorage.setItem(storageKey, new Date().toLocaleDateString('en-GB')); }
+                
+                // --- CRITICAL FIX: RESET EVERYTHING FOR NEXT STUDENT ---
+                resetApplicationState();
+                
                 switchScreen('screenSuccess'); playSuccess(); confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#10b981'] });
             } catch (error) { btn.innerHTML = originalText; btn.disabled = false; showConnectionLostModal(); }
         }
