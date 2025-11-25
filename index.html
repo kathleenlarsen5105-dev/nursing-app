@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>نظام كشف الحضور المطور</title>
+    <title>نظام كشف الحضور المطور - كلية التمريض</title>
     
     <meta property="og:title" content="جامعة الريادة - كلية التمريض">
+    <meta property="og:description" content="نظام تسجيل الحضور الذكي.">
+    <meta property="og:image" content="https://k.top4top.io/p_3615d3vek1.png">
+    
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,29 +34,6 @@
         .card-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(255,255,255,1), transparent); }
         .card-body { padding: 0 25px 30px 25px; position: relative; z-index: 2; }
         
-        /* زر التحديث الجديد */
-        .refresh-fab {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            cursor: pointer;
-            z-index: 100;
-            border: 1px solid #e2e8f0;
-            color: var(--primary-dark);
-            transition: all 0.3s;
-        }
-        .refresh-fab:active { transform: scale(0.9) rotate(180deg); background: white; }
-
-        /* بقية التصميم كما هو ... */
         .hero-icon-wrapper { width: 110px; height: 110px; margin: -65px auto 20px auto; position: relative; z-index: 10; border-radius: 50%; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 4px rgba(255, 255, 255, 0.3), 0 0 25px rgba(14, 165, 233, 0.4); overflow: hidden; animation: float-magic 4s ease-in-out infinite alternate; }
         .hero-img { width: 100%; height: 100%; object-fit: cover; transform: scale(0.94); border-radius: 50%; display: block; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 1; box-shadow: inset 0 0 15px rgba(0,0,0,0.05); position: relative; z-index: 2; }
         .status-icon-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); opacity: 0; transform: scale(0); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-radius: 50%; z-index: 3; }
@@ -69,23 +49,75 @@
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
 
-        /* الأزرار والشبكة */
+        /* === الأزرار الرئيسية والمعدلة (تصميم حديث) === */
         .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 100%; padding: 15px; border-radius: 20px; font-size: 16px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.5); transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; z-index: 5; margin-bottom: 20px; }
         .btn-main:active { transform: scale(0.97); }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; pointer-events: none; }
+
         .btn-secondary { background: #ffffff; color: var(--primary-dark); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: 2px solid #e0f2fe; cursor: pointer; font-family: 'Cairo'; margin-top: 10px; box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
         
-        .admin-controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .admin-sub-btn { border-radius: 18px; padding: 12px 10px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo'; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); height: 85px; }
+        /* شبكة الأزرار الفرعية */
+        .admin-controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .admin-sub-btn {
+            border-radius: 18px;
+            padding: 12px 10px;
+            font-size: 12px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            font-family: 'Cairo';
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            height: 85px;
+        }
+
         .admin-sub-btn:active { transform: scale(0.95); }
+
+        /* زر دخول المسؤول (أزرق فاتح) */
         .btn-admin-login { background: #f0f9ff; color: var(--primary-dark); border: 1px solid #bae6fd; }
+        /* زر خروج المسؤول (أحمر فاتح) */
         .btn-admin-logout { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+        
+        /* زر سجل الحضور (متغير الحالة) */
         .btn-report { transition: all 0.3s; }
         .btn-report.locked { background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; cursor: not-allowed; }
         .btn-report.unlocked { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; cursor: pointer; }
-        .btn-exams { grid-column: span 2; background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #7c3aed; border: 1px solid #ddd6fe; flex-direction: row; height: 60px; margin-top: 5px; }
+
+        /* زر تنظيم الامتحانات (بنفسجي فاتح - تصميم مميز) */
+        .btn-exams {
+            grid-column: span 2; /* يأخذ العرض الكامل */
+            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+            flex-direction: row; 
+            height: 60px;
+            margin-top: 5px;
+        }
+
+        /* زر التحديث الجديد (أسفل الامتحانات) */
+        .btn-refresh {
+            grid-column: span 2; /* يأخذ العرض الكامل */
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe); /* أزرق سماوي فاتح */
+            color: #0ea5e9;
+            border: 1px solid #bae6fd;
+            flex-direction: row;
+            height: 55px;
+            margin-top: 5px;
+        }
+
         .sub-btn-icon { font-size: 20px; margin-bottom: 2px; }
-        .btn-exams .sub-btn-icon { margin-bottom: 0; font-size: 18px; }
+        .btn-exams .sub-btn-icon, .btn-refresh .sub-btn-icon { margin-bottom: 0; font-size: 18px; }
 
         /* MODAL STYLES - NEW REPORT DESIGN */
         #reportModal .modal-box { max-width: 380px; padding: 0; overflow: hidden; background: #f8fafc; }
@@ -236,10 +268,6 @@
         <p>هذا النظام متاح فقط من الهواتف الذكية.</p>
     </div>
 
-    <div class="refresh-fab" onclick="location.reload()">
-        <i class="fa-solid fa-rotate-right"></i>
-    </div>
-
     <div class="bg-image"></div>
     <audio id="successSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
     <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
@@ -360,6 +388,11 @@
                             <button onclick="openExamModal()" class="admin-sub-btn btn-exams">
                                 <i class="fa-solid fa-file-pen sub-btn-icon"></i>
                                 <span style="font-size: 13px;">تنظيم الامتحانات</span>
+                            </button>
+
+                            <button onclick="safeClick(this, () => location.reload())" class="admin-sub-btn btn-refresh">
+                                <i class="fa-solid fa-rotate-right sub-btn-icon"></i>
+                                <span style="font-size: 13px;">تحديث النظام</span>
                             </button>
                         </div>
 
