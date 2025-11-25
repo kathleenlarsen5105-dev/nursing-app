@@ -69,45 +69,80 @@
         .sub-btn-icon { font-size: 20px; margin-bottom: 2px; }
         .btn-exams .sub-btn-icon, .btn-refresh .sub-btn-icon { margin-bottom: 0; font-size: 18px; }
 
-        /* === MODAL & REPORT Styles (المحدث) === */
+        /* === MODAL Styles (Updated) === */
         #reportModal .modal-box { max-width: 380px; padding: 0; overflow: hidden; background: #f8fafc; }
-        .report-modal-header { padding: 20px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
-        .report-modal-body { padding: 15px; max-height: 50vh; overflow-y: auto; }
-        .report-modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #e2e8f0; }
+        .report-modal-header { padding: 15px 20px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .report-modal-body { padding: 15px; overflow-y: auto; background: #f8fafc; scrollbar-width: thin; }
+        .report-modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #e2e8f0; z-index: 10; }
         
-        /* === تصميم سجل الحضور العصري === */
-        .modern-report-item {
-            background: #ffffff;
-            border-right: 5px solid var(--primary); /* خط ملون جانبي */
+        /* === تصميم سجل الحضور العصري والمقسم === */
+        .subject-group-title {
+            background: linear-gradient(90deg, #f1f5f9 0%, #ffffff 100%);
+            padding: 10px 15px;
+            margin: 15px 0 10px 0;
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            font-size: 13px;
+            border-right: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .count-badge { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; }
+
+        .student-report-card {
+            background: white;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 15px -3px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
-            border: 1px solid #f1f5f9;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .modern-report-item:hover { transform: translateY(-3px); }
+        .student-report-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -5px rgba(0,0,0,0.1); }
 
-        .rep-info { display: flex; flex-direction: column; gap: 5px; text-align: right; width: 100%; }
-        .rep-header { display: flex; justify-content: space-between; align-items: center; margin-left: 10px; }
-        .rep-name { font-weight: 800; font-size: 14px; color: #1e293b; }
-        
-        /* بادج المادة */
-        .subject-badge { background: #ecfdf5; color: #059669; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; border: 1px solid #d1fae5; }
-        
-        .rep-meta { display: flex; gap: 10px; font-size: 11px; color: #64748b; font-weight: 600; }
-        
-        /* زر الحذف */
-        .rep-delete { background: #fef2f2; color: #ef4444; width: 35px; height: 35px; border-radius: 10px; border: 1px solid #fee2e2; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; font-size: 14px; }
-        .rep-delete:hover { background: #ef4444; color: white; }
-        .rep-delete:active { transform: scale(0.9); }
+        .st-data-col { display: flex; flex-direction: column; gap: 4px; text-align: right; }
+        .st-name { font-weight: 800; font-size: 13px; color: #1e293b; }
+        .st-meta-row { display: flex; gap: 10px; font-size: 10px; color: #64748b; font-weight: 600; align-items: center; }
+        .st-tag { background: #f8fafc; padding: 2px 6px; border-radius: 6px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 4px; }
 
-        .btn-close-report { width: 100%; background: #334155; color: white; padding: 14px; border-radius: 14px; font-weight: 800; border: none; cursor: pointer; }
-        .btn-clear-all { color: #ef4444; background: none; border: none; font-size: 12px; font-weight: 800; cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: 0.2s; }
-        .btn-clear-all:hover { background: #fee2e2; }
+        /* أزرار الحذف والتحكم */
+        .btn-delete-item {
+            width: 38px; height: 38px;
+            background: #fff1f2; color: #f43f5e;
+            border: none; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s; font-size: 14px; flex-shrink: 0; margin-right: 10px;
+        }
+        .btn-delete-item:active { transform: scale(0.9); background: #f43f5e; color: white; }
+
+        /* أزرار الفوتر الجديدة */
+        .report-footer-actions { display: flex; flex-direction: column; gap: 10px; }
+        .btn-refresh-list {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; width: 100%; padding: 14px;
+            border-radius: 16px; font-weight: 800; border: none; cursor: pointer; font-family: 'Cairo';
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;
+        }
+        .btn-refresh-list:active { transform: scale(0.98); }
+        .btn-close-stylish {
+            background: #f1f5f9; color: #475569; width: 100%; padding: 12px;
+            border-radius: 16px; font-weight: 700; border: 1px solid #e2e8f0; cursor: pointer; font-family: 'Cairo'; font-size: 13px;
+        }
+        .btn-clear-stylish {
+            background: #fee2e2; color: #ef4444; padding: 6px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;
+        }
+        .btn-clear-stylish:hover { background: #ef4444; color: white; }
+
 
         /* Other Modals */
         #examModal .modal-box { border: 2px solid #ddd6fe; background: #ffffff; }
@@ -246,18 +281,33 @@
     </div>
 
     <div id="reportModal" class="modal-overlay">
-        <div class="modal-box" style="padding:0;">
+        <div class="modal-box" style="padding:0; height: 80vh; display: flex; flex-direction: column;">
+            
             <div class="report-modal-header">
-                <div class="modal-title" style="margin:0; font-size:16px;">سجل اليوم</div>
-                <button onclick="clearAllReport()" class="btn-clear-all"><i class="fa-solid fa-trash-can"></i> حذف الكل</button>
+                <div style="display:flex; flex-direction:column; align-items:flex-start;">
+                    <div class="modal-title" style="margin:0; font-size:16px;">سجل الحضور اليومي</div>
+                    <div style="font-size:10px; color:#94a3b8; font-weight:bold;">مصنف حسب المواد - الأحدث أولاً</div>
+                </div>
+                <button onclick="clearAllReport()" class="btn-clear-stylish">
+                    <i class="fa-solid fa-trash-can"></i> مسح السجل
+                </button>
             </div>
-            <div id="reportContent" class="report-modal-body"></div>
+
+            <div id="reportContent" class="report-modal-body" style="flex: 1; background: #f8fafc;"></div>
+
             <div class="report-modal-footer">
-                <button onclick="closeReportModal()" class="btn-close-report">إغلاق السجل</button>
+                <div class="report-footer-actions">
+                    <button onclick="openReportModal()" class="btn-refresh-list">
+                        تحديث القائمة <i class="fa-solid fa-rotate"></i>
+                    </button>
+                    <button onclick="closeReportModal()" class="btn-close-stylish">
+                        إغلاق السجل
+                    </button>
+                </div>
             </div>
+
         </div>
     </div>
-
     <div id="examModal" class="modal-overlay">
         <div class="modal-box">
             <div class="exam-loader"></div>
@@ -283,7 +333,7 @@
             <div class="modal-text">لا يوجد اتصال بالإنترنت.<br>جاري المحاولة...</div>
         </div>
     </div>
-    
+     
     <div id="toastMessage" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; z-index: 20000; animation: fadeIn 0.3s;">
         تم تفعيل وضع المسؤول بنجاح
     </div>
@@ -580,9 +630,6 @@
             try { studentsDB = JSON.parse(savedDB); console.log("⚡ تم تحميل الأسماء محلياً:", Object.keys(studentsDB).length); } catch(e) { console.error("Error parsing DB", e); }
         }
 
-        // جلب الأسماء (يفضل وضع رابط منفصل إذا كانت الأسماء في شيت آخر)
-        // هنا نفترض أن نفس السكريبت يعيد الأسماء في حالة معينة، أو نستخدمه لتحديث البيانات
-        // للتبسيط، الكود الحالي سيحاول جلب البيانات من نفس الرابط
         fetch(CONFIG.sheetApiUrl).then(r => r.json()).then(d => { if(!d.error) { studentsDB = d; localStorage.setItem(LOCAL_STORAGE_DB_KEY, JSON.stringify(d)); console.log("✅ تم تحديث قاعدة البيانات:", Object.keys(d).length); } }).catch(e => console.log("DB Update Error", e));
 
         const subjectsData = {
@@ -850,14 +897,13 @@
             
             const finalCodeValue = `${attendanceData.code} (QR: ${sessionPassVal})`; 
             
-            // === NEW: Send Data for Writing ===
             const formParams = new URLSearchParams(); 
-            formParams.append("action", "register"); // Key change
+            formParams.append("action", "register"); 
             formParams.append("id", attendanceData.uniID); 
             formParams.append("name", attendanceData.name); 
             formParams.append("code", finalCodeValue); 
             formParams.append("ip", userIP); 
-            formParams.append("subject", selectedSubject); // Included Subject
+            formParams.append("subject", selectedSubject); 
             
             try {
                 await fetch(CONFIG.sheetApiUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formParams.toString() });
@@ -941,7 +987,7 @@
         function initGlobalGuard() { setInterval(async () => { const o = await checkRealConnection(); if (!o) showConnectionLostModal(); else hideConnectionLostModal(); }, 2000); }
         function handleGpsError(error) { let msg = "يرجى تفعيل الموقع (GPS)."; if(error.code == 1) msg = "⛔ تم رفض إذن الموقع."; else if(error.code == 2) msg = "⚠️ إشارة GPS ضعيفة."; document.getElementById('errorMsg').innerHTML = msg; document.getElementById('retryBtn').onclick = function() { playClick(); switchScreen('screenLoading'); navigator.geolocation.getCurrentPosition(checkPosition, handleGpsError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); }; switchScreen('screenError'); }
 
-        // === REPORT & DELETE LOGIC ===
+        // === UPDATED REPORT & DELETE LOGIC ===
         async function openReportModal() { 
             playClick(); 
             document.getElementById('reportModal').style.display = 'flex'; 
@@ -949,56 +995,96 @@
             const d = new Date().toLocaleDateString('en-GB'); 
             const contentDiv = document.getElementById('reportContent');
             
-            contentDiv.innerHTML = '<div style="text-align:center; padding:30px;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:25px; color:var(--primary);"></i><br><br>جاري جلب السجل...</div>';
+            contentDiv.innerHTML = `
+                <div style="text-align:center; padding:50px 20px;">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size:30px; color:var(--primary); margin-bottom:15px;"></i>
+                    <div style="font-weight:bold; color:#64748b;">جاري تحديث البيانات...</div>
+                </div>`;
             
             try {
-                // Fetch report from Google Sheet
                 const response = await fetch(`${CONFIG.sheetApiUrl}?action=getReport&date=${encodeURIComponent(d)}`);
-                const data = await response.json();
+                let data = await response.json();
                 
                 if (!data || data.length === 0) { 
-                    contentDiv.innerHTML = '<div class="empty-state">لا يوجد حضور مسجل اليوم.</div>'; 
+                    contentDiv.innerHTML = `
+                        <div class="empty-state" style="margin-top:50px;">
+                            <i class="fa-solid fa-clipboard-list" style="font-size:40px; margin-bottom:15px; opacity:0.3;"></i><br>
+                            لا يوجد حضور مسجل اليوم حتى الآن.
+                        </div>`; 
                     return; 
                 }
-                
-                let html = '';
-                data.forEach(item => {
-                    html += `
-                    <div class="modern-report-item">
-                        <div class="rep-info">
-                            <div class="rep-header">
-                                <span class="rep-name">${item.name}</span>
-                                <span class="subject-badge">${item.subject}</span>
-                            </div>
-                            <div class="rep-meta">
-                                <span><i class="fa-solid fa-id-card"></i> ${item.uniID}</span>
-                                <span><i class="fa-regular fa-clock"></i> ${item.timestamp}</span>
-                            </div>
-                        </div>
-                        <button class="rep-delete" onclick="deleteEntry('${item.uniID}', this)">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>`;
+
+                data.reverse(); // Newest first
+
+                const groupedData = {};
+                data.forEach(student => {
+                    const subject = student.subject || "مادة غير محددة";
+                    if (!groupedData[subject]) { groupedData[subject] = []; }
+                    groupedData[subject].push(student);
                 });
-                contentDiv.innerHTML = html;
+
+                let finalHtml = '';
+                
+                for (const [subject, students] of Object.entries(groupedData)) {
+                    finalHtml += `
+                        <div class="subject-section">
+                            <div class="subject-group-title">
+                                <span><i class="fa-solid fa-book-bookmark"></i> ${subject}</span>
+                                <span class="count-badge">${students.length} طالب</span>
+                            </div>
+                    `;
+
+                    students.forEach(item => {
+                        finalHtml += `
+                            <div class="student-report-card">
+                                <div class="st-data-col">
+                                    <div class="st-name">${item.name}</div>
+                                    <div class="st-meta-row">
+                                        <div class="st-tag">
+                                            <i class="fa-solid fa-fingerprint" style="color:var(--primary)"></i> 
+                                            <span style="font-family:'Outfit';">${item.uniID}</span>
+                                        </div>
+                                        <div class="st-tag">
+                                            <i class="fa-regular fa-clock" style="color:#f59e0b"></i> 
+                                            <span style="font-family:'Outfit';">${item.timestamp.split(' ')[1] || item.timestamp}</span>
+                                        </div>
+                                    </div>
+                                    <div class="st-meta-row" style="margin-top:2px;">
+                                        <div class="st-tag" style="background:#f0f9ff; border-color:#bae6fd;">
+                                            <i class="fa-solid fa-key" style="font-size:9px; color:#0ea5e9;"></i> 
+                                            <span>كود الجلسة: <span style="font-family:'Outfit'; font-weight:700;">${item.code.split('(')[0].trim()}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn-delete-item" onclick="deleteEntry('${item.uniID}', this)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        `;
+                    });
+
+                    finalHtml += `</div>`;
+                }
+
+                contentDiv.innerHTML = finalHtml;
                 
             } catch (e) { 
-                contentDiv.innerHTML = '<div style="color:red; text-align:center;">خطأ في الاتصال بالسيرفر</div>'; 
+                console.error(e);
+                contentDiv.innerHTML = '<div style="color:#ef4444; text-align:center; padding:30px;">حدث خطأ في الاتصال بالسيرفر.<br>تأكد من الانترنت.</div>'; 
             }
         }
 
         async function deleteEntry(id, btn) {
-            if(!confirm("هل أنت متأكد من حذف هذا الطالب من سجل اليوم؟\n(سيتم الحذف نهائياً من Google Sheet)")) return;
+            if(!confirm("⚠️ تأكيد الحذف:\nسيتم مسح الطالب نهائياً من سجل جوجل شيت ومن النظام.\nهل أنت متأكد؟")) return;
             
-            const card = btn.closest('.modern-report-item');
+            const card = btn.closest('.student-report-card');
+            const originalIcon = btn.innerHTML;
             
-            // Visual feedback
-            card.style.opacity = '0.5';
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            card.style.opacity = '0.6';
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
             btn.style.pointerEvents = 'none';
             
             try {
-                // Send delete request
                 await fetch(CONFIG.sheetApiUrl, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1006,21 +1092,19 @@
                     body: `action=delete&id=${id}`
                 });
                 
-                // Remove card on success (optimistic UI update since no-cors)
-                card.style.transform = 'translateX(100px)';
+                card.style.transition = '0.3s';
+                card.style.transform = 'translateX(50px)';
+                card.style.opacity = '0';
+                
                 setTimeout(() => {
                     card.remove();
-                    if(document.querySelectorAll('.modern-report-item').length === 0) {
-                         document.getElementById('reportContent').innerHTML = '<div class="empty-state">تم حذف جميع السجلات.</div>';
-                    }
+                    playSuccess();
                 }, 300);
-                playSuccess();
                 
             } catch(e) {
-                alert("فشل الحذف");
+                alert("فشل الحذف، تأكد من الاتصال.");
                 card.style.opacity = '1';
-                card.style.transform = 'none';
-                btn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                btn.innerHTML = originalIcon;
                 btn.style.pointerEvents = 'auto';
             }
         }
