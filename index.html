@@ -34,29 +34,13 @@
         .card-body { padding: 0 25px 30px 25px; position: relative; z-index: 2; }
         
         /* --- Hero Wrapper --- */
-        .hero-icon-wrapper { 
-            width: 110px; height: 110px; 
-            margin: -65px auto 20px auto; 
-            position: relative; z-index: 10;
-            border-radius: 50%; 
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 4px rgba(255, 255, 255, 0.3), 0 0 25px rgba(14, 165, 233, 0.4);
-            overflow: hidden; 
-            animation: float-magic 4s ease-in-out infinite alternate;
-        }
-        .hero-icon-wrapper::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent, rgba(255,255,255,0.5), transparent 30%);
-            animation: rotate-shine 6s linear infinite; opacity: 0.6; pointer-events: none;
-        }
+        .hero-icon-wrapper { width: 110px; height: 110px; margin: -65px auto 20px auto; position: relative; z-index: 10; border-radius: 50%; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 4px rgba(255, 255, 255, 0.3), 0 0 25px rgba(14, 165, 233, 0.4); overflow: hidden; animation: float-magic 4s ease-in-out infinite alternate; }
+        .hero-icon-wrapper::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, rgba(255,255,255,0.5), transparent 30%); animation: rotate-shine 6s linear infinite; opacity: 0.6; pointer-events: none; }
         .hero-img { width: 100%; height: 100%; object-fit: cover; transform: scale(0.94); border-radius: 50%; display: block; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 1; box-shadow: inset 0 0 15px rgba(0,0,0,0.05); position: relative; z-index: 2; }
         .status-icon-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); opacity: 0; transform: scale(0); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-radius: 50%; z-index: 3; }
         .hero-icon { font-size: 42px; color: var(--primary); transition: 0.3s; filter: drop-shadow(0 4px 6px rgba(14, 165, 233, 0.3)); }
         .hero-icon-wrapper.show-icon .hero-img { transform: scale(0); opacity: 0; }
         .hero-icon-wrapper.show-icon .status-icon-container { opacity: 1; transform: scale(1); }
-
         @keyframes float-magic { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
         @keyframes rotate-shine { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -64,11 +48,7 @@
         .info-pill { background: #f1f5f9; color: var(--text-sub); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 5px; }
         h1 { font-size: 22px; font-weight: 900; margin-bottom: 5px; color: #0f172a; }
         
-        .faculty-title-box {
-            display: inline-block; margin-bottom: 15px; padding: 8px 20px; border-radius: 50px;
-            background: linear-gradient(135deg, rgba(224, 242, 254, 0.6), rgba(240, 249, 255, 0.4));
-            border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 10px rgba(14, 165, 233, 0.05); backdrop-filter: blur(5px);
-        }
+        .faculty-title-box { display: inline-block; margin-bottom: 15px; padding: 8px 20px; border-radius: 50px; background: linear-gradient(135deg, rgba(224, 242, 254, 0.6), rgba(240, 249, 255, 0.4)); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 10px rgba(14, 165, 233, 0.05); backdrop-filter: blur(5px); }
         .faculty-title-text { font-size: 14px; font-weight: 800; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
         p { font-size: 13px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.6; }
         
@@ -76,11 +56,7 @@
         .btn-main:active { transform: scale(0.97); }
         .btn-main:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
         
-        .btn-secondary { 
-            background: #ffffff; color: var(--primary-dark); width: 100%; padding: 12px; border-radius: 14px; 
-            font-size: 14px; font-weight: 700; border: 2px solid #e0f2fe; cursor: pointer; font-family: 'Cairo'; 
-            margin-top: 10px; box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; 
-        }
+        .btn-secondary { background: #ffffff; color: var(--primary-dark); width: 100%; padding: 12px; border-radius: 14px; font-size: 14px; font-weight: 700; border: 2px solid #e0f2fe; cursor: pointer; font-family: 'Cairo'; margin-top: 10px; box-shadow: 0 2px 5px -2px rgba(0,0,0,0.1); transition: 0.3s; position: relative; z-index: 5; }
         .btn-secondary:hover { background: #f0f9ff; }
         .logout-btn { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; display: none; } 
         .input-group { margin-bottom: 15px; text-align: right; position: relative; z-index: 5; }
@@ -98,28 +74,52 @@
         .particle:nth-child(5) { width: 25px; height: 25px; left: 90%; animation-duration: 15s; animation-delay: 3s; }
         @keyframes floatUp { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translateY(-600px) translateX(20px) rotate(360deg); opacity: 0; } }
 
-        /* --- Modern Bottom Sheet Select (New Style) --- */
-        .custom-select-wrapper { position: relative; user-select: none; width: 100%; z-index: 10; -webkit-tap-highlight-color: transparent; }
-        .custom-select-trigger { position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 16px 20px; font-size: 15px; font-weight: 700; color: #334155; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; cursor: pointer; transition: all 0.3s ease; }
-        .custom-select-trigger:active { transform: scale(0.98); background: #f1f5f9; }
-        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); background: #fff; }
-        .arrow-icon { transition: transform 0.3s; font-size: 14px; color: #94a3b8; }
-        .custom-select-wrapper.open .arrow-icon { transform: rotate(180deg); color: var(--primary); }
+        /* --- ULTRA MODERN SELECTION (New Design) --- */
+        .ultra-modern-selection { width: 100%; margin-bottom: 25px; direction: rtl; }
 
-        /* Backdrop */
-        .custom-select-wrapper.open .custom-options::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: -1; animation: fadeIn 0.3s forwards; }
-        
-        /* Bottom Sheet */
-        .custom-options { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-radius: 25px 25px 0 0; padding: 20px 20px 40px 20px; z-index: 99999; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); transform: translateY(120%); transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1); visibility: visible; display: block !important; max-height: 60vh; overflow-y: auto; }
-        .custom-select-wrapper.open .custom-options { transform: translateY(0); }
-        .custom-options::after { content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 50px; height: 5px; background: #e2e8f0; border-radius: 10px; }
-        
-        .custom-option { padding: 18px 20px; font-size: 16px; font-weight: 700; color: #334155; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .custom-option:last-child { border-bottom: none; }
-        .custom-option:hover, .custom-option:active { background: #f0f9ff; color: var(--primary-dark); }
-        .custom-option.selected { color: var(--primary); background: #f0f9ff; border-radius: 12px; border-bottom: none; }
-        .custom-option.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
-        .custom-select-wrapper.disabled { opacity: 0.6; pointer-events: none; filter: grayscale(100%); }
+        /* 1. Year Switcher */
+        .year-switcher-container {
+            background: #f1f5f9; border-radius: 16px; padding: 5px;
+            display: flex; position: relative; height: 55px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.03); margin-bottom: 20px; border: 1px solid #e2e8f0;
+        }
+        .year-switcher-bg {
+            position: absolute; top: 5px; right: 5px;
+            width: calc(50% - 5px); height: calc(100% - 10px);
+            background: white; border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); z-index: 1; pointer-events: none;
+        }
+        .year-switcher-container.slide-left .year-switcher-bg { transform: translateX(calc(-100% - 10px)); }
+        .year-option {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 14px; font-weight: 700; color: #64748b; cursor: pointer; z-index: 2;
+            transition: color 0.3s; position: relative;
+        }
+        .year-option.active { color: var(--primary-dark); }
+        .yo-icon { font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 16px; opacity: 0.5; }
+        .year-option.active .yo-icon { opacity: 1; color: var(--primary); }
+
+        /* 2. Subjects Area */
+        .modern-subjects-area { animation: fadeInScale 0.4s ease-out; }
+        .area-title { font-size: 12px; color: #94a3b8; font-weight: 800; margin-bottom: 12px; padding-right: 5px; }
+        .modern-subjects-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+
+        /* 3. Floating Chips */
+        .modern-subject-chip {
+            background: white; border: 1px solid #e2e8f0; padding: 12px 20px;
+            border-radius: 14px; font-size: 13px; font-weight: 600; color: #475569;
+            cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            flex-grow: 1; text-align: center; animation: popIn 0.3s backwards;
+        }
+        .modern-subject-chip:active { transform: scale(0.97); }
+        .modern-subject-chip.selected {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border-color: transparent;
+            box-shadow: 0 8px 20px -6px rgba(14, 165, 233, 0.5); font-weight: 800;
+        }
+        @keyframes fadeInScale { from { opacity:0; transform: scale(0.95); } to { opacity:1; transform: scale(1); } }
+        @keyframes popIn { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
 
         /* Ticket Styles */
         .ticket-container { background: white; border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #f1f5f9; }
@@ -135,7 +135,6 @@
         .t-value { font-size: 14px; font-weight: 700; color: #1e293b; }
         .english-num { font-family: 'Outfit', sans-serif; direction: ltr; letter-spacing: 0.5px; font-weight: 700; }
         .verified-badge { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%) rotate(-15deg); border: 2px solid #10b981; color: #10b981; padding: 5px 15px; font-size: 16px; font-weight: 900; border-radius: 8px; opacity: 0; font-family: 'Outfit', sans-serif; letter-spacing: 2px; animation: stampEffect 0.6s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; pointer-events: none; }
-
         .circular-timer { position: relative; width: 80px; height: 80px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; }
         .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
         .timer-circle-bg { fill: none; stroke: #f1f5f9; stroke-width: 6; }
@@ -144,7 +143,6 @@
         .timer-number { font-size: 20px; font-weight: 900; color: #334155; line-height: 1; font-family: 'Cairo', sans-serif; }
         .timer-label { font-size: 9px; color: #94a3b8; font-weight: 700; }
         .timer-pulse { animation: pulse-red 1s infinite; }
-        
         .student-info-card { background: linear-gradient(135deg, #f8fafc, #e0f2fe); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.2); border: 1px solid #bae6fd; text-align: right; position: relative; overflow: hidden; }
         .student-info-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%); opacity: 0.5; pointer-events: none; }
         .student-info-item { margin-bottom: 15px; position: relative; padding-right: 45px; z-index: 2; }
@@ -153,7 +151,6 @@
         .student-info-label { font-size: 12px; color: var(--text-sub); font-weight: 700; display: block; margin-bottom: 4px; }
         .student-info-value { font-size: 18px; font-weight: 900; color: var(--text-main); display: block; }
         #scanIDDisplay { color: var(--primary-dark); letter-spacing: 1px; font-family: sans-serif; }
-
         .qr-card-trigger { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         .qr-card-trigger:hover { background: #f1f5f9; border-color: var(--primary); }
         .qr-card-icon { width: 60px; height: 60px; background: #e0f2fe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; animation: pulse-blue 2s infinite; }
@@ -165,7 +162,6 @@
         .scan-btn.scanned { background: #10b981; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); pointer-events: none; }
         .scanner-laser { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(to right, transparent, #ef4444, transparent); box-shadow: 0 0 4px #ef4444; z-index: 10; animation: scanning 2s infinite alternate; display: none; }
         .scan-success-badge { background: #ecfdf5; color: #10b981; border: 1px solid #d1fae5; padding: 15px; border-radius: 15px; font-weight: 700; font-size: 14px; display: none; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; animation: popUp 0.4s; }
-
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s ease-out; }
         .modal-box { background: rgba(255, 255, 255, 0.95); width: 85%; max-width: 320px; padding: 25px; border-radius: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2); transform: scale(0.9); animation: popUp 0.3s; }
         .modal-title { font-size: 18px; font-weight: 900; margin-bottom: 10px; color: var(--text-main); }
@@ -177,51 +173,22 @@
         .btn-cancel { background: #f1f5f9; color: #475569; }
         #connectionLostModal { z-index: 20000 !important; }
         #connectionLostModal .modal-box { border: 2px solid #ef4444; }
-
         .uni-watermark { position: absolute; bottom: 0; left: 0; width: 100%; height: 320px; background: url('https://a.top4top.io/p_36115ao3o1.jpg') no-repeat center bottom; background-size: cover; opacity: 0.2; pointer-events: none; z-index: 0; mix-blend-mode: multiply; -webkit-mask-image: radial-gradient(ellipse at bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 75%); mask-image: radial-gradient(ellipse at bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 75%); }
         #screenWelcome { padding-bottom: 120px; }
         .admin-badge { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; padding: 5px 15px; border-radius: 20px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 10px rgba(239,68,68,0.3); z-index: 100; display: none; }
         .section { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; } .section.active { display: block; opacity: 1; animation: fadeIn 0.5s; }
         .card-body-content { position: relative; min-height: 500px; z-index: 5; }
-
         .academic-footer { margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(203, 213, 225, 0.6); display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 5; }
-        .uni-footer-label-large { 
-            font-size: 16px; color: var(--primary-dark); font-weight: 900; 
-            background: rgba(255, 255, 255, 0.9); padding: 12px 25px; border-radius: 25px; 
-            border: 1px solid rgba(255, 255, 255, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 0 5px rgba(14, 165, 233, 0.1);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            display: flex; align-items: center; gap: 8px; margin-top: 5px;
-        }
-
-        .attempts-badge { 
-            background: #fff1f2; color: #be123c; font-size: 11px; font-weight: 800; 
-            padding: 5px 10px; border-radius: 20px; border: 1px solid #fecdd3; 
-            display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;
-        }
-
-        .admin-floating-back {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 45px; height: 45px;
-            background: rgba(255, 255, 255, 0.9); color: #475569;
-            border-radius: 50%; display: none; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;
-            z-index: 1000; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .uni-footer-label-large { font-size: 16px; color: var(--primary-dark); font-weight: 900; background: rgba(255, 255, 255, 0.9); padding: 12px 25px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 0 5px rgba(14, 165, 233, 0.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+        .attempts-badge { background: #fff1f2; color: #be123c; font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 20px; border: 1px solid #fecdd3; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+        .admin-floating-back { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.9); color: #475569; border-radius: 50%; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; z-index: 1000; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .admin-floating-back:active { transform: scale(0.9); }
         .admin-floating-back i { font-size: 16px; }
-
         .custom-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; direction: ltr; position: relative; z-index: 10; }
-        .key-btn { 
-            background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px 0; 
-            font-size: 22px; font-weight: 700; color: #334155; 
-            box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.1s; 
-            font-family: 'Cairo', sans-serif; display: flex; justify-content: center; align-items: center;
-        }
+        .key-btn { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px 0; font-size: 22px; font-weight: 700; color: #334155; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.1s; font-family: 'Cairo', sans-serif; display: flex; justify-content: center; align-items: center; }
         .key-btn:active { transform: scale(0.95); background: #f1f5f9; box-shadow: none; }
         .key-btn.action-btn { background: #f8fafc; color: #64748b; }
         .key-btn.delete-btn { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
-
         .report-modal-body { margin-bottom: 20px; max-height: 400px; overflow-y: auto; text-align: right; padding-right: 5px; }
         .report-group { background: #ffffff; border-radius: 12px; margin-bottom: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.3s; }
         .report-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--text-main); cursor: pointer; transition: background 0.2s, color 0.2s; position: relative; background: #f0f9ff; border-right: 5px solid var(--primary); }
@@ -237,7 +204,6 @@
         .btn-delete-single { background: #fee2e2; color: #b91c1c; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; transition: 0.2s; font-size: 12px; display: flex; align-items: center; justify-content: center; }
         .btn-delete-single:active { transform: scale(0.9); }
         .empty-state { padding: 30px; font-weight: 700; color: var(--text-sub); background: #f8fafc; border-radius: 12px; }
-
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -428,32 +394,24 @@
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">الفرقة الدراسية:</label>
-                        <div class="custom-select-wrapper" id="yearSelectWrapper">
-                            <div class="custom-select-trigger"><span>-- اختر الفرقة --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="first_year">الفرقة الأولى</div>
-                                <div class="custom-option" data-value="second_year">الفرقة الثانية</div>
+                    <div class="ultra-modern-selection">
+                        <div class="year-switcher-container">
+                            <div class="year-switcher-bg"></div>
+                            <div class="year-option" onclick="selectYearModern(this, 'first_year')">
+                                <span class="yo-icon">1</span> الفرقة الأولى
+                            </div>
+                            <div class="year-option" onclick="selectYearModern(this, 'second_year')">
+                                <span class="yo-icon">2</span> الفرقة الثانية
                             </div>
                         </div>
-                        <select id="yearSelect" style="display:none;">
-                            <option value="" disabled selected>-- اختر الفرقة --</option>
-                            <option value="first_year">الفرقة الأولى</option>
-                            <option value="second_year">الفرقة الثانية</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label style="display:block; text-align:right; margin-bottom:5px; font-size:12px; color:#64748b; font-weight:bold;">المادة الدراسية:</label>
-                        <div class="custom-select-wrapper disabled" id="subjectSelectWrapper">
-                            <div class="custom-select-trigger"><span>-- اختر الفرقة أولاً --</span> <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
-                            <div class="custom-options" id="subjectOptionsContainer">
-                            </div>
+                    
+                        <div id="modernSubjectsArea" class="modern-subjects-area" style="display:none;">
+                            <div class="area-title">المواد المتاحة</div>
+                            <div id="modernSubjectsGrid" class="modern-subjects-grid"></div>
                         </div>
-                        <select id="subjectSelect" style="display:none;" onchange="checkSubjectSelection()">
-                            <option value="" disabled selected>-- اختر الفرقة أولاً --</option>
-                        </select>
+                    
+                        <select id="yearSelect" style="display:none;"><option value="" disabled selected></option></select>
+                        <select id="subjectSelect" style="display:none;"><option value="" disabled selected></option></select>
                     </div>
 
                     <div id="qr-reader">
@@ -535,28 +493,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-       <script>
+    <script>
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        // الرابط الجديد الذي أرسلته:
+        // الرابط النهائي (مع البحث الآمن Server-Side)
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwhlwJxlkLDwXFkrp2-A0i7WmR9zCcDa4MrUs_7kvwKXvFVP5zEHyVRDCXv8fUWxpQI/exec";
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzwoJiKpCYtO2NUgmWvj3I3HvJrWKuxBzto-3macfSsL6__8bdPQqhqL0Ebji7-etl-/exec";
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-        let studentsDB = {};
-        // ... باقي الكود كما هو ...
-        
-        // جلب أسماء الطلاب عند بدء التشغيل
-        fetch(SHEET_API_URL)
-            .then(r => r.json())
-            .then(d => { 
-                studentsDB = d; 
-                if(d.error) {
-                    console.error("خطأ من السيرفر:", d.error);
-                } else {
-                    console.log("تم تحميل البيانات بنجاح", Object.keys(d).length);
-                }
-            })
-            .catch(e => { console.log("DB Load Error", e); });
 
         const subjectsData = {
             "first_year": ["تمريض بالغين 1 نظرى", "تمريض بالغين 1 عملى", "اناتومى نظرى", "اناتومى عملى", "تقييم صحى نظرى", "تقييم صحى عملى", "مصطلحات طبية", "فسيولوجى", "تكنولوجيا المعلومات"],
@@ -572,7 +514,6 @@
         const TEMP_NAME_KEY = "temp_student_name";
         const TEMP_ID_KEY = "temp_student_id";
         const TEMP_CODE_KEY = "temp_session_code";
-        
         const MAX_ATTEMPTS = 3;
         const ATTEMPTS_KEY = "daily_attempts_v46_" + new Date().toLocaleDateString('en-GB');
 
@@ -635,7 +576,7 @@
         }
 
         window.onload = function() {
-            initGlobalGuard(); updateUIForAttempts(); updateUIForMode(); setupCustomSelects(); 
+            initGlobalGuard(); updateUIForAttempts(); updateUIForMode(); 
             setInterval(() => {
                 const now = new Date();
                 const timeStr = now.toLocaleTimeString('en-US', {hour12: true, hour:'2-digit', minute:'2-digit', second:'2-digit'});
@@ -733,16 +674,37 @@
         }
 
         async function handleIdSubmit() {
-            playClick(); const uniIdVal = document.getElementById('uniID').value.trim(); const alertBox = document.getElementById('dataEntryAlert');
-            if (!uniIdVal) { alertBox.innerText = "⚠️ يرجى إدخال الكود الجامعي."; alertBox.style.display = 'block'; return; }
-            if(Object.keys(studentsDB).length === 0) { alertBox.innerText = "⚠️ جاري تحميل البيانات.."; alertBox.style.display = 'block'; return; }
-            const studentName = studentsDB[uniIdVal];
-            if (studentName) {
-                attendanceData.uniID = uniIdVal; attendanceData.name = studentName;
-                sessionStorage.setItem(TEMP_ID_KEY, uniIdVal); sessionStorage.setItem(TEMP_NAME_KEY, studentName);
-                document.getElementById('scanNameDisplay').innerText = studentName; document.getElementById('scanIDDisplay').innerText = uniIdVal; 
-                if(countdownInterval) clearInterval(countdownInterval); stopCameraSafely(); switchScreen('screenScanQR'); playSuccess();
-            } else { alertBox.innerText = "❌ الكود غير صحيح."; alertBox.style.display = 'block'; if(navigator.vibrate) navigator.vibrate(300); }
+            playClick(); 
+            const uniIdVal = document.getElementById('uniID').value.trim(); 
+            const alertBox = document.getElementById('dataEntryAlert');
+            const nextBtn = document.getElementById('nextStepBtn');
+
+            if (!uniIdVal) { 
+                alertBox.innerText = "⚠️ يرجى إدخال الكود الجامعي."; alertBox.style.display = 'block'; return; 
+            }
+
+            nextBtn.disabled = true;
+            nextBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري البحث...';
+            alertBox.style.display = 'none';
+
+            try {
+                const response = await fetch(`${SHEET_API_URL}?action=getName&id=${encodeURIComponent(uniIdVal)}`);
+                const studentName = await response.text();
+
+                if (studentName && studentName !== "Not Found" && studentName !== "Error DB") {
+                    attendanceData.uniID = uniIdVal; attendanceData.name = studentName;
+                    sessionStorage.setItem(TEMP_ID_KEY, uniIdVal); sessionStorage.setItem(TEMP_NAME_KEY, studentName);
+                    document.getElementById('scanNameDisplay').innerText = studentName; document.getElementById('scanIDDisplay').innerText = uniIdVal; 
+                    if(countdownInterval) clearInterval(countdownInterval); stopCameraSafely(); switchScreen('screenScanQR'); playSuccess();
+                } else {
+                    alertBox.innerText = "❌ الكود غير صحيح أو غير مسجل."; alertBox.style.display = 'block'; if(navigator.vibrate) navigator.vibrate(300);
+                }
+            } catch (error) {
+                alertBox.innerText = "⚠️ خطأ في الاتصال. حاول مرة أخرى."; alertBox.style.display = 'block';
+            } finally {
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = 'التالي <i class="fa-solid fa-arrow-left"></i>';
+            }
         }
 
         async function submitToGoogle() {
@@ -769,92 +731,47 @@
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
         async function goBackToWelcome() { playClick(); if (geo_watch_id) navigator.geolocation.clearWatch(geo_watch_id); if(countdownInterval) clearInterval(countdownInterval); await stopCameraSafely(); sessionStorage.removeItem(SESSION_END_TIME_KEY); sessionStorage.removeItem(TEMP_NAME_KEY); sessionStorage.removeItem(TEMP_ID_KEY); sessionStorage.removeItem(TEMP_CODE_KEY); processIsActive = false; document.getElementById('uniID').value = ''; document.getElementById('startScanCard').style.display = 'flex'; hideConnectionLostModal(); switchScreen('screenWelcome'); }
         
-        function setupCustomSelects() {
-            const yearWrapper = document.getElementById('yearSelectWrapper');
-            const subjectWrapper = document.getElementById('subjectSelectWrapper');
-            const allWrappers = [yearWrapper, subjectWrapper];
-
-            function toggleSelect(wrapper, event) {
-                event.stopPropagation();
-                if (!wrapper.classList.contains('open')) {
-                    allWrappers.forEach(w => w.classList.remove('open'));
-                    if (!wrapper.classList.contains('disabled')) {
-                        wrapper.classList.add('open');
-                        playClick();
-                    }
-                } else {
-                    wrapper.classList.remove('open');
-                }
-            }
-
-            yearWrapper.querySelector('.custom-select-trigger').addEventListener('click', (e) => toggleSelect(yearWrapper, e));
-            subjectWrapper.querySelector('.custom-select-trigger').addEventListener('click', (e) => toggleSelect(subjectWrapper, e));
-
-            yearWrapper.querySelectorAll('.custom-option').forEach(op => {
-                op.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    yearWrapper.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
-                    this.classList.add('selected');
-                    yearWrapper.querySelector('.custom-select-trigger span').textContent = this.textContent;
-                    yearWrapper.classList.remove('open');
-                    document.getElementById('yearSelect').value = this.getAttribute('data-value');
-                    playClick();
-                    updateSubjects();
-                });
-            });
-
-            window.addEventListener('click', (e) => {
-                allWrappers.forEach(wrapper => {
-                    if (wrapper.classList.contains('open')) {
-                        wrapper.classList.remove('open');
-                    }
-                });
-            });
+        // --- NEW: Modern Selection Logic ---
+        function selectYearModern(element, yearValue) {
+            playClick();
+            const container = document.querySelector('.year-switcher-container');
+            const allOptions = document.querySelectorAll('.year-option');
+            allOptions.forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+            
+            if (yearValue === 'second_year') container.classList.add('slide-left');
+            else container.classList.remove('slide-left');
+            
+            document.getElementById('yearSelect').value = yearValue;
+            renderModernSubjects(yearValue);
         }
 
-        function updateSubjects() { 
-            const y = document.getElementById("yearSelect").value; 
-            const sWrapper = document.getElementById('subjectSelectWrapper'); 
-            const sOptions = document.getElementById('subjectOptionsContainer'); 
-            const sTrigger = sWrapper.querySelector('.custom-select-trigger span'); 
-            const sReal = document.getElementById("subjectSelect"); 
+        function renderModernSubjects(year) {
+            const area = document.getElementById('modernSubjectsArea');
+            const grid = document.getElementById('modernSubjectsGrid');
+            const subjectSelect = document.getElementById('subjectSelect');
             
-            sReal.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>'; 
-            sOptions.innerHTML = ''; 
-            sTrigger.textContent = '-- اختر المادة --'; 
+            grid.innerHTML = '';
+            subjectSelect.value = "";
+            checkSubjectSelection();
             
-            if (y && subjectsData[y]) { 
-                sReal.disabled = false; 
-                sWrapper.classList.remove('disabled'); 
-                subjectsData[y].forEach(sub => { 
-                    const opt = document.createElement("option"); 
-                    opt.value = sub; 
-                    opt.text = sub; 
-                    sReal.appendChild(opt); 
-                    
-                    const cOpt = document.createElement('div'); 
-                    cOpt.className = 'custom-option'; 
-                    cOpt.textContent = sub; 
-                    cOpt.setAttribute('data-value', sub); 
-                    
-                    cOpt.addEventListener('click', function(e) { 
-                        e.stopPropagation();
-                        sOptions.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
-                        this.classList.add('selected');
-                        sTrigger.textContent = this.textContent; 
-                        sWrapper.classList.remove('open'); 
-                        sReal.value = this.getAttribute('data-value'); 
+            if (subjectsData[year]) {
+                area.style.display = 'block';
+                subjectsData[year].forEach((sub, index) => {
+                    const chip = document.createElement('div');
+                    chip.className = 'modern-subject-chip';
+                    chip.textContent = sub;
+                    chip.style.animationDelay = (index * 0.03) + 's';
+                    chip.onclick = function() {
                         playClick();
-                        checkSubjectSelection(); 
-                    }); 
-                    sOptions.appendChild(cOpt); 
-                }); 
-            } else { 
-                sReal.disabled = true; 
-                sWrapper.classList.add('disabled'); 
-                sTrigger.textContent = '-- اختر الفرقة أولاً --'; 
-            } 
-            checkSubjectSelection(); 
+                        document.querySelectorAll('.modern-subject-chip').forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        subjectSelect.value = sub;
+                        checkSubjectSelection();
+                    };
+                    grid.appendChild(chip);
+                });
+            }
         }
 
         function checkSubjectSelection() { const s = document.getElementById('subjectSelect').value; const p = document.getElementById('sessionPass').value; const b = document.getElementById('submitBtn'); if(s && p) { b.disabled = false; b.style.opacity = "1"; b.style.cursor = "pointer"; } else { b.disabled = true; b.style.opacity = "0.6"; b.style.cursor = "not-allowed"; } }
