@@ -537,9 +537,9 @@
 
     <script>
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        // تنبيه هام: قم بوضع رابط تطبيق الويب (Google Script Web App URL) هنا:
+        // الرابط الذي أرسلته (تم وضعه هنا بنجاح)
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        const SHEET_API_URL = "YOUR_WEB_APP_URL_HERE"; 
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzwoJiKpCYtO2NUgmWvj3I3HvJrWKuxBzto-3macfSsL6__8bdPQqhqL0Ebji7-etl-/exec";
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
         let studentsDB = {};
@@ -547,7 +547,14 @@
         // جلب أسماء الطلاب عند بدء التشغيل
         fetch(SHEET_API_URL)
             .then(r => r.json())
-            .then(d => { studentsDB = d; })
+            .then(d => { 
+                studentsDB = d; 
+                if(d.error) {
+                    console.error("خطأ من السيرفر:", d.error);
+                } else {
+                    console.log("تم تحميل البيانات بنجاح", Object.keys(d).length);
+                }
+            })
             .catch(e => { console.log("DB Load Error", e); });
 
         const subjectsData = {
@@ -564,7 +571,6 @@
         const TEMP_NAME_KEY = "temp_student_name";
         const TEMP_ID_KEY = "temp_student_id";
         const TEMP_CODE_KEY = "temp_session_code";
-        const LOCAL_LOG_KEY = "attendance_daily_log_v1";
         
         const MAX_ATTEMPTS = 3;
         const ATTEMPTS_KEY = "daily_attempts_v46_" + new Date().toLocaleDateString('en-GB');
@@ -637,8 +643,6 @@
                 if(timeEl) timeEl.innerText = timeStr; if(dateEl) dateEl.innerText = dateStr;
             }, 1000);
             document.getElementById('submitBtn').addEventListener('click', function(e) { e.preventDefault(); submitToGoogle(); });
-            
-            // تمت إزالة التحقق الفوري من الحظر هنا لتظهر الصفحة بشكل طبيعي
         };
 
         function updateUIForMode() {
@@ -654,8 +658,6 @@
                 badge.style.display = 'block'; 
                 loginBtn.style.display = 'none'; 
                 logoutBtn.style.display = 'block'; 
-                
-                // زر التقرير نشط
                 reportBtn.style.display = 'block'; 
                 reportBtn.disabled = false;
                 reportBtn.className = 'btn-secondary';
@@ -663,14 +665,11 @@
                 reportBtn.style.color = '#15803d';
                 reportBtn.style.borderColor = '#d1fae5';
                 reportBtn.innerHTML = '<i class="fa-solid fa-list-check"></i> سجل حضور اليوم';
-                
                 if(attemptsBadge) attemptsBadge.style.display = 'none'; 
             } else { 
                 badge.style.display = 'none'; 
                 loginBtn.style.display = 'block'; 
                 logoutBtn.style.display = 'none'; 
-                
-                // زر التقرير مقفل
                 reportBtn.style.display = 'block';
                 reportBtn.disabled = true;
                 reportBtn.className = 'btn-secondary';
@@ -678,7 +677,6 @@
                 reportBtn.style.color = '#94a3b8';
                 reportBtn.style.borderColor = '#e2e8f0';
                 reportBtn.innerHTML = '<i class="fa-solid fa-lock"></i> سجل حضور اليوم (مقفل)';
-                
                 adminFloating.style.display = 'none'; 
                 if(attemptsBadge) attemptsBadge.style.display = 'inline-flex'; 
             }
@@ -687,7 +685,6 @@
 
         async function startProcess(skip = false) {
             playClick();
-            // التحقق من الحظر هنا فقط عند الضغط
             if (sessionStorage.getItem(DOCTOR_MODE_KEY) !== 'true') { 
                 if (getAttemptsLeft() <= 0) { 
                     showError("⛔ لقد استنفذت جميع محاولاتك اليوم (3 محاولات).<br>تم حظرك.", true); 
@@ -771,7 +768,6 @@
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) { var R = 6371; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180); var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); }
         async function goBackToWelcome() { playClick(); if (geo_watch_id) navigator.geolocation.clearWatch(geo_watch_id); if(countdownInterval) clearInterval(countdownInterval); await stopCameraSafely(); sessionStorage.removeItem(SESSION_END_TIME_KEY); sessionStorage.removeItem(TEMP_NAME_KEY); sessionStorage.removeItem(TEMP_ID_KEY); sessionStorage.removeItem(TEMP_CODE_KEY); processIsActive = false; document.getElementById('uniID').value = ''; document.getElementById('startScanCard').style.display = 'flex'; hideConnectionLostModal(); switchScreen('screenWelcome'); }
         
-        /* --- FIXED JS FOR MODERN BOTTOM SHEET SELECT --- */
         function setupCustomSelects() {
             const yearWrapper = document.getElementById('yearSelectWrapper');
             const subjectWrapper = document.getElementById('subjectSelectWrapper');
